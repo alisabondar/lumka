@@ -2,6 +2,9 @@
   min-height: 100vh;
   background: linear-gradient(to bottom right, rgb(250 250 250), rgb(244 244 245));
   padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -10,98 +13,72 @@
   }
 }
 
-.main {
-  max-width: 80rem;
-  margin-left: auto;
-  margin-right: auto;
+.deckStack {
+  position: absolute;
+  top: 50%;
+  right: 2rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 10;
 }
 
-.header {
-  margin-bottom: 2rem;
-  text-align: center;
+.deckCard {
+  width: 120px;
+  height: 168px;
+  border-radius: 0.5rem;
+  border: 2px solid rgb(63 63 70);
+  background: linear-gradient(135deg, rgb(37 99 235), rgb(29 78 216));
+  position: relative;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transition: transform 0.15s ease;
 }
 
-.title {
-  font-size: 2.25rem;
+.deckCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.deckCard:active {
+  transform: translateY(-2px);
+}
+
+.deckPattern {
+  width: 100%;
+  height: 100%;
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.1) 10px, rgba(255, 255, 255, 0.1) 20px),
+    repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.1) 10px, rgba(255, 255, 255, 0.1) 20px);
+  border-radius: 0.5rem;
+}
+
+.deckCount {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
   font-weight: 700;
-  color: rgb(0 0 0);
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
 }
 
 @media (prefers-color-scheme: dark) {
-  .title {
-    color: rgb(250 250 250);
+  .deckCard {
+    border-color: rgb(82 82 91);
+    background: linear-gradient(135deg, rgb(29 78 216), rgb(37 99 235));
   }
 }
 
-.buttonContainer {
+.bottomCards {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   gap: 1rem;
   justify-content: center;
-}
-
-.button {
-  padding: 0.5rem 1.5rem;
-  color: white;
-  border-radius: 0.5rem;
-  transition-property: background-color;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-}
-
-.buttonPrimary {
-  background-color: rgb(37 99 235);
-}
-
-.buttonPrimary:hover {
-  background-color: rgb(29 78 216);
-}
-
-.buttonSecondary {
-  background-color: rgb(82 82 91);
-}
-
-.buttonSecondary:hover {
-  background-color: rgb(63 63 70);
-}
-
-.shuffledMessage {
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
-  color: rgb(22 163 74);
-}
-
-@media (prefers-color-scheme: dark) {
-  .shuffledMessage {
-    color: rgb(74 222 128);
-  }
-}
-
-.cardsGrid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.5rem;
-}
-
-@media (min-width: 640px) {
-  .cardsGrid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 768px) {
-  .cardsGrid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1024px) {
-  .cardsGrid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
+  z-index: 10;
 }
 
 .card {
@@ -114,6 +91,7 @@
   transition-property: transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+  position: relative;
 }
 
 .card:hover {
@@ -155,5 +133,23 @@
 
 .cardRank {
   font-size: 0.75rem;
+}
+
+.traitSymbol {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.bottomCards .card {
+  min-width: 80px;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
