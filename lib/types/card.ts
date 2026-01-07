@@ -6,7 +6,7 @@ export interface Card {
   suit: Suit;
   rank: Rank;
   color: Color;
-  id: string; // Unique identifier for each card
+  id: string;
 }
 
 export const SUIT_SYMBOLS: Record<Suit, string> = {
