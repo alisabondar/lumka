@@ -151,5 +151,409 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+}
+
+.cardSelected {
+  border-width: 4px !important;
+  transform: translateY(-8px) !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+.handContainer {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 10;
+}
+
+.discardButton {
+  background-color: rgb(220 38 38);
+  color: white;
+  font-weight: 700;
+  font-size: 1.125rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.discardButton:hover {
+  background-color: rgb(185 28 28);
+}
+
+.discardButton:active {
+  background-color: rgb(153 27 27);
+}
+
+.gameInfo {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .gameInfo {
+    background: rgba(24, 24, 27, 0.9);
+  }
+}
+
+.roundInfo {
+  margin-bottom: 1rem;
+}
+
+.roundInfo h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: rgb(0 0 0);
+}
+
+@media (prefers-color-scheme: dark) {
+  .roundInfo h2 {
+    color: rgb(250 250 250);
+  }
+}
+
+.anteInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.anteColor {
+  font-size: 1.25rem;
+}
+
+.anteName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgb(63 63 70);
+}
+
+@media (prefers-color-scheme: dark) {
+  .anteName {
+    color: rgb(212 212 216);
+  }
+}
+
+.playerStats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.statLabel {
+  font-weight: 600;
+  color: rgb(63 63 70);
+}
+
+@media (prefers-color-scheme: dark) {
+  .statLabel {
+    color: rgb(212 212 216);
+  }
+}
+
+.statValue {
+  font-weight: 700;
+  color: rgb(37 99 235);
+}
+
+.challengesDisplay {
+  position: absolute;
+  top: 2rem;
+  right: 10rem;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .challengesDisplay {
+    background: rgba(24, 24, 27, 0.9);
+  }
+}
+
+.challengesDisplay h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: rgb(0 0 0);
+}
+
+@media (prefers-color-scheme: dark) {
+  .challengesDisplay h3 {
+    color: rgb(250 250 250);
+  }
+}
+
+.challenge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  background: rgb(244 244 245);
+  font-size: 0.875rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .challenge {
+    background: rgb(39 39 42);
+  }
+}
+
+.challengePassed {
+  background: rgb(220 252 231);
+  border: 2px solid rgb(74 222 128);
+}
+
+@media (prefers-color-scheme: dark) {
+  .challengePassed {
+    background: rgb(20 83 45);
+    border-color: rgb(74 222 128);
+  }
+}
+
+.challengeId {
+  font-weight: 700;
+  color: rgb(63 63 70);
+}
+
+@media (prefers-color-scheme: dark) {
+  .challengeId {
+    color: rgb(212 212 216);
+  }
+}
+
+.challengeName {
+  font-weight: 600;
+  color: rgb(37 99 235);
+}
+
+.challengeDesc {
+  color: rgb(113 113 122);
+  flex-basis: 100%;
+  margin-top: 0.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .challengeDesc {
+    color: rgb(161 161 170);
+  }
+}
+
+.checkmark {
+  color: rgb(22 163 74);
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-left: auto;
+}
+
+.endRoundButton {
+  margin-top: 1rem;
+  width: 100%;
+  background-color: rgb(37 99 235);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.endRoundButton:hover {
+  background-color: rgb(29 78 216);
+}
+
+.endScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 2rem;
+}
+
+.endTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: rgb(0 0 0);
+}
+
+@media (prefers-color-scheme: dark) {
+  .endTitle {
+    color: rgb(250 250 250);
+  }
+}
+
+.endMessage {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  color: rgb(63 63 70);
+}
+
+@media (prefers-color-scheme: dark) {
+  .endMessage {
+    color: rgb(161 161 170);
+  }
+}
+
+.playAgainButton {
+  background-color: rgb(37 99 235);
+  color: white;
+  font-weight: 700;
+  font-size: 1.25rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.playAgainButton:hover {
+  background-color: rgb(29 78 216);
+}
+
+.introScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 2rem;
+}
+
+.introTitle {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: rgb(0 0 0);
+}
+
+@media (prefers-color-scheme: dark) {
+  .introTitle {
+    color: rgb(250 250 250);
+  }
+}
+
+.introContent {
+  max-width: 800px;
+  width: 100%;
+}
+
+.introDescription {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  color: rgb(63 63 70);
+  line-height: 1.6;
+}
+
+@media (prefers-color-scheme: dark) {
+  .introDescription {
+    color: rgb(161 161 170);
+  }
+}
+
+.introRules {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+@media (prefers-color-scheme: dark) {
+  .introRules {
+    background: rgba(24, 24, 27, 0.9);
+  }
+}
+
+.introRules h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: rgb(0 0 0);
+  text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .introRules h2 {
+    color: rgb(250 250 250);
+  }
+}
+
+.introRules ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.introRules li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgb(229 231 235);
+  color: rgb(63 63 70);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.introRules li:last-child {
+  border-bottom: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .introRules li {
+    border-bottom-color: rgb(63 63 70);
+    color: rgb(212 212 216);
+  }
+}
+
+.introRules li::before {
+  content: '🐾 ';
+  margin-right: 0.5rem;
+}
+
+.startButton {
+  background-color: rgb(37 99 235);
+  color: white;
+  font-weight: 700;
+  font-size: 1.5rem;
+  padding: 1rem 3rem;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.startButton:hover {
+  background-color: rgb(29 78 216);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15);
 }
 

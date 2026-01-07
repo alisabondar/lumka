@@ -1,0 +1,57 @@
+.deckStack {
+  position: absolute;
+  top: calc(50% + 60px);
+  right: 2rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 10;
+}
+
+.deckCard {
+  width: 120px;
+  height: 168px;
+  border-radius: 0.5rem;
+  border: 2px solid rgb(63 63 70);
+  background: linear-gradient(135deg, rgb(37 99 235), rgb(29 78 216));
+  position: relative;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transition: transform 0.15s ease;
+}
+
+.deckCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.deckCard:active {
+  transform: translateY(-2px);
+}
+
+.deckPattern {
+  width: 100%;
+  height: 100%;
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.1) 10px, rgba(255, 255, 255, 0.1) 20px),
+    repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.1) 10px, rgba(255, 255, 255, 0.1) 20px);
+  border-radius: 0.5rem;
+}
+
+.deckCount {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .deckCard {
+    border-color: rgb(82 82 91);
+    background: linear-gradient(135deg, rgb(29 78 216), rgb(37 99 235));
+  }
+}
+

@@ -1,0 +1,133 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, rgb(250 250 250), rgb(244 244 245));
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: linear-gradient(to bottom right, rgb(0 0 0), rgb(24 24 27));
+  }
+}
+
+.introScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 2rem;
+}
+
+.introTitle {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: rgb(0 0 0);
+}
+
+@media (prefers-color-scheme: dark) {
+  .introTitle {
+    color: rgb(250 250 250);
+  }
+}
+
+.introContent {
+  max-width: 800px;
+  width: 100%;
+}
+
+.introDescription {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  color: rgb(63 63 70);
+  line-height: 1.6;
+}
+
+@media (prefers-color-scheme: dark) {
+  .introDescription {
+    color: rgb(161 161 170);
+  }
+}
+
+.introRules {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+@media (prefers-color-scheme: dark) {
+  .introRules {
+    background: rgba(24, 24, 27, 0.9);
+  }
+}
+
+.introRules h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: rgb(0 0 0);
+  text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .introRules h2 {
+    color: rgb(250 250 250);
+  }
+}
+
+.introRules ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.introRules li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgb(229 231 235);
+  color: rgb(63 63 70);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.introRules li:last-child {
+  border-bottom: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .introRules li {
+    border-bottom-color: rgb(63 63 70);
+    color: rgb(212 212 216);
+  }
+}
+
+.introRules li::before {
+  content: '🐾 ';
+  margin-right: 0.5rem;
+}
+
+.startButton {
+  background-color: rgb(37 99 235);
+  color: white;
+  font-weight: 700;
+  font-size: 1.5rem;
+  padding: 1rem 3rem;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.startButton:hover {
+  background-color: rgb(29 78 216);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15);
+}

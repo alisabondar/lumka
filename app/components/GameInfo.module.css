@@ -1,0 +1,117 @@
+.gameInfo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1rem 2rem;
+  border-bottom: 2px solid rgb(229, 231, 235);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .gameInfo {
+    background: rgba(24, 24, 27, 0.95);
+    border-bottom-color: rgb(63, 63, 70);
+  }
+}
+
+.roundInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.roundInfo h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: rgb(0 0 0);
+}
+
+@media (prefers-color-scheme: dark) {
+  .roundInfo h2 {
+    color: rgb(250 250 250);
+  }
+}
+
+.anteInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.anteColor {
+  font-size: 1.25rem;
+}
+
+.anteName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgb(63 63 70);
+}
+
+@media (prefers-color-scheme: dark) {
+  .anteName {
+    color: rgb(212 212 216);
+  }
+}
+
+.playerStats {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.statLabel {
+  font-weight: 600;
+  color: rgb(63 63 70);
+}
+
+@media (prefers-color-scheme: dark) {
+  .statLabel {
+    color: rgb(212 212 216);
+  }
+}
+
+.statValue {
+  font-weight: 700;
+  color: rgb(37 99 235);
+}
+
+.selectedChallenge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.selectedChallengeLabel {
+  font-size: 0.875rem;
+  color: rgb(113, 113, 122);
+  font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+  .selectedChallengeLabel {
+    color: rgb(161, 161, 170);
+  }
+}
+
+.selectedChallengeText {
+  font-size: 0.875rem;
+  color: rgb(37, 99, 235);
+  font-weight: 600;
+}
+
