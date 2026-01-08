@@ -13,9 +13,9 @@ import {
 } from '@/lib/game/gameState';
 import type { GameState } from '@/lib/game/gameState';
 import { getAnteForRound } from '@/lib/game/challenges';
-import IntroPage from './pages/IntroPage';
-import GameplayPage from './pages/GameplayPage';
-import OutcomePage from './pages/OutcomePage';
+import { IntroPage } from './pages/IntroPage';
+import { GameplayPage } from './pages/GameplayPage';
+import { OutcomePage } from './pages/OutcomePage';
 
 type Page = 'intro' | 'gameplay' | 'outcome';
 

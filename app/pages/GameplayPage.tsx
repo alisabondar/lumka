@@ -2,10 +2,10 @@
 
 import { GameState } from '@/lib/game/gameState';
 import { Ante } from '@/lib/game/challenges';
-import GameInfo from '../components/GameInfo';
-import ChallengeModal from '../components/ChallengeModal';
-import Deck from '../components/Deck';
-import Hand from '../components/Hand';
+import { GameInfo } from '../components/GameInfo';
+import { ChallengeModal } from '../components/ChallengeModal';
+import { Deck } from '../components/Deck';
+import { Hand } from '../components/Hand';
 import styles from './GameplayPage.module.css';
 
 interface GameplayPageProps {
@@ -19,7 +19,7 @@ interface GameplayPageProps {
   onSelectChallenge: (challengeId: string) => void;
 }
 
-export default function GameplayPage({
+export const GameplayPage = ({
   gameState,
   currentAnte,
   onCardClick,
@@ -28,7 +28,7 @@ export default function GameplayPage({
   onDrawCard,
   onEndRound,
   onSelectChallenge,
-}: GameplayPageProps) {
+}: GameplayPageProps) => {
   const hasSelectedChallenge = gameState.selectedChallengeId !== null;
   const hasSelectedCards = gameState.selectedCards.size > 0;
 
@@ -45,7 +45,7 @@ export default function GameplayPage({
 
       {hasSelectedChallenge && (
         <>
-          <div className={styles.endRoundContainer}>
+          <div className={styles.endRoundContainer} data-walkthrough="end-round-button">
             <button
               className={styles.endRoundButton}
               onClick={onEndRound}
@@ -57,7 +57,7 @@ export default function GameplayPage({
           <Deck count={gameState.deck.length} onClick={onDrawCard} />
 
           {hasSelectedCards && (
-            <div className={styles.discardContainer}>
+            <div className={styles.discardContainer} data-walkthrough="discard-button">
               <button
                 className={styles.discardButton}
                 onClick={onDiscard}
@@ -77,5 +77,5 @@ export default function GameplayPage({
       )}
     </div>
   );
-}
+};
 

@@ -8,11 +8,11 @@ interface ChallengesDisplayProps {
   onEndRound: () => void;
 }
 
-export default function ChallengesDisplay({
+export const ChallengesDisplay = ({
   gameState,
   currentAnte,
   onEndRound
-}: ChallengesDisplayProps) {
+}: ChallengesDisplayProps) => {
   return (
     <div className={styles.challengesDisplay}>
       <h3>Challenges (meet at least one):</h3>
@@ -38,5 +38,5 @@ export default function ChallengesDisplay({
       </button>
     </div>
   );
-}
+};
 

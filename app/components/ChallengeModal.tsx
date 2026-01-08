@@ -8,7 +8,7 @@ interface ChallengeModalProps {
   onSelectChallenge: (challengeId: string) => void;
 }
 
-export default function ChallengeModal({ ante, onSelectChallenge }: ChallengeModalProps) {
+export const ChallengeModal = ({ ante, onSelectChallenge }: ChallengeModalProps) => {
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
@@ -36,5 +36,5 @@ export default function ChallengeModal({ ante, onSelectChallenge }: ChallengeMod
       </div>
     </div>
   );
-}
+};
 

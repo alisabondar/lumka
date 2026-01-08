@@ -9,13 +9,13 @@ interface GameInfoProps {
   currentAnte: Ante;
 }
 
-export default function GameInfo({ gameState, currentAnte }: GameInfoProps) {
+export const GameInfo = ({ gameState, currentAnte }: GameInfoProps) => {
   const selectedChallenge = gameState.selectedChallengeId
     ? currentAnte.challenges.find(c => c.id === gameState.selectedChallengeId)
     : null;
 
   return (
-    <div className={styles.gameInfo}>
+    <div className={styles.gameInfo} data-walkthrough="game-info">
       <div className={styles.roundInfo}>
         <h2>Round {gameState.round} of 6</h2>
         <div className={styles.anteInfo}>
@@ -47,5 +47,5 @@ export default function GameInfo({ gameState, currentAnte }: GameInfoProps) {
       </div>
     </div>
   );
-}
+};
 

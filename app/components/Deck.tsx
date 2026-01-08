@@ -7,12 +7,13 @@ interface DeckProps {
   onClick: () => void;
 }
 
-export default function Deck({ count, onClick }: DeckProps) {
+export const Deck = ({ count, onClick }: DeckProps) => {
   return (
     <div
       className={styles.deckStack}
       onClick={onClick}
       title={count > 0 ? `Click to draw a card (${count} remaining)` : 'Deck is empty'}
+      data-walkthrough="deck"
     >
       <div className={styles.deckCard}>
         <div className={styles.deckPattern}></div>
@@ -22,5 +23,5 @@ export default function Deck({ count, onClick }: DeckProps) {
       )}
     </div>
   );
-}
+};
 

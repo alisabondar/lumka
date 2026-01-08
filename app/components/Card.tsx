@@ -11,7 +11,7 @@ interface CardProps {
   onDoubleClick?: () => void;
 }
 
-export default function Card({ card, isSelected = false, onClick, onDoubleClick }: CardProps) {
+export const Card = ({ card, isSelected = false, onClick, onDoubleClick }: CardProps) => {
   return (
     <div
       className={`${styles.card} ${styles.cardInHand} ${
@@ -32,5 +32,5 @@ export default function Card({ card, isSelected = false, onClick, onDoubleClick 
       <div className={styles.cardRank}>{card.rank}</div>
     </div>
   );
-}
+};
 

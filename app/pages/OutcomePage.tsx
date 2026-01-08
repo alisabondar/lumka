@@ -7,7 +7,7 @@ interface OutcomePageProps {
   onPlayAgain: () => void;
 }
 
-export default function OutcomePage({ won, onPlayAgain }: OutcomePageProps) {
+export const OutcomePage = ({ won, onPlayAgain }: OutcomePageProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.endScreen}>
@@ -28,5 +28,5 @@ export default function OutcomePage({ won, onPlayAgain }: OutcomePageProps) {
       </div>
     </div>
   );
-}
+};
 

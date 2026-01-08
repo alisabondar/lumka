@@ -1,35 +1,57 @@
-'use client';
+"use client";
 
-import styles from './IntroPage.module.css';
+import { useState } from "react";
+import styles from "./IntroPage.module.css";
+import { WalkthroughWrapper } from "../components/WalkthroughWrapper";
 
 interface IntroPageProps {
   onStart: () => void;
 }
 
-export default function IntroPage({ onStart }: IntroPageProps) {
+export const IntroPage = ({ onStart }: IntroPageProps) => {
+  const [playerName, setPlayerName] = useState("");
+  const [showWalkthrough, setShowWalkthrough] = useState(false);
+  const [modalKey, setModalKey] = useState(0);
+
+  const handleStartClick = () => {
+    setModalKey((prev) => prev + 1);
+    setShowWalkthrough(true);
+  };
+
+  const handleWalkthroughClose = () => {
+    setShowWalkthrough(false);
+    onStart();
+  };
+
+  const isNameValid = playerName.trim().length > 0;
+
   return (
     <div className={styles.container}>
       <div className={styles.introScreen}>
-        <h1 className={styles.introTitle}>🐱 LUMKA 🐱</h1>
+        <h1 className={styles.introTitle}>🐾 LUMKA 🐾</h1>
         <div className={styles.introContent}>
           <p className={styles.introDescription}>
-            Welcome to the evolution game! You are a cute kitten that must grow into a cat with useful cat traits.
+            Welcome to Lumka! A game all about growth and evolution in order to
+            become an immortal cat. Are you ready to evolve?
           </p>
-          <div className={styles.introRules}>
-            <h2>How to Play:</h2>
-            <ul>
-              <li>You have 6 cards in your hand at all times</li>
-              <li>Click cards to select them, then click &quot;Discard&quot; to remove them</li>
-              <li>Double-click a card to apply it as a trait to your cat</li>
-              <li>Click the deck to draw a new card (costs 0.5 stability)</li>
-              <li>Discarding cards also costs 0.5 stability</li>
-              <li>Complete all 6 rounds by meeting challenge requirements</li>
-              <li>If you fail a round, you lose!</li>
-            </ul>
+          <WalkthroughWrapper
+            key={modalKey}
+            isOpen={showWalkthrough}
+            onClose={handleWalkthroughClose}
+          />
+          <div className={styles.inputContainer}>
+            <input
+              type="text"
+              placeholder="Enter your name"
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value)}
+              className={styles.nameInput}
+            />
           </div>
           <button
             className={styles.startButton}
-            onClick={onStart}
+            onClick={handleStartClick}
+            disabled={!isNameValid}
           >
             Start Game
           </button>
@@ -37,5 +59,4 @@ export default function IntroPage({ onStart }: IntroPageProps) {
       </div>
     </div>
   );
-}
-
+};

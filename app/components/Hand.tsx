@@ -1,7 +1,7 @@
 'use client';
 
 import { Card as CardType } from '@/lib/types/card';
-import Card from './Card';
+import { Card } from './Card';
 import styles from './Hand.module.css';
 
 interface HandProps {
@@ -11,15 +11,15 @@ interface HandProps {
   onCardDoubleClick: (cardId: string) => void;
 }
 
-export default function Hand({
+export const Hand = ({
   cards,
   selectedCards,
   onCardClick,
   onCardDoubleClick,
-}: HandProps) {
+}: HandProps) => {
   return (
     <div className={styles.handContainer}>
-      <div className={styles.bottomCards}>
+      <div className={styles.bottomCards} data-walkthrough="hand">
         {cards.map((card) => (
           <Card
             key={card.id}
@@ -32,5 +32,5 @@ export default function Hand({
       </div>
     </div>
   );
-}
+};
 
