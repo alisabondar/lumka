@@ -120,34 +120,24 @@
 }
 
 .nameInput {
-  width: 100%;
-  max-width: 400px;
-  font-size: 1.25rem;
-  padding: 0.75rem 1rem;
-  border: 2px solid rgb(229 231 235);
-  border-radius: 0.75rem;
-  background-color: white;
-  color: rgb(0 0 0);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  border-radius: 8px;
 }
 
-.nameInput:focus {
-  outline: none;
-  border-color: rgb(37 99 235);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+.nameInput :global(.MuiOutlinedInput-root) {
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: background-color 0.2s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .nameInput {
-    background-color: rgb(24 24 27);
-    border-color: rgb(63 63 70);
-    color: rgb(250 250 250);
-  }
+.nameInput :global(.MuiOutlinedInput-notchedOutline) {
+  border: none;
+}
 
-  .nameInput:focus {
-    border-color: rgb(37 99 235);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-  }
+.nameInput :global(.MuiOutlinedInput-root:hover:not(.Mui-focused)) {
+  background-color: rgba(220, 220, 220, 0.95);
+}
+
+.nameInput :global(.MuiOutlinedInput-root.Mui-focused) {
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .startButton {

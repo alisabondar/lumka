@@ -60,7 +60,6 @@ const STEPS = [
 export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps) => {
   const [stepIndex, setStepIndex] = useState(0);
   const [highlightPosition, setHighlightPosition] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
-  const [modalPosition, setModalPosition] = useState<{ top?: number; bottom?: number; left?: number; right?: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Create a mock game state for demonstration
@@ -86,7 +85,6 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
     const currentStep = STEPS[stepIndex];
     if (!currentStep.highlightElement) {
       setHighlightPosition(null);
-      setModalPosition(null);
       return;
     }
 
@@ -95,7 +93,6 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
       const element = document.querySelector(`[data-walkthrough="${currentStep.highlightElement}"]`);
       if (!element || !containerRef.current) {
         setHighlightPosition(null);
-        setModalPosition(null);
         return;
       }
 
@@ -116,50 +113,6 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
       };
 
       setHighlightPosition(highlightPos);
-
-      // Position modal near the highlighted element
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
-      const modalWidth = 400;
-      const modalHeight = 250;
-      const padding = 20;
-
-      let modalPos: { top?: number; bottom?: number; left?: number; right?: number } = {};
-
-      // Prefer positioning above if there's space
-      if (elementRect.top > modalHeight + padding) {
-        modalPos.top = elementRect.top - modalHeight - padding;
-        modalPos.left = elementRect.left + elementRect.width / 2 - modalWidth / 2;
-        if (modalPos.left! < padding) modalPos.left = padding;
-        if (modalPos.left! + modalWidth > viewportWidth - padding) {
-          modalPos.left = viewportWidth - modalWidth - padding;
-        }
-      }
-      // Otherwise position below
-      else if (viewportHeight - elementRect.bottom > modalHeight + padding) {
-        modalPos.top = elementRect.bottom + padding;
-        modalPos.left = elementRect.left + elementRect.width / 2 - modalWidth / 2;
-        if (modalPos.left! < padding) modalPos.left = padding;
-        if (modalPos.left! + modalWidth > viewportWidth - padding) {
-          modalPos.left = viewportWidth - modalWidth - padding;
-        }
-      }
-      // Try right side
-      else if (viewportWidth - elementRect.right > modalWidth + padding) {
-        modalPos.top = Math.max(padding, elementRect.top + elementRect.height / 2 - modalHeight / 2);
-        modalPos.left = elementRect.right + padding;
-      }
-      // Try left side
-      else if (elementRect.left > modalWidth + padding) {
-        modalPos.top = Math.max(padding, elementRect.top + elementRect.height / 2 - modalHeight / 2);
-        modalPos.right = viewportWidth - elementRect.left + padding;
-      }
-      // Fallback to center
-      else {
-        modalPos = {};
-      }
-
-      setModalPosition(Object.keys(modalPos).length > 0 ? modalPos : null);
     };
 
     // Use requestAnimationFrame and a timeout to ensure DOM is fully rendered
@@ -293,7 +246,7 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
         onBack={() => setStepIndex((i) => Math.max(i - 1, 0))}
         onClose={onClose}
         isLastStep={isLastStep}
-        position={modalPosition}
+        position={null}
       />
     </div>
   );

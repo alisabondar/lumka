@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@mui/material';
 import { GameState } from '@/lib/game/gameState';
 import { Ante } from '@/lib/game/challenges';
 import { GameInfo } from '../components/GameInfo';
@@ -33,7 +34,7 @@ export const GameplayPage = ({
   const hasSelectedCards = gameState.selectedCards.size > 0;
 
   return (
-    <div className={styles.container}>
+    <div className={styles.gameplayContainer}>
       <GameInfo gameState={gameState} currentAnte={currentAnte} />
 
       {!hasSelectedChallenge && (
@@ -45,25 +46,30 @@ export const GameplayPage = ({
 
       {hasSelectedChallenge && (
         <>
-          <div className={styles.endRoundContainer} data-walkthrough="end-round-button">
-            <button
-              className={styles.endRoundButton}
+          <div className={styles.endRoundButtonWrapper} data-walkthrough="end-round-button">
+            <Button
+              variant="contained"
+              size="large"
               onClick={onEndRound}
+              sx={{ fontWeight: 600 }}
             >
               End Round
-            </button>
+            </Button>
           </div>
 
           <Deck count={gameState.deck.length} onClick={onDrawCard} />
 
           {hasSelectedCards && (
-            <div className={styles.discardContainer} data-walkthrough="discard-button">
-              <button
-                className={styles.discardButton}
+            <div className={styles.discardButtonWrapper} data-walkthrough="discard-button">
+              <Button
+                variant="contained"
+                color="error"
+                size="large"
                 onClick={onDiscard}
+                sx={{ fontWeight: 700, fontSize: '1.125rem' }}
               >
                 Discard
-              </button>
+              </Button>
             </div>
           )}
 
@@ -78,4 +84,3 @@ export const GameplayPage = ({
     </div>
   );
 };
-

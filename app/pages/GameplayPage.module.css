@@ -1,67 +1,21 @@
-.container {
+.gameplayContainer {
   min-height: 100vh;
-  background: linear-gradient(to bottom right, rgb(250 250 250), rgb(244 244 245));
-  padding: 2rem;
   padding-top: 120px;
-  display: flex;
-  flex-direction: column;
+  padding: 24px;
   position: relative;
+  overflow: visible;
 }
 
-@media (prefers-color-scheme: dark) {
-  .container {
-    background: linear-gradient(to bottom right, rgb(0 0 0), rgb(24 24 27));
-  }
-}
-
-.endRoundContainer {
+.endRoundButtonWrapper {
   position: absolute;
   top: 140px;
-  right: 2rem;
+  right: 32px;
   z-index: 10;
 }
 
-.endRoundButton {
-  background-color: rgb(37 99 235);
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.endRoundButton:hover {
-  background-color: rgb(29 78 216);
-}
-
-.discardContainer {
+.discardButtonWrapper {
   position: absolute;
   bottom: 220px;
-  right: 2rem;
+  right: 32px;
   z-index: 10;
-}
-
-.discardButton {
-  background-color: rgb(220 38 38);
-  color: white;
-  font-weight: 700;
-  font-size: 1.125rem;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.discardButton:hover {
-  background-color: rgb(185 28 28);
-}
-
-.discardButton:active {
-  background-color: rgb(153 27 27);
 }

@@ -1,3 +1,7 @@
+'use client';
+
+import { Paper, Typography, Button, Chip, Stack } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { GameState } from '@/lib/game/gameState';
 import { Ante } from '@/lib/game/challenges';
 import styles from './ChallengesDisplay.module.css';
@@ -14,29 +18,41 @@ export const ChallengesDisplay = ({
   onEndRound
 }: ChallengesDisplayProps) => {
   return (
-    <div className={styles.challengesDisplay}>
-      <h3>Challenges (meet at least one):</h3>
-      {currentAnte.challenges.map((challenge) => {
-        const passed = challenge.check(gameState.playerState);
-        return (
-          <div
-            key={challenge.id}
-            className={`${styles.challenge} ${passed ? styles.challengePassed : ''}`}
-          >
-            <span className={styles.challengeId}>{challenge.id}:</span>
-            <span className={styles.challengeName}>{challenge.name}</span>
-            <span className={styles.challengeDesc}>{challenge.description}</span>
-            {passed && <span className={styles.checkmark}>✓</span>}
-          </div>
-        );
-      })}
-      <button
-        className={styles.endRoundButton}
+    <Paper elevation={4} className={styles.container}>
+      <Typography variant="h6" gutterBottom className={styles.title}>
+        Challenges (meet at least one):
+      </Typography>
+      <Stack spacing={2} className={styles.challengesList}>
+        {currentAnte.challenges.map((challenge) => {
+          const passed = challenge.check(gameState.playerState);
+          return (
+            <div
+              key={challenge.id}
+              className={`${styles.challengeItem} ${passed ? styles.challengeItemPassed : ''}`}
+            >
+              <Chip label={challenge.id} size="small" color="primary" />
+              <Typography variant="body1" className={styles.challengeName}>
+                {challenge.name}
+              </Typography>
+              <Typography variant="body2" className={styles.challengeDescription}>
+                {challenge.description}
+              </Typography>
+              {passed && (
+                <CheckCircleIcon className={styles.checkIcon} />
+              )}
+            </div>
+          );
+        })}
+      </Stack>
+      <Button
+        variant="contained"
+        size="large"
+        fullWidth
         onClick={onEndRound}
+        className={styles.endButton}
       >
         End Round
-      </button>
-    </div>
+      </Button>
+    </Paper>
   );
 };
-

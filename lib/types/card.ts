@@ -32,4 +32,3 @@ export const TRAIT_SYMBOLS: Record<TraitCategory, string> = {
   negative: '-',
   wild: '~',
 };
-

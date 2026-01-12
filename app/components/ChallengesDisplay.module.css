@@ -1,112 +1,48 @@
-.challengesDisplay {
-  position: absolute;
-  top: 2rem;
-  right: 10rem;
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 1.5rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
+.container {
+  padding: 24px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
 }
 
-@media (prefers-color-scheme: dark) {
-  .challengesDisplay {
-    background: rgba(24, 24, 27, 0.9);
-  }
+.title {
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
-.challengesDisplay h3 {
-  font-size: 1.125rem;
-  font-weight: 700;
-  margin: 0 0 1rem 0;
-  color: rgb(0 0 0);
+.challengesList {
+  margin-bottom: 24px;
 }
 
-@media (prefers-color-scheme: dark) {
-  .challengesDisplay h3 {
-    color: rgb(250 250 250);
-  }
-}
-
-.challenge {
+.challengeItem {
+  padding: 16px;
+  border-radius: 8px;
+  border: 2px solid rgba(0, 0, 0, 0.23);
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  border-radius: 0.5rem;
-  background: rgb(244 244 245);
-  font-size: 0.875rem;
+  align-items: center;
+  gap: 16px;
 }
 
-@media (prefers-color-scheme: dark) {
-  .challenge {
-    background: rgb(39 39 42);
-  }
-}
-
-.challengePassed {
-  background: rgb(220 252 231);
-  border: 2px solid rgb(74 222 128);
-}
-
-@media (prefers-color-scheme: dark) {
-  .challengePassed {
-    background: rgb(20 83 45);
-    border-color: rgb(74 222 128);
-  }
-}
-
-.challengeId {
-  font-weight: 700;
-  color: rgb(63 63 70);
-}
-
-@media (prefers-color-scheme: dark) {
-  .challengeId {
-    color: rgb(212 212 216);
-  }
+.challengeItemPassed {
+  border-color: #4caf50;
+  background-color: rgba(76, 175, 80, 0.1);
 }
 
 .challengeName {
   font-weight: 600;
-  color: rgb(37 99 235);
 }
 
-.challengeDesc {
-  color: rgb(113 113 122);
-  flex-basis: 100%;
-  margin-top: 0.25rem;
+.challengeDescription {
+  flex-grow: 1;
+  color: rgba(0, 0, 0, 0.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  .challengeDesc {
-    color: rgb(161 161 170);
-  }
+.checkIcon {
+  color: #4caf50;
+  font-size: 28px;
 }
 
-.checkmark {
-  color: rgb(22 163 74);
+.endButton {
+  padding-top: 12px;
+  padding-bottom: 12px;
   font-weight: 700;
-  font-size: 1.25rem;
-  margin-left: auto;
 }
-
-.endRoundButton {
-  margin-top: 1rem;
-  width: 100%;
-  background-color: rgb(37 99 235);
-  color: white;
-  font-weight: 600;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-
-.endRoundButton:hover {
-  background-color: rgb(29 78 216);
-}
-

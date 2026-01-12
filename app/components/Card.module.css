@@ -1,79 +1,50 @@
 .card {
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  border-width: 2px;
-  text-align: center;
-  font-weight: 600;
-  font-size: 0.875rem;
-  transition-property: transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-  position: relative;
-}
-
-.card:hover {
-  transform: scale(1.05);
-}
-
-.cardRed {
-  border-color: rgb(252 165 165);
-  background-color: rgb(254 242 242);
-  color: rgb(185 28 28);
-}
-
-@media (prefers-color-scheme: dark) {
-  .cardRed {
-    border-color: rgb(185 28 28);
-    background-color: rgb(127 29 29 / 0.2);
-    color: rgb(248 113 113);
-  }
-}
-
-.cardBlack {
-  border-color: rgb(212 212 216);
-  background-color: rgb(244 244 245);
-  color: rgb(63 63 70);
-}
-
-@media (prefers-color-scheme: dark) {
-  .cardBlack {
-    border-color: rgb(82 82 91);
-    background-color: rgb(39 39 42 / 0.5);
-    color: rgb(212 212 216);
-  }
-}
-
-.cardSymbol {
-  font-size: 1.125rem;
-  margin-bottom: 0.25rem;
-}
-
-.cardRank {
-  font-size: 0.75rem;
-}
-
-.traitSymbol {
-  position: absolute;
-  top: 0.25rem;
-  right: 0.25rem;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.cardSelected {
-  border-width: 4px !important;
-  transform: translateY(-8px) !important;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
-}
-
-.cardInHand {
-  min-width: 80px;
-  min-height: 110px;
+  min-width: 120px;
+  min-height: 164px;
+  width: 120px;
+  height: 164px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  padding: 12px;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+  position: relative;
 }
 
+.cardRed {
+  border: 2px solid #b91c1c;
+  background-color: rgba(254, 242, 242, 0.95);
+  color: #b91c1c;
+}
+
+.cardBlack {
+  border: 2px solid #52525b;
+  background-color: rgba(244, 244, 245, 0.95);
+  color: #3f3f46;
+}
+
+.cardSelected {
+  border-width: 4px;
+}
+
+.traitSymbol {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.suitSymbol {
+  font-size: 1.125rem;
+  margin-bottom: 4px;
+}
+
+.rankText {
+  font-size: 0.75rem;
+  font-weight: 600;
+}

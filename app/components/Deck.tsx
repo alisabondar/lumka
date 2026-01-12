@@ -1,5 +1,6 @@
 'use client';
 
+import { Paper } from '@mui/material';
 import styles from './Deck.module.css';
 
 interface DeckProps {
@@ -8,20 +9,23 @@ interface DeckProps {
 }
 
 export const Deck = ({ count, onClick }: DeckProps) => {
+  const stackClass = `${styles.deckStack} ${count > 0 ? styles.deckStackEnabled : styles.deckStackDisabled}`;
+
   return (
     <div
-      className={styles.deckStack}
       onClick={onClick}
       title={count > 0 ? `Click to draw a card (${count} remaining)` : 'Deck is empty'}
       data-walkthrough="deck"
+      className={stackClass}
     >
-      <div className={styles.deckCard}>
-        <div className={styles.deckPattern}></div>
-      </div>
-      {count > 0 && (
-        <div className={styles.deckCount}>{count}</div>
-      )}
+      <Paper elevation={8} className={styles.deckCard}>
+        <div className={styles.deckPattern} />
+        {count > 0 && (
+          <div className={styles.deckCount}>
+            {count}
+          </div>
+        )}
+      </Paper>
     </div>
   );
 };
-

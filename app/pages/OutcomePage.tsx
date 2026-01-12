@@ -1,5 +1,7 @@
 'use client';
 
+import { Container, Typography, Paper } from '@mui/material';
+import { GradientButton } from '../components/GradientButton';
 import styles from './OutcomePage.module.css';
 
 interface OutcomePageProps {
@@ -10,23 +12,25 @@ interface OutcomePageProps {
 export const OutcomePage = ({ won, onPlayAgain }: OutcomePageProps) => {
   return (
     <div className={styles.container}>
-      <div className={styles.endScreen}>
-        <h1 className={styles.endTitle}>
-          {won ? 'Congrats, you sly cat! 🐱' : 'Guess you&apos;re not good enough 😿'}
-        </h1>
-        <p className={styles.endMessage}>
-          {won
-            ? 'You\'ve successfully evolved through all 6 rounds!'
-            : 'You failed to meet the challenge requirements.'}
-        </p>
-        <button
-          className={styles.playAgainButton}
-          onClick={onPlayAgain}
-        >
-          Play Again
-        </button>
-      </div>
+      <Container maxWidth="md">
+        <Paper elevation={24} className={styles.outcomeCard}>
+          <Typography
+            variant="h2"
+            gutterBottom
+            className={`${styles.title} ${won ? styles.titleWin : styles.titleLose}`}
+          >
+            {won ? 'Congrats, you sly cat! 🐱' : "Guess you're not good enough 😿"}
+          </Typography>
+          <Typography variant="h5" className={styles.subtitle}>
+            {won
+              ? "You've successfully evolved through all 6 rounds!"
+              : 'You failed to meet the challenge requirements.'}
+          </Typography>
+          <GradientButton size="large" onClick={onPlayAgain}>
+            Play Again
+          </GradientButton>
+        </Paper>
+      </Container>
     </div>
   );
 };
-

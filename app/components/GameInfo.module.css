@@ -1,117 +1,153 @@
-.gameInfo {
+.container {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 1rem 2rem;
-  border-bottom: 2px solid rgb(229, 231, 235);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 16px;
+  border-bottom: 2px solid rgba(229, 231, 235, 0.8);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 2rem;
+  gap: 32px;
 }
 
-@media (prefers-color-scheme: dark) {
-  .gameInfo {
-    background: rgba(24, 24, 27, 0.95);
-    border-bottom-color: rgb(63, 63, 70);
-  }
-}
-
-.roundInfo {
+.leftSection {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
-.roundInfo h2 {
-  font-size: 1.5rem;
+.roundTitle {
   font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  color: rgb(0 0 0);
-}
-
-@media (prefers-color-scheme: dark) {
-  .roundInfo h2 {
-    color: rgb(250 250 250);
-  }
 }
 
 .anteInfo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-}
-
-.anteColor {
-  font-size: 1.25rem;
+  gap: 8px;
 }
 
 .anteName {
-  font-size: 1rem;
   font-weight: 600;
-  color: rgb(63 63 70);
 }
 
-@media (prefers-color-scheme: dark) {
-  .anteName {
-    color: rgb(212 212 216);
-  }
-}
-
-.playerStats {
+.challengeInfo {
   display: flex;
-  flex-direction: row;
-  gap: 2rem;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
 }
 
-.stat {
+.challengeLabel {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.statsSection {
   display: flex;
-  justify-content: space-between;
-  gap: 1rem;
+  gap: 32px;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .statLabel {
   font-weight: 600;
-  color: rgb(63 63 70);
-}
-
-@media (prefers-color-scheme: dark) {
-  .statLabel {
-    color: rgb(212 212 216);
-  }
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .statValue {
   font-weight: 700;
-  color: rgb(37 99 235);
 }
 
-.selectedChallenge {
+.tooltipContainer {
+  padding: 16px;
   display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  min-height: 120px;
+  max-width: 90vw;
+  overflow: hidden;
+}
+
+.tooltipInner {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  width: 100%;
+}
+
+.traitCard {
+  position: relative;
+  width: 60px;
+  height: 84px;
+  transform-origin: center bottom;
+  transition: transform 0.2s ease;
+}
+
+.traitCard:hover {
+  z-index: 1000;
+}
+
+.traitCardInner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
-}
-
-.selectedChallengeLabel {
-  font-size: 0.875rem;
-  color: rgb(113, 113, 122);
-  font-weight: 500;
-}
-
-@media (prefers-color-scheme: dark) {
-  .selectedChallengeLabel {
-    color: rgb(161, 161, 170);
-  }
-}
-
-.selectedChallengeText {
-  font-size: 0.875rem;
-  color: rgb(37, 99, 235);
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 0.75rem;
   font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
+.traitCardRed {
+  border: 2px solid #b91c1c;
+  background-color: rgba(254, 242, 242, 0.95);
+  color: #b91c1c;
+}
+
+.traitCardBlack {
+  border: 2px solid #52525b;
+  background-color: rgba(244, 244, 245, 0.95);
+  color: #3f3f46;
+}
+
+.traitSymbol {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.suitSymbol {
+  font-size: 1.25rem;
+  margin-bottom: 4px;
+}
+
+.rankSymbol {
+  font-size: 0.7rem;
+}
+
+.traitsButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: help;
+}
+
+.traitsLabel {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.traitsValue {
+  font-weight: 700;
+}

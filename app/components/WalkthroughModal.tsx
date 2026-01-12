@@ -1,4 +1,7 @@
-import styles from "./WalkthrougModal.module.css";
+'use client';
+
+import { Paper, Typography, Button, LinearProgress } from '@mui/material';
+import styles from './WalkthroughModal.module.css';
 
 interface WalkthroughModalProps {
   title: string;
@@ -29,44 +32,48 @@ export const WalkthroughModal = ({
         ...position,
         margin: 0,
       }
-    : {
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        margin: 0,
-      };
+    : {};
 
   return (
     <>
       <div className={styles.overlay} />
-      <div className={styles.modal} style={modalStyle}>
-        <h2>{title}</h2>
-        <p>{text}</p>
+      <Paper elevation={24} className={styles.modal} style={modalStyle}>
+        <div className={styles.progressContainer}>
+          <LinearProgress
+            variant="determinate"
+            value={((stepIndex + 1) / totalSteps) * 100}
+            className={styles.progress}
+          />
+        </div>
 
-        <div className={styles.controls}>
-          <button
+        <Typography variant="h5" gutterBottom className={styles.title}>
+          {title}
+        </Typography>
+        <Typography variant="body1" className={styles.text}>
+          {text}
+        </Typography>
+
+        <div className={styles.buttonRow}>
+          <Button
+            variant="outlined"
             onClick={onBack}
             disabled={stepIndex === 0}
+            fullWidth
+            className={styles.backButton}
           >
             Back
-          </button>
+          </Button>
 
-          {!isLastStep ? (
-            <button onClick={onNext}>
-              Next
-            </button>
-          ) : (
-            <button onClick={onClose}>
-              Start Game
-            </button>
-          )}
+          <Button
+            variant="contained"
+            onClick={isLastStep ? onClose : onNext}
+            fullWidth
+            className={styles.nextButton}
+          >
+            {isLastStep ? 'Start Game' : 'Next'}
+          </Button>
         </div>
-
-        <div className={styles.progress}>
-          {stepIndex + 1} / {totalSteps}
-        </div>
-      </div>
+      </Paper>
     </>
   );
 };

@@ -1,5 +1,6 @@
 'use client';
 
+import { Modal, Paper, Typography, Button, Stack } from '@mui/material';
 import { Ante } from '@/lib/game/challenges';
 import styles from './ChallengeModal.module.css';
 
@@ -10,31 +11,47 @@ interface ChallengeModalProps {
 
 export const ChallengeModal = ({ ante, onSelectChallenge }: ChallengeModalProps) => {
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
-        <h2 className={styles.modalTitle}>
+    <Modal open={true} className={styles.modalBackdrop}>
+      <Paper elevation={24} className={styles.modalPaper}>
+        <Typography variant="h4" gutterBottom className={styles.title}>
           {ante.color} {ante.name} - Round {ante.ante}
-        </h2>
-        <p className={styles.modalSubtitle}>
+        </Typography>
+        <Typography variant="h6" className={styles.subtitle}>
           Choose one challenge to complete this round:
-        </p>
-        <div className={styles.challengesList}>
+        </Typography>
+        <Stack spacing={2}>
           {ante.challenges.map((challenge) => (
-            <button
+            <Button
               key={challenge.id}
-              className={styles.challengeButton}
+              variant="outlined"
+              size="large"
               onClick={() => onSelectChallenge(challenge.id)}
+              className={styles.challengeButton}
+              sx={{
+                '&:hover': {
+                  backgroundColor: 'primary.light',
+                  color: 'white',
+                },
+              }}
             >
-              <div className={styles.challengeButtonHeader}>
-                <span className={styles.challengeButtonId}>{challenge.id}</span>
-                <span className={styles.challengeButtonName}>{challenge.name}</span>
+              <div>
+                <div className={styles.challengeHeader}>
+                  <Typography variant="h6" className={styles.challengeId}>
+                    {challenge.id}
+                  </Typography>
+                  <Typography variant="h6" className={styles.challengeName}>
+                    {challenge.name}
+                  </Typography>
+                </div>
+                <Typography variant="body2" className={styles.challengeDescription}>
+                  {challenge.description}
+                </Typography>
               </div>
-              <p className={styles.challengeButtonDesc}>{challenge.description}</p>
-            </button>
+            </Button>
           ))}
-        </div>
-      </div>
-    </div>
+        </Stack>
+      </Paper>
+    </Modal>
   );
 };
 
