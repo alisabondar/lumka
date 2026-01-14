@@ -1,6 +1,7 @@
 'use client';
 
 import { Paper, Typography, Button, LinearProgress } from '@mui/material';
+import { GradientButton } from './GradientButton';
 import styles from './WalkthroughModal.module.css';
 
 interface WalkthroughModalProps {
@@ -37,19 +38,31 @@ export const WalkthroughModal = ({
   return (
     <>
       <div className={styles.overlay} />
-      <Paper elevation={24} className={styles.modal} style={modalStyle}>
+      <Paper
+        elevation={24}
+        className={styles.modal}
+        style={modalStyle}
+      >
         <div className={styles.progressContainer}>
           <LinearProgress
             variant="determinate"
             value={((stepIndex + 1) / totalSteps) * 100}
             className={styles.progress}
+            style={{ backgroundColor: '#e0e0e0' }}
           />
         </div>
 
-        <Typography variant="h5" gutterBottom className={styles.title}>
+        <Typography
+          variant="h5"
+          gutterBottom
+          className={styles.title}
+        >
           {title}
         </Typography>
-        <Typography variant="body1" className={styles.text}>
+        <Typography
+          variant="body1"
+          className={styles.text}
+        >
           {text}
         </Typography>
 
@@ -64,14 +77,13 @@ export const WalkthroughModal = ({
             Back
           </Button>
 
-          <Button
-            variant="contained"
+          <GradientButton
             onClick={isLastStep ? onClose : onNext}
             fullWidth
             className={styles.nextButton}
           >
             {isLastStep ? 'Start Game' : 'Next'}
-          </Button>
+          </GradientButton>
         </div>
       </Paper>
     </>

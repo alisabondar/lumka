@@ -9,6 +9,36 @@ import { GameplayPage } from '../pages/GameplayPage';
 import { WalkthroughModal } from './WalkthroughModal';
 import styles from './WalkthroughWrapper.module.css';
 
+interface OverlayProps {
+  elementRect: DOMRect;
+}
+
+const Overlay = ({ elementRect }: OverlayProps) => {
+  const overlays = [
+    { top: 0, left: 0, right: 0, height: `${elementRect.top}px` },
+    { top: `${elementRect.top}px`, left: 0, width: `${elementRect.left}px`, height: `${elementRect.height}px` },
+    { top: `${elementRect.top}px`, left: `${elementRect.left + elementRect.width}px`, right: 0, height: `${elementRect.height}px` },
+    { top: `${elementRect.top + elementRect.height}px`, left: 0, right: 0, bottom: 0 },
+  ];
+
+  return (
+    <>
+      {overlays.map((style, index) => (
+        <div
+          key={index}
+          style={{
+            position: 'fixed',
+            background: 'rgba(0, 0, 0, 0.75)',
+            zIndex: 1001,
+            pointerEvents: 'none',
+            ...style,
+          }}
+        />
+      ))}
+    </>
+  );
+};
+
 interface WalkthroughWrapperProps {
   isOpen: boolean;
   onClose: () => void;
@@ -62,34 +92,32 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
   const [highlightPosition, setHighlightPosition] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Create a mock game state for demonstration
   const [mockGameState] = useState<GameState>(() => {
     const deck = shuffleDeck(createDeck());
     const state = createInitialGameState(deck);
-    // Pre-select a challenge and some cards for the walkthrough
     const ante = getAnteForRound(1);
     if (ante) {
-      // Select first card to show discard button
-      const selectedCards = new Set([state.hand[0]?.id].filter(Boolean));
-      return { ...state, selectedChallengeId: ante.challenges[0].id, selectedCards };
+      return { ...state, selectedChallengeId: ante.challenges[0].id, selectedCards: new Set() };
     }
     return state;
   });
 
-  const currentAnte = getAnteForRound(1);
-  if (!currentAnte) return null;
+  const displayGameState: GameState = {
+    ...mockGameState,
+    selectedCards: stepIndex >= 3 ? new Set([mockGameState.hand[0]?.id].filter(Boolean)) : new Set(),
+  };
 
   useEffect(() => {
     if (!isOpen) return;
 
     const currentStep = STEPS[stepIndex];
-    if (!currentStep.highlightElement) {
-      setHighlightPosition(null);
-      return;
-    }
 
     const updatePositions = () => {
-      // Find the element to highlight
+      if (!currentStep.highlightElement) {
+        setHighlightPosition(null);
+        return;
+      }
+
       const element = document.querySelector(`[data-walkthrough="${currentStep.highlightElement}"]`);
       if (!element || !containerRef.current) {
         setHighlightPosition(null);
@@ -99,12 +127,10 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
       const containerRect = containerRef.current.getBoundingClientRect();
       const elementRect = element.getBoundingClientRect();
 
-      // Check if element has valid dimensions
       if (elementRect.width === 0 && elementRect.height === 0) {
         return;
       }
 
-      // Calculate highlight position relative to container
       const highlightPos = {
         top: elementRect.top - containerRect.top,
         left: elementRect.left - containerRect.left,
@@ -115,12 +141,10 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
       setHighlightPosition(highlightPos);
     };
 
-    // Use requestAnimationFrame and a timeout to ensure DOM is fully rendered
     const frameId = requestAnimationFrame(() => {
       const timeoutId = setTimeout(() => {
         updatePositions();
 
-        // Retry once more after a longer delay in case the first attempt failed
         const retryTimeoutId = setTimeout(() => {
           updatePositions();
         }, 300);
@@ -143,12 +167,14 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
     };
   }, [stepIndex, isOpen]);
 
+  const currentAnte = getAnteForRound(1);
+  if (!currentAnte) return null;
+
   if (!isOpen) return null;
 
   const currentStep = STEPS[stepIndex];
   const isLastStep = stepIndex === STEPS.length - 1;
 
-  // Mock handlers for the gameplay page
   const mockHandlers = {
     onCardClick: () => {},
     onCardDoubleClick: () => {},
@@ -162,9 +188,10 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
     <div className={styles.wrapper} ref={containerRef}>
       <div className={styles.gameplayContainer}>
         <GameplayPage
-          gameState={mockGameState}
+          gameState={displayGameState}
           currentAnte={currentAnte}
           {...mockHandlers}
+          isWalkthrough={true}
         />
       </div>
 
@@ -172,6 +199,11 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
         const element = document.querySelector(`[data-walkthrough="${currentStep.highlightElement}"]`);
         if (!element) return null;
         const elementRect = element.getBoundingClientRect();
+
+        const getBorderRadius = () => {
+          const roundedElements = ['discard-button', 'end-round-button', 'deck'];
+          return roundedElements.includes(currentStep.highlightElement || '') ? '6px' : '';
+        };
 
         return (
           <>
@@ -182,57 +214,10 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
                 left: elementRect.left,
                 width: elementRect.width,
                 height: elementRect.height,
+                borderRadius: getBorderRadius(),
               }}
             />
-            {/* Create overlay masks around the highlight to create spotlight effect */}
-            <div
-              style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: `${elementRect.top}px`,
-                background: 'rgba(0, 0, 0, 0.75)',
-                zIndex: 1001,
-                pointerEvents: 'none',
-              }}
-            />
-            <div
-              style={{
-                position: 'fixed',
-                top: `${elementRect.top}px`,
-                left: 0,
-                width: `${elementRect.left}px`,
-                height: `${elementRect.height}px`,
-                background: 'rgba(0, 0, 0, 0.75)',
-                zIndex: 1001,
-                pointerEvents: 'none',
-              }}
-            />
-            <div
-              style={{
-                position: 'fixed',
-                top: `${elementRect.top}px`,
-                left: `${elementRect.left + elementRect.width}px`,
-                right: 0,
-                height: `${elementRect.height}px`,
-                background: 'rgba(0, 0, 0, 0.75)',
-                zIndex: 1001,
-                pointerEvents: 'none',
-              }}
-            />
-            <div
-              style={{
-                position: 'fixed',
-                top: `${elementRect.top + elementRect.height}px`,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'rgba(0, 0, 0, 0.75)',
-                zIndex: 1001,
-                pointerEvents: 'none',
-              }}
-            />
+            <Overlay elementRect={elementRect} />
           </>
         );
       })()}

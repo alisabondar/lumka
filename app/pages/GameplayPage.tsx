@@ -1,12 +1,12 @@
 'use client';
 
-import { Button } from '@mui/material';
 import { GameState } from '@/lib/game/gameState';
 import { Ante } from '@/lib/game/challenges';
 import { GameInfo } from '../components/GameInfo';
 import { ChallengeModal } from '../components/ChallengeModal';
 import { Deck } from '../components/Deck';
 import { Hand } from '../components/Hand';
+import { GradientButton } from '../components/GradientButton';
 import styles from './GameplayPage.module.css';
 
 interface GameplayPageProps {
@@ -18,6 +18,7 @@ interface GameplayPageProps {
   onDrawCard: () => void;
   onEndRound: () => void;
   onSelectChallenge: (challengeId: string) => void;
+  isWalkthrough?: boolean;
 }
 
 export const GameplayPage = ({
@@ -29,9 +30,11 @@ export const GameplayPage = ({
   onDrawCard,
   onEndRound,
   onSelectChallenge,
+  isWalkthrough = false,
 }: GameplayPageProps) => {
   const hasSelectedChallenge = gameState.selectedChallengeId !== null;
   const hasSelectedCards = gameState.selectedCards.size > 0;
+  const isHandFull = gameState.hand.length >= 6;
 
   return (
     <div className={styles.gameplayContainer}>
@@ -47,29 +50,29 @@ export const GameplayPage = ({
       {hasSelectedChallenge && (
         <>
           <div className={styles.endRoundButtonWrapper} data-walkthrough="end-round-button">
-            <Button
-              variant="contained"
+            <GradientButton
               size="large"
               onClick={onEndRound}
-              sx={{ fontWeight: 600 }}
             >
               End Round
-            </Button>
+            </GradientButton>
           </div>
 
-          <Deck count={gameState.deck.length} onClick={onDrawCard} />
+          <Deck
+            count={gameState.deck.length}
+            onClick={onDrawCard}
+            isWalkthrough={isWalkthrough}
+            disabled={isHandFull}
+          />
 
           {hasSelectedCards && (
             <div className={styles.discardButtonWrapper} data-walkthrough="discard-button">
-              <Button
-                variant="contained"
-                color="error"
+              <GradientButton
                 size="large"
                 onClick={onDiscard}
-                sx={{ fontWeight: 700, fontSize: '1.125rem' }}
               >
                 Discard
-              </Button>
+              </GradientButton>
             </div>
           )}
 

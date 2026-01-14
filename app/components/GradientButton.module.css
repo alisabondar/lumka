@@ -1,9 +1,9 @@
 .gradientButton {
-  padding: 12px 24px;
-  font-size: 1.25rem;
+  padding: clamp(10px, 1vh, 16px) clamp(20px, 2vw, 32px);
+  font-size: clamp(1rem, 1.2vw, 1.5rem);
   font-weight: 700;
   border-radius: 8px;
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #ffe66d);
+  background: linear-gradient(45deg, var(--gradient-pink), var(--gradient-teal), var(--gradient-yellow));
   color: white;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   box-shadow: 0 4px 16px rgba(255, 107, 107, 0.5);

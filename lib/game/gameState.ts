@@ -52,6 +52,10 @@ export function drawCard(state: GameState): GameState {
     return state; // Can't draw if deck is empty
   }
 
+  if (state.hand.length >= 6) {
+    return state; // Can't draw if hand already has 6 or more cards
+  }
+
   const newDeck = [...state.deck];
   const drawnCard = newDeck.pop()!;
 

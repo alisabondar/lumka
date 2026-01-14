@@ -14,12 +14,12 @@ export const ChallengeModal = ({ ante, onSelectChallenge }: ChallengeModalProps)
     <Modal open={true} className={styles.modalBackdrop}>
       <Paper elevation={24} className={styles.modalPaper}>
         <Typography variant="h4" gutterBottom className={styles.title}>
-          {ante.color} {ante.name} - Round {ante.ante}
+          Round {ante.ante}: {ante.name}
         </Typography>
         <Typography variant="h6" className={styles.subtitle}>
-          Choose one challenge to complete this round:
+          Choose a challenge to complete this round:
         </Typography>
-        <Stack spacing={2}>
+        <Stack spacing={2} className={styles.challengesList}>
           {ante.challenges.map((challenge) => (
             <Button
               key={challenge.id}
@@ -27,22 +27,11 @@ export const ChallengeModal = ({ ante, onSelectChallenge }: ChallengeModalProps)
               size="large"
               onClick={() => onSelectChallenge(challenge.id)}
               className={styles.challengeButton}
-              sx={{
-                '&:hover': {
-                  backgroundColor: 'primary.light',
-                  color: 'white',
-                },
-              }}
             >
               <div>
-                <div className={styles.challengeHeader}>
-                  <Typography variant="h6" className={styles.challengeId}>
-                    {challenge.id}
-                  </Typography>
-                  <Typography variant="h6" className={styles.challengeName}>
-                    {challenge.name}
-                  </Typography>
-                </div>
+                <Typography variant="h6" className={styles.challengeName}>
+                  {challenge.name}
+                </Typography>
                 <Typography variant="body2" className={styles.challengeDescription}>
                   {challenge.description}
                 </Typography>
@@ -54,4 +43,3 @@ export const ChallengeModal = ({ ante, onSelectChallenge }: ChallengeModalProps)
     </Modal>
   );
 };
-

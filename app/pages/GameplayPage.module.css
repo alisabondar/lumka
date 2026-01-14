@@ -1,6 +1,5 @@
 .gameplayContainer {
   min-height: 100vh;
-  padding-top: 120px;
   padding: 24px;
   position: relative;
   overflow: visible;
@@ -8,14 +7,14 @@
 
 .endRoundButtonWrapper {
   position: absolute;
-  top: 140px;
-  right: 32px;
-  z-index: 10;
+  bottom: clamp(100px, 10vh, 150px);
+  right: clamp(24px, 3vw, 48px);
+  z-index: 50;
 }
 
 .discardButtonWrapper {
   position: absolute;
-  bottom: 220px;
-  right: 32px;
+  bottom: clamp(100px, 10vh, 150px);
+  left: clamp(24px, 3vw, 48px);
   z-index: 10;
 }

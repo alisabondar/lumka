@@ -13,46 +13,58 @@
   overflow: auto;
   background-color: rgba(255, 255, 255, 0.98);
   border-radius: 12px;
+  border: 2px solid rgba(var(--neon-blue-rgb), 0.5);
+  color: #000000;
 }
 
 .title {
   font-weight: 700;
   text-align: center;
   margin-bottom: 8px;
+  color: #000000;
+  background: linear-gradient(45deg, var(--gradient-pink), var(--gradient-teal), var(--gradient-yellow));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
+  padding-bottom: 12px;
   text-align: center;
   margin-bottom: 24px;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 500;
+}
+
+.challengesList {
+  align-items: flex-start;
 }
 
 .challengeButton {
-  padding: 16px;
+  width: 100%;
+  padding: 20px;
   text-align: left;
   justify-content: flex-start;
-  border-width: 2px;
+  border: 2px solid rgba(var(--neon-blue-rgb), 0.3);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.95);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .challengeButton:hover {
-  border-width: 2px;
-}
-
-.challengeHeader {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.challengeId {
-  font-weight: 700;
+  border: 2px solid rgba(var(--neon-blue-rgb), 0.8);
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1), rgba(255, 230, 109, 0.1));
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .challengeName {
-  font-weight: 600;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 8px;
 }
 
 .challengeDescription {
   color: rgba(0, 0, 0, 0.6);
+  line-height: 1.5;
 }
