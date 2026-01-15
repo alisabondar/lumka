@@ -14,8 +14,8 @@ export const CATEGORY_LABELS: Record<TraitCategory, string> = {
 };
 
 export const CATEGORY_COLORS: Record<TraitCategory, string> = {
-  positive: '#4ecdc4', // neon-teal
-  neutral: '#4FC3F7',  // neon-blue
-  negative: '#ff6b6b', // neon-pink
-  wild: '#ffe66d',     // neon-yellow
+  positive: '#4ecdc4',
+  neutral: '#4FC3F7',
+  negative: '#ff6b6b',
+  wild: '#ffe66d',
 };

@@ -1,5 +1,4 @@
 import { Card } from '../types/card';
-import { Trait } from '../types/trait';
 import { State } from '../types/playerState';
 import { cardToTrait } from './cardToTrait';
 import { applyTrait } from './traitLogic';
@@ -22,7 +21,6 @@ export type GameState = {
 const MAX_ROUNDS = 6;
 
 export function createInitialGameState(deck: Card[]): GameState {
-  // Draw initial hand of 6 cards
   const initialDeck = [...deck];
   const initialHand: Card[] = [];
 
@@ -39,7 +37,7 @@ export function createInitialGameState(deck: Card[]): GameState {
     playerState: {
       traits: [],
       score: 0,
-      stability: 10, // Starting stability
+      stability: 10,
     },
     selectedCards: new Set(),
     wildUsedThisRound: false,
@@ -49,17 +47,16 @@ export function createInitialGameState(deck: Card[]): GameState {
 
 export function drawCard(state: GameState): GameState {
   if (state.deck.length === 0) {
-    return state; // Can't draw if deck is empty
+    return state;
   }
 
   if (state.hand.length >= 6) {
-    return state; // Can't draw if hand already has 6 or more cards
+    return state;
   }
 
   const newDeck = [...state.deck];
   const drawnCard = newDeck.pop()!;
 
-  // Decrease stability by 0.5 when drawing
   const newPlayerState = {
     ...state.playerState,
     stability: Math.max(0, state.playerState.stability - 0.5),
@@ -77,7 +74,6 @@ export function discardCards(state: GameState, cardIds: string[]): GameState {
   const newHand = state.hand.filter(card => !cardIds.includes(card.id));
   const discardedCards = state.hand.filter(card => cardIds.includes(card.id));
 
-  // Replenish hand to 6 cards
   const newDeck = [...state.deck];
   const cardsNeeded = 6 - newHand.length;
 
@@ -85,7 +81,6 @@ export function discardCards(state: GameState, cardIds: string[]): GameState {
     newHand.push(newDeck.pop()!);
   }
 
-  // Decrease stability by 0.5 when discarding
   const newPlayerState = {
     ...state.playerState,
     stability: Math.max(0, state.playerState.stability - 0.5),
@@ -122,7 +117,6 @@ export function applyCardAsTrait(state: GameState, cardId: string): GameState {
   const trait = cardToTrait(card);
   const newPlayerState = applyTrait(state.playerState, trait);
 
-  // Remove card from hand (don't replenish automatically)
   const newHand = state.hand.filter(c => c.id !== cardId);
 
   return {
@@ -134,12 +128,12 @@ export function applyCardAsTrait(state: GameState, cardId: string): GameState {
 
 export function checkRoundWin(state: GameState): boolean {
   if (state.round > ANTES.length || state.round < 1) {
-    return false; // No more antes or invalid round
+    return false;
   }
 
   const currentAnte = ANTES[state.round - 1];
   if (!currentAnte) {
-    return false; // Safety check
+    return false;
   }
   return checkAnte(state.playerState, currentAnte);
 }
@@ -161,7 +155,6 @@ export function advanceRound(state: GameState): GameState {
     };
   }
 
-  // Automatically fill hand to 6 cards when ending round (without affecting points)
   const newDeck = [...state.deck];
   const newHand = [...state.hand];
   const cardsNeeded = 6 - newHand.length;
@@ -176,7 +169,7 @@ export function advanceRound(state: GameState): GameState {
     wildUsedThisRound: false,
     deck: newDeck,
     hand: newHand,
-    selectedChallengeId: null, // Reset challenge selection for new round
+    selectedChallengeId: null,
   };
 }
 
@@ -186,4 +179,3 @@ export function selectChallenge(state: GameState, challengeId: string): GameStat
     selectedChallengeId: challengeId,
   };
 }
-

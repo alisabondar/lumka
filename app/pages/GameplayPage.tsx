@@ -21,6 +21,8 @@ interface GameplayPageProps {
   isWalkthrough?: boolean;
 }
 
+const SEASONS = ['winter', 'spring', 'summer', 'autumn'] as const;
+
 export const GameplayPage = ({
   gameState,
   currentAnte,
@@ -36,8 +38,15 @@ export const GameplayPage = ({
   const hasSelectedCards = gameState.selectedCards.size > 0;
   const isHandFull = gameState.hand.length >= 6;
 
+  const currentSeason = SEASONS[(gameState.round - 1) % SEASONS.length];
+
   return (
-    <div className={styles.gameplayContainer}>
+    <div
+      className={`${styles.gameplayContainer} ${isWalkthrough ? styles.walkthroughBackground : ''}`}
+      style={isWalkthrough ? undefined : {
+        backgroundImage: `url(/${currentSeason}.png)`,
+      }}
+    >
       <GameInfo gameState={gameState} currentAnte={currentAnte} />
 
       {!hasSelectedChallenge && (

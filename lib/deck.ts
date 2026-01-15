@@ -1,7 +1,5 @@
 import { Card } from './types/card';
-import { TraitCategory } from './types/trait';
 
-// 🌱 FLOURISH - Positive traits (17)
 const POSITIVE_TRAITS = [
   'Lively Instinct',
   'Sharp Senses',
@@ -22,7 +20,6 @@ const POSITIVE_TRAITS = [
   'Enduring Legacy',
 ];
 
-// ⚖️ ADAPT - Neutral traits (17)
 const NEUTRAL_TRAITS = [
   'Watchful Instinct',
   'Curious Senses',
@@ -43,7 +40,6 @@ const NEUTRAL_TRAITS = [
   'Uncertain Inheritance',
 ];
 
-// 🪨 BURDEN - Negative traits (17)
 const NEGATIVE_TRAITS = [
   'Erratic Instinct',
   'Dulled Senses',
@@ -64,13 +60,11 @@ const NEGATIVE_TRAITS = [
   'Crumbled Legacy',
 ];
 
-// ✨ Wild trait (1)
 const WILD_TRAIT = 'Evolutionary Catalyst';
 
 export function createDeck(): Card[] {
   const deck: Card[] = [];
 
-  // Add positive traits
   POSITIVE_TRAITS.forEach((name, index) => {
     deck.push({
       id: `positive-${index}`,
@@ -79,7 +73,6 @@ export function createDeck(): Card[] {
     });
   });
 
-  // Add neutral traits
   NEUTRAL_TRAITS.forEach((name, index) => {
     deck.push({
       id: `neutral-${index}`,
@@ -88,7 +81,6 @@ export function createDeck(): Card[] {
     });
   });
 
-  // Add negative traits
   NEGATIVE_TRAITS.forEach((name, index) => {
     deck.push({
       id: `negative-${index}`,
@@ -97,7 +89,6 @@ export function createDeck(): Card[] {
     });
   });
 
-  // Add wild trait
   deck.push({
     id: 'wild-0',
     name: WILD_TRAIT,

@@ -9,7 +9,6 @@ const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   wild: 'An evolutionary catalyst that can transform into any other trait',
 };
 
-// Convert a card to a trait
 export function cardToTrait(card: Card): Trait {
   return {
     id: card.id,
@@ -28,7 +27,6 @@ export function cardToTrait(card: Card): Trait {
         newState.score += 1;
         newState.stability -= 2;
       } else if (card.traitCategory === 'wild') {
-        // Wild traits don't apply directly, they duplicate other traits
         newState.score += 1;
       }
 

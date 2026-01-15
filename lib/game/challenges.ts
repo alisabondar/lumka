@@ -16,7 +16,6 @@ export type Ante = {
   challenges: Challenge[];
 };
 
-// Helper functions for challenge checks
 function getTraitCounts(state: State): Record<TraitCategory, number> {
   const counts: Record<TraitCategory, number> = {
     positive: 0,
@@ -45,16 +44,9 @@ function getCategoryPercentage(state: State, category: TraitCategory): number {
 
 function hasDuplicatedTrait(state: State): boolean {
   const traitIds = state.traits.map(t => t.id);
-  // Check if any trait ID contains '-dup-' (from wild duplication)
   return traitIds.some(id => id.includes('-dup-'));
 }
 
-function getMaxCategoryCount(state: State): number {
-  const counts = getTraitCounts(state);
-  return Math.max(counts.positive, counts.neutral, counts.negative, counts.wild);
-}
-
-// Ante 1 - Survival & Identity
 const ante1Challenges: Challenge[] = [
   {
     id: '1A',
@@ -74,7 +66,6 @@ const ante1Challenges: Challenge[] = [
   },
 ];
 
-// Ante 2 - Adaptation
 const ante2Challenges: Challenge[] = [
   {
     id: '2A',
@@ -96,7 +87,6 @@ const ante2Challenges: Challenge[] = [
   },
 ];
 
-// Ante 3 - Optimization
 const ante3Challenges: Challenge[] = [
   {
     id: '3A',
@@ -105,7 +95,7 @@ const ante3Challenges: Challenge[] = [
     check: (state) => {
       const counts = getTraitCounts(state);
       const hasFourSame = counts.positive >= 4 || counts.neutral >= 4 || counts.negative >= 4 || counts.wild >= 4;
-      const targetScore = 15; // Base target score for ante 3
+      const targetScore = 15;
       return hasFourSame && state.score >= targetScore;
     },
   },
@@ -117,7 +107,6 @@ const ante3Challenges: Challenge[] = [
   },
 ];
 
-// Ante 4 - Tradeoffs
 const ante4Challenges: Challenge[] = [
   {
     id: '4A',
@@ -134,13 +123,12 @@ const ante4Challenges: Challenge[] = [
     description: 'At least 2 negative traits, Score ≥ targetScore × 1.2',
     check: (state) => {
       const counts = getTraitCounts(state);
-      const targetScore = 20; // Base target score for ante 4
+      const targetScore = 20;
       return counts.negative >= 2 && state.score >= targetScore * 1.2;
     },
   },
 ];
 
-// Ante 5 - Endgame
 const ante5Challenges: Challenge[] = [
   {
     id: '5A',
@@ -178,7 +166,6 @@ const ante5Challenges: Challenge[] = [
   },
 ];
 
-// Ante 6 - Final Evolution
 const ante6Challenges: Challenge[] = [
   {
     id: '6A',
@@ -246,7 +233,6 @@ export const ANTES: Ante[] = [
 ];
 
 export function checkAnte(state: State, ante: Ante): boolean {
-  // Player wins if they meet at least one challenge
   return ante.challenges.some(challenge => challenge.check(state));
 }
 
@@ -256,4 +242,3 @@ export function getAnteForRound(round: number): Ante | null {
   }
   return ANTES[round - 1] || null;
 }
-

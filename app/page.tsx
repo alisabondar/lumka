@@ -70,7 +70,6 @@ export default function Home() {
     const newState = won ? advanceRound(gameState) : { ...gameState, status: 'lost' as const };
     setGameState(newState);
 
-    // Navigate to outcome page
     if (newState.status === 'won' || newState.status === 'lost') {
       setCurrentPage('outcome');
     }
@@ -83,7 +82,6 @@ export default function Home() {
     setCurrentPage('intro');
   };
 
-  // Render based on current page
   if (currentPage === 'intro') {
     return <IntroPage onStart={startGame} />;
   }
@@ -100,7 +98,6 @@ export default function Home() {
   if (currentPage === 'gameplay' && gameState) {
     const currentAnte = getAnteForRound(gameState.round);
 
-    // Safety check - if no ante found, show error state
     if (!currentAnte) {
       return (
         <OutcomePage

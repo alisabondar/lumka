@@ -22,7 +22,6 @@
   --neon-yellow: #ffe66d;
   --neon-yellow-rgb: 255, 230, 109;
 
-  /* Card category colors */
   --card-positive: var(--neon-teal);
   --card-positive-rgb: var(--neon-teal-rgb);
   --card-neutral: var(--neon-blue);
@@ -31,6 +30,9 @@
   --card-negative-rgb: var(--neon-pink-rgb);
   --card-wild: var(--neon-yellow);
   --card-wild-rgb: var(--neon-yellow-rgb);
+
+  --animated-bg-color: #fafafa;
+  --animated-bg-gradient: linear-gradient(-45deg, rgba(238, 119, 82, 0.15), rgba(231, 60, 126, 0.15), rgba(35, 166, 213, 0.15), rgba(35, 213, 171, 0.15));
 
   --text-primary: rgba(0, 0, 0, 0.87);
   --text-secondary: rgba(0, 0, 0, 0.6);
@@ -51,7 +53,22 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --animated-bg-color: #0a0a0a;
+    --animated-bg-gradient: linear-gradient(-45deg, rgba(238, 119, 82, 0.25), rgba(231, 60, 126, 0.25), rgba(35, 166, 213, 0.25), rgba(35, 213, 171, 0.25));
   }
+}
+
+.animatedGradientBg {
+  background-color: var(--animated-bg-color);
+  background-image: var(--animated-bg-gradient);
+  background-size: 400% 400%;
+  animation: animatedGradient 20s ease infinite;
+}
+
+@keyframes animatedGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 body {

@@ -12,28 +12,24 @@
   position: relative;
 }
 
-/* 🌱 FLOURISH - Positive (Neon Teal) */
 .cardPositive {
   border: 2px solid var(--card-positive);
   background: linear-gradient(135deg, rgba(var(--card-positive-rgb), 0.1) 0%, rgba(var(--card-positive-rgb), 0.2) 100%);
   color: #0d9488;
 }
 
-/* ⚖️ ADAPT - Neutral (Neon Blue) */
 .cardNeutral {
   border: 2px solid var(--card-neutral);
   background: linear-gradient(135deg, rgba(var(--card-neutral-rgb), 0.1) 0%, rgba(var(--card-neutral-rgb), 0.2) 100%);
   color: #0284c7;
 }
 
-/* 🪨 BURDEN - Negative (Neon Pink) */
 .cardNegative {
   border: 2px solid var(--card-negative);
   background: linear-gradient(135deg, rgba(var(--card-negative-rgb), 0.1) 0%, rgba(var(--card-negative-rgb), 0.2) 100%);
   color: #dc2626;
 }
 
-/* ✨ CATALYST - Wild (Neon Yellow) */
 .cardWild {
   border: 2px solid var(--card-wild);
   background: linear-gradient(135deg, rgba(var(--card-wild-rgb), 0.15) 0%, rgba(var(--card-wild-rgb), 0.25) 100%);
