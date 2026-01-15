@@ -1,38 +1,107 @@
-import { Card, Suit, Rank, SUIT_COLORS } from './types/card';
+import { Card } from './types/card';
 import { TraitCategory } from './types/trait';
 
-const SUITS: Suit[] = ['hearts', 'diamonds', 'clubs', 'spades'];
-const RANKS: Rank[] = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'];
+// 🌱 FLOURISH - Positive traits (17)
+const POSITIVE_TRAITS = [
+  'Lively Instinct',
+  'Sharp Senses',
+  'Nimble Movement',
+  'Efficient Foraging',
+  'Resilient Hide',
+  'Cooperative Bonds',
+  'Clear Signals',
+  'Fertile Cycle',
+  'Living Memory',
+  'Claimed Territory',
+  'Clever Tools',
+  'Mutual Aid',
+  'Clever Mind',
+  'Rapid Adaptation',
+  'Enduring Form',
+  'Natural Authority',
+  'Enduring Legacy',
+];
+
+// ⚖️ ADAPT - Neutral traits (17)
+const NEUTRAL_TRAITS = [
+  'Watchful Instinct',
+  'Curious Senses',
+  'Shifting Gait',
+  'Opportunistic Feeding',
+  'Measured Defense',
+  'Loose Hierarchy',
+  'Adaptive Signals',
+  'Seasonal Breeding',
+  'Selective Recall',
+  'Flexible Territory',
+  'Borrowed Tools',
+  'Conditional Symbiosis',
+  'Adaptive Reasoning',
+  'Plastic Traits',
+  'Recovering Frame',
+  'Contested Dominance',
+  'Uncertain Inheritance',
+];
+
+// 🪨 BURDEN - Negative traits (17)
+const NEGATIVE_TRAITS = [
+  'Erratic Instinct',
+  'Dulled Senses',
+  'Clumsy Movement',
+  'Constant Hunger',
+  'Brittle Shell',
+  'Fractured Bonds',
+  'Noisy Signals',
+  'Unstable Cycle',
+  'Fading Memory',
+  'Overextended Range',
+  'Crude Implements',
+  'Parasitic Dependence',
+  'Overthinking Brain',
+  'Maladaptive Drift',
+  'Fragile Form',
+  'Unchecked Aggression',
+  'Crumbled Legacy',
+];
+
+// ✨ Wild trait (1)
+const WILD_TRAIT = 'Evolutionary Catalyst';
 
 export function createDeck(): Card[] {
   const deck: Card[] = [];
 
-  for (const suit of SUITS) {
-    for (const rank of RANKS) {
-      deck.push({
-        suit,
-        rank,
-        color: SUIT_COLORS[suit],
-        id: `${suit}-${rank}`,
-        traitCategory: 'neutral',
-      });
-    }
-  }
+  // Add positive traits
+  POSITIVE_TRAITS.forEach((name, index) => {
+    deck.push({
+      id: `positive-${index}`,
+      name,
+      traitCategory: 'positive',
+    });
+  });
 
-  const traitDistribution: TraitCategory[] = [
-    ...Array(17).fill('positive' as TraitCategory),
-    ...Array(17).fill('neutral' as TraitCategory),
-    ...Array(17).fill('negative' as TraitCategory),
-    'wild' as TraitCategory,
-  ];
+  // Add neutral traits
+  NEUTRAL_TRAITS.forEach((name, index) => {
+    deck.push({
+      id: `neutral-${index}`,
+      name,
+      traitCategory: 'neutral',
+    });
+  });
 
-  for (let i = traitDistribution.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [traitDistribution[i], traitDistribution[j]] = [traitDistribution[j], traitDistribution[i]];
-  }
+  // Add negative traits
+  NEGATIVE_TRAITS.forEach((name, index) => {
+    deck.push({
+      id: `negative-${index}`,
+      name,
+      traitCategory: 'negative',
+    });
+  });
 
-  deck.forEach((card, index) => {
-    card.traitCategory = traitDistribution[index];
+  // Add wild trait
+  deck.push({
+    id: 'wild-0',
+    name: WILD_TRAIT,
+    traitCategory: 'wild',
   });
 
   return deck;
@@ -48,5 +117,5 @@ export function shuffleDeck(deck: Card[]): Card[] {
 }
 
 export function getCardDisplayName(card: Card): string {
-  return `${card.rank} of ${card.suit.charAt(0).toUpperCase() + card.suit.slice(1)}`;
+  return card.name;
 }

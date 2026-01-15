@@ -16,6 +16,22 @@
   --neon-pink: #ff6b6b;
   --neon-pink-rgb: 255, 107, 107;
 
+  --neon-teal: #4ecdc4;
+  --neon-teal-rgb: 78, 205, 196;
+
+  --neon-yellow: #ffe66d;
+  --neon-yellow-rgb: 255, 230, 109;
+
+  /* Card category colors */
+  --card-positive: var(--neon-teal);
+  --card-positive-rgb: var(--neon-teal-rgb);
+  --card-neutral: var(--neon-blue);
+  --card-neutral-rgb: var(--neon-blue-rgb);
+  --card-negative: var(--neon-pink);
+  --card-negative-rgb: var(--neon-pink-rgb);
+  --card-wild: var(--neon-yellow);
+  --card-wild-rgb: var(--neon-yellow-rgb);
+
   --text-primary: rgba(0, 0, 0, 0.87);
   --text-secondary: rgba(0, 0, 0, 0.6);
   --text-light: rgba(255, 255, 255, 0.95);

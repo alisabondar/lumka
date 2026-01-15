@@ -6,22 +6,38 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  padding: clamp(10px, 1.2vw, 18px);
-  border-radius: 8px;
+  padding: clamp(12px, 1.2vw, 18px);
+  border-radius: 12px;
   transition: all 0.15s ease;
   position: relative;
 }
 
-.cardRed {
-  border: 2px solid #b91c1c;
-  background-color: rgba(254, 242, 242, 0.95);
-  color: #b91c1c;
+/* 🌱 FLOURISH - Positive (Neon Teal) */
+.cardPositive {
+  border: 2px solid var(--card-positive);
+  background: linear-gradient(135deg, rgba(var(--card-positive-rgb), 0.1) 0%, rgba(var(--card-positive-rgb), 0.2) 100%);
+  color: #0d9488;
 }
 
-.cardBlack {
-  border: 2px solid #52525b;
-  background-color: rgba(244, 244, 245, 0.95);
-  color: #3f3f46;
+/* ⚖️ ADAPT - Neutral (Neon Blue) */
+.cardNeutral {
+  border: 2px solid var(--card-neutral);
+  background: linear-gradient(135deg, rgba(var(--card-neutral-rgb), 0.1) 0%, rgba(var(--card-neutral-rgb), 0.2) 100%);
+  color: #0284c7;
+}
+
+/* 🪨 BURDEN - Negative (Neon Pink) */
+.cardNegative {
+  border: 2px solid var(--card-negative);
+  background: linear-gradient(135deg, rgba(var(--card-negative-rgb), 0.1) 0%, rgba(var(--card-negative-rgb), 0.2) 100%);
+  color: #dc2626;
+}
+
+/* ✨ CATALYST - Wild (Neon Yellow) */
+.cardWild {
+  border: 2px solid var(--card-wild);
+  background: linear-gradient(135deg, rgba(var(--card-wild-rgb), 0.15) 0%, rgba(var(--card-wild-rgb), 0.25) 100%);
+  color: #b45309;
 }
 
 .cardSelected {
@@ -31,29 +47,52 @@
   z-index: 10;
 }
 
-.cardRed.cardSelected {
-  border-color: #4FC3F7 !important;
+.cardPositive.cardSelected {
+  box-shadow: 0 8px 24px rgba(var(--card-positive-rgb), 0.5) !important;
 }
 
-.cardBlack.cardSelected {
-  border-color: #4FC3F7 !important;
+.cardNeutral.cardSelected {
+  box-shadow: 0 8px 24px rgba(var(--card-neutral-rgb), 0.5) !important;
 }
 
-.traitSymbol {
+.cardNegative.cardSelected {
+  box-shadow: 0 8px 24px rgba(var(--card-negative-rgb), 0.5) !important;
+}
+
+.cardWild.cardSelected {
+  box-shadow: 0 8px 24px rgba(var(--card-wild-rgb), 0.5) !important;
+}
+
+.categoryIcon {
   position: absolute;
-  top: 4px;
-  right: 4px;
-  font-size: clamp(1rem, 1vw, 1.5rem);
-  font-weight: 700;
+  top: 8px;
+  right: 8px;
+  font-size: clamp(1rem, 1.2vw, 1.5rem);
   line-height: 1;
 }
 
-.suitSymbol {
-  font-size: clamp(1.5rem, 1.5vw, 2.25rem);
-  margin-bottom: 4px;
+.traitName {
+  font-family: var(--font-trait), sans-serif;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.15;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
-.rankText {
-  font-size: clamp(0.875rem, 0.9vw, 1.125rem);
-  font-weight: 600;
+.traitName span {
+  display: block;
+}
+
+.categoryName {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  font-size: clamp(0.4rem, 0.5vw, 0.55rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.75px;
+  opacity: 0.6;
 }

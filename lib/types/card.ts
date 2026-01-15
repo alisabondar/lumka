@@ -1,34 +1,21 @@
 import { TraitCategory } from './trait';
 
-export type Suit = 'hearts' | 'diamonds' | 'clubs' | 'spades';
-export type Rank = 'Ace' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'Jack' | 'Queen' | 'King';
-export type Color = 'red' | 'black';
-
 export interface Card {
-  suit: Suit;
-  rank: Rank;
-  color: Color;
   id: string;
+  name: string;
   traitCategory: TraitCategory;
 }
 
-export const SUIT_SYMBOLS: Record<Suit, string> = {
-  hearts: '♥',
-  diamonds: '♦',
-  clubs: '♣',
-  spades: '♠',
+export const CATEGORY_LABELS: Record<TraitCategory, string> = {
+  positive: '🌱 FLOURISH',
+  neutral: '⚖️ ADAPT',
+  negative: '🪨 BURDEN',
+  wild: '✨ CATALYST',
 };
 
-export const SUIT_COLORS: Record<Suit, Color> = {
-  hearts: 'red',
-  diamonds: 'red',
-  clubs: 'black',
-  spades: 'black',
-};
-
-export const TRAIT_SYMBOLS: Record<TraitCategory, string> = {
-  positive: '+',
-  neutral: '0',
-  negative: '-',
-  wild: '~',
+export const CATEGORY_COLORS: Record<TraitCategory, string> = {
+  positive: '#4ecdc4', // neon-teal
+  neutral: '#4FC3F7',  // neon-blue
+  negative: '#ff6b6b', // neon-pink
+  wild: '#ffe66d',     // neon-yellow
 };
