@@ -15,7 +15,8 @@
 
 .infoSection {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   gap: 8px;
 }
 
@@ -24,13 +25,13 @@
   font-size: clamp(0.875rem, 1vw, 1.125rem);
 }
 
-.challengeChip {
-  align-self: center;
+.challengeText {
   cursor: pointer;
+  color: var(--neon-blue);
 }
 
-.challengeChip:hover {
-  cursor: pointer;
+.challengeText:hover {
+  color: var(--neon-blue-dark);
 }
 
 .statsRow {

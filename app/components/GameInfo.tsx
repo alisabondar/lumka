@@ -1,6 +1,6 @@
 'use client';
 
-import { Paper, Typography, Chip, Tooltip } from '@mui/material';
+import { Paper, Typography, Tooltip } from '@mui/material';
 import { GameState } from '@/lib/game/gameState';
 import { Ante } from '@/lib/game/challenges';
 import type { TraitCategory } from '@/lib/types/trait';
@@ -26,8 +26,8 @@ export const GameInfo = ({ gameState, currentAnte }: GameInfoProps) => {
   return (
     <Paper elevation={4} data-walkthrough="game-info" className={styles.container}>
       <div className={styles.infoSection}>
-        <Typography variant="body1" className={styles.roundText}>
-          Round {gameState.round}: {currentAnte.name}
+        <Typography variant="body1" component="span" className={styles.roundText}>
+          Round {gameState.round}{selectedChallenge && ':'}
         </Typography>
         {selectedChallenge && (
           <Tooltip
@@ -35,18 +35,9 @@ export const GameInfo = ({ gameState, currentAnte }: GameInfoProps) => {
             arrow
             placement="bottom"
           >
-            <Chip
-              label={selectedChallenge.name}
-              size="small"
-              className={styles.challengeChip}
-              sx={{
-                backgroundColor: 'var(--neon-blue)',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: 'var(--neon-blue-dark)',
-                }
-              }}
-            />
+            <Typography variant="body1" component="span" className={styles.challengeText}>
+              {selectedChallenge.name}
+            </Typography>
           </Tooltip>
         )}
       </div>

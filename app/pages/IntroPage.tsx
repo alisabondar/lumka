@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Box, Container, Typography, TextField } from "@mui/material";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { WalkthroughWrapper } from "../components/WalkthroughWrapper";
 import { GradientButton } from "../components/GradientButton";
 import styles from "./IntroPage.module.css";
@@ -46,7 +47,7 @@ export const IntroPage = ({ onStart }: IntroPageProps) => {
 
           <Typography variant="h5" className={styles.subtitle}>
             Welcome to Lumka! A game all about growth and evolution in order to
-            become an immortal cat. Are you ready to evolve?
+            become an immortal fox. Are you ready to evolve?
           </Typography>
 
           <Box className={styles.formContainer}>
@@ -68,6 +69,12 @@ export const IntroPage = ({ onStart }: IntroPageProps) => {
             </GradientButton>
           </Box>
         </Container>
+        <DotLottieReact
+          src="/happy-fox.lottie"
+          loop
+          autoplay
+          className={styles.lottie}
+        />
       </Box>
     </>
   );
