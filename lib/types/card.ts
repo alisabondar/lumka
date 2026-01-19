@@ -6,11 +6,18 @@ export interface Card {
   traitCategory: TraitCategory;
 }
 
-export const CATEGORY_LABELS: Record<TraitCategory, string> = {
-  positive: '🌱 FLOURISH',
-  neutral: '⚖️ ADAPT',
-  negative: '🪨 BURDEN',
-  wild: '✨ CATALYST',
+export const CATEGORY_ICONS: Record<TraitCategory, string> = {
+  positive: '🩶',
+  neutral: '⚙️',
+  negative: '⛓️',
+  wild: '✨',
+};
+
+export const CATEGORY_NAMES: Record<TraitCategory, string> = {
+  positive: 'FLOURISH',
+  neutral: 'ADAPT',
+  negative: 'BURDEN',
+  wild: 'CATALYST',
 };
 
 export const CATEGORY_COLORS: Record<TraitCategory, string> = {

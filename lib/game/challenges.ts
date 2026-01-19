@@ -1,19 +1,14 @@
 import { State } from '../types/playerState';
 import { TraitCategory } from '../types/trait';
+import { CATEGORY_ICONS } from '../types/card';
 
 export type Challenge = {
   id: string;
+  number: number;
   name: string;
   description: string;
+  difficulty: number;
   check: (state: State) => boolean;
-};
-
-export type Ante = {
-  id: string;
-  ante: number;
-  name: string;
-  color: string;
-  challenges: Challenge[];
 };
 
 function getTraitCounts(state: State): Record<TraitCategory, number> {
@@ -42,203 +37,335 @@ function getCategoryPercentage(state: State, category: TraitCategory): number {
   return (counts[category] / total) * 100;
 }
 
-function hasDuplicatedTrait(state: State): boolean {
-  const traitIds = state.traits.map(t => t.id);
-  return traitIds.some(id => id.includes('-dup-'));
+function getCategoryEmoji(category: TraitCategory): string {
+  return CATEGORY_ICONS[category];
 }
 
-const ante1Challenges: Challenge[] = [
-  {
-    id: '1A',
-    name: 'Viable Genome',
-    description: 'At least 3 total traits, Stability ≥ 8',
-    check: (state) => getTotalTraits(state) >= 3 && state.stability >= 8,
-  },
-  {
-    id: '1B',
-    name: 'Defined Nature',
-    description: 'At least 2 traits of the same category, No more than 1 negative',
-    check: (state) => {
-      const counts = getTraitCounts(state);
-      const hasTwoSameCategory = counts.positive >= 2 || counts.neutral >= 2 || counts.negative >= 2 || counts.wild >= 2;
-      return hasTwoSameCategory && counts.negative <= 1;
-    },
-  },
-];
+// 52-card deck, start with 10 stability
+// Positive: +2 score, +1 stability | Neutral: +1 score | Negative: +1 score, -2 stability
+function getDifficultyParams(challengeNum: number) {
+  const tier = Math.ceil(challengeNum / 10);
+  const tierProgress = (challengeNum - 1) % 10;
 
-const ante2Challenges: Challenge[] = [
-  {
-    id: '2A',
-    name: 'Balanced Adaptation',
-    description: '≥ 1 positive, ≥ 1 neutral, ≥ 1 negative',
-    check: (state) => {
+  return {
+    tier,
+    tierProgress,
+    minTraits: Math.floor(2 + tier * 0.8 + tierProgress * 0.05),
+    minScore: Math.floor(4 + tier * 1.6 + tierProgress * 0.15),
+    minStability: Math.max(1, Math.floor(7 - tier * 0.5)),
+    minCategoryCount: Math.floor(1 + tier * 0.3 + tierProgress * 0.02),
+    maxCategoryPct: Math.max(40, 70 - tier * 3),
+    minCategoryPct: Math.min(50, 20 + tier * 3),
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Challenge Definitions - 100 unique, progressively harder challenges
+// ─────────────────────────────────────────────────────────────────────────────
+
+function generateAllChallenges(): Challenge[] {
+  const challenges: Challenge[] = [];
+
+  const patterns = [
+    // Pattern 0: Trait count + stability
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
+    name: 'Viable Genome',
+      description: `At least ${p.minTraits} traits, Stability ≥ ${p.minStability}`,
+      check: (state: State) => getTotalTraits(state) >= p.minTraits && state.stability >= p.minStability,
+    }),
+
+    // Pattern 1: Score threshold
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
+      name: 'Point Threshold',
+      description: `Score ≥ ${p.minScore}`,
+      check: (state: State) => state.score >= p.minScore,
+    }),
+
+    // Pattern 2: Flourish focus
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
+      name: 'Flourishing Path',
+      description: `At least ${p.minCategoryCount} ${getCategoryEmoji('positive')} FLOURISH traits`,
+      check: (state: State) => getTraitCounts(state).positive >= p.minCategoryCount,
+    }),
+
+    // Pattern 3: Adapt focus
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
+      name: 'Balanced Approach',
+      description: `At least ${p.minCategoryCount} ${getCategoryEmoji('neutral')} ADAPT traits`,
+      check: (state: State) => getTraitCounts(state).neutral >= p.minCategoryCount,
+    }),
+
+    // Pattern 4: Score + stability combo
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
+      name: 'Optimal Balance',
+      description: `Score ≥ ${p.minScore}, Stability ≥ ${p.minStability}`,
+      check: (state: State) => state.score >= p.minScore && state.stability >= p.minStability,
+    }),
+
+    // Pattern 5: Limited burdens
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => {
+      const maxNeg = Math.max(0, 4 - Math.floor(p.tier / 2));
+      return {
+        name: 'Burden Control',
+        description: `No more than ${maxNeg} ${getCategoryEmoji('negative')} BURDEN traits, Traits ≥ ${p.minTraits}`,
+        check: (state: State) => getTraitCounts(state).negative <= maxNeg && getTotalTraits(state) >= p.minTraits,
+      };
+    },
+
+    // Pattern 6: Category diversity
+    () => ({
+      name: 'Diverse Genome',
+      description: `≥1 ${getCategoryEmoji('positive')}, ≥1 ${getCategoryEmoji('neutral')}, ≥1 ${getCategoryEmoji('negative')}`,
+      check: (state: State) => {
       const counts = getTraitCounts(state);
       return counts.positive >= 1 && counts.neutral >= 1 && counts.negative >= 1;
     },
-  },
-  {
-    id: '2B',
-    name: 'Controlled Risk',
-    description: 'Negative traits ≤ 30% of total, Stability ≥ 6',
-    check: (state) => {
-      const negativePercent = getCategoryPercentage(state, 'negative');
-      return negativePercent <= 30 && state.stability >= 6;
-    },
-  },
-];
+    }),
 
-const ante3Challenges: Challenge[] = [
-  {
-    id: '3A',
+    // Pattern 7: Category concentration
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => {
+      const minSame = Math.floor(2 + p.tier * 0.5);
+      return {
     name: 'Specialization',
-    description: '≥ 4 traits of the same category, Score ≥ targetScore',
-    check: (state) => {
+        description: `At least ${minSame} traits share a category`,
+        check: (state: State) => {
       const counts = getTraitCounts(state);
-      const hasFourSame = counts.positive >= 4 || counts.neutral >= 4 || counts.negative >= 4 || counts.wild >= 4;
-      const targetScore = 15;
-      return hasFourSame && state.score >= targetScore;
+          return counts.positive >= minSame || counts.neutral >= minSame ||
+                 counts.negative >= minSame || counts.wild >= minSame;
+        },
+      };
     },
-  },
-  {
-    id: '3B',
-    name: 'Evolutionary Pressure',
-    description: 'At least 1 duplicated trait (wild effect), Stability ≥ 5',
-    check: (state) => hasDuplicatedTrait(state) && state.stability >= 5,
-  },
+
+    // Pattern 8: Catalyst requirement
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => {
+      const minWild = Math.max(1, Math.floor(p.tier / 3));
+      return {
+        name: 'Catalyst Spark',
+        description: `At least ${minWild} ${getCategoryEmoji('wild')} CATALYST trait${minWild > 1 ? 's' : ''}`,
+        check: (state: State) => getTraitCounts(state).wild >= minWild,
+      };
+    },
+
+    // Pattern 9: No category dominance
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
+      name: 'Even Spread',
+      description: `Traits ≥ ${p.minTraits}, no category exceeds ${p.maxCategoryPct}%`,
+      check: (state: State) => {
+        if (getTotalTraits(state) < p.minTraits) return false;
+        const categories: TraitCategory[] = ['positive', 'neutral', 'negative', 'wild'];
+        return categories.every(cat => getCategoryPercentage(state, cat) <= p.maxCategoryPct);
+      },
+    }),
+  ];
+
+  const advancedPatterns = [
+    // Pattern 10: Flourish majority
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
+      name: 'Flourish Dominant',
+      description: `${getCategoryEmoji('positive')} traits ≥ ${p.minCategoryPct}% of total`,
+      check: (state: State) => getCategoryPercentage(state, 'positive') >= p.minCategoryPct,
+    }),
+
+    // Pattern 11: High score + specific category
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
+      name: 'Focused Excellence',
+      description: `Score ≥ ${p.minScore + 2}, ≥${p.minCategoryCount + 1} ${getCategoryEmoji('positive')} traits`,
+      check: (state: State) => state.score >= p.minScore + 2 && getTraitCounts(state).positive >= p.minCategoryCount + 1,
+    }),
+
+    // Pattern 12: Risky build
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => {
+      const maxStab = Math.max(2, 6 - Math.floor(p.tier / 2));
+      return {
+        name: 'Edge Walker',
+        description: `Stability ≤ ${maxStab}, Traits ≥ ${p.minTraits + 1}`,
+        check: (state: State) => state.stability <= maxStab && getTotalTraits(state) >= p.minTraits + 1,
+      };
+    },
+
+    // Pattern 13: High trait count with stability
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => {
+      const extraTraits = Math.floor(p.tier / 3) + 1;
+      return {
+        name: 'Thriving Colony',
+        description: `At least ${p.minTraits + extraTraits} traits, Stability ≥ ${p.minStability}`,
+        check: (state: State) => getTotalTraits(state) >= p.minTraits + extraTraits && state.stability >= p.minStability,
+      };
+    },
+
+    // Pattern 14: Multi-category requirements
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => {
+      const req = Math.floor(1 + p.tier / 3);
+      return {
+        name: 'Hybrid Vigor',
+        description: `≥${req} ${getCategoryEmoji('positive')}, ≥${req} ${getCategoryEmoji('neutral')}, Score ≥ ${p.minScore}`,
+        check: (state: State) => {
+          const counts = getTraitCounts(state);
+          return counts.positive >= req && counts.neutral >= req && state.score >= p.minScore;
+        },
+      };
+    },
+
+    // Pattern 15: Complete organism
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
+      name: 'Complete Organism',
+      description: `Traits ≥ ${p.minTraits + 1}, all trait types present, Score ≥ ${p.minScore}`,
+      check: (state: State) => {
+        const counts = getTraitCounts(state);
+        return getTotalTraits(state) >= p.minTraits + 1 &&
+               counts.positive > 0 && counts.neutral > 0 && counts.negative > 0 &&
+               state.score >= p.minScore;
+      },
+    }),
+
+    // Pattern 16: Positive ratio
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => {
+      const ratio = Math.floor(1 + p.tier / 3);
+      return {
+        name: 'Golden Ratio',
+        description: `${getCategoryEmoji('positive')} traits ≥ ${ratio}× ${getCategoryEmoji('negative')} traits`,
+        check: (state: State) => {
+          const counts = getTraitCounts(state);
+          return counts.positive >= counts.negative * ratio;
+        },
+      };
+    },
+
+    // Pattern 17: Survivor
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
+      name: 'Survivor',
+      description: `Stability > 0, Score ≥ ${p.minScore + 3}, Traits ≥ ${p.minTraits}`,
+      check: (state: State) => state.stability > 0 && state.score >= p.minScore + 3 && getTotalTraits(state) >= p.minTraits,
+    }),
+
+    // Pattern 18: Positive dominance (positives outnumber negatives)
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => {
+      const margin = Math.max(1, Math.floor(p.tier / 3));
+      return {
+        name: 'Flourish Dominance',
+        description: `${getCategoryEmoji('positive')} traits exceed ${getCategoryEmoji('negative')} by at least ${margin}, Traits ≥ ${p.minTraits}`,
+        check: (state: State) => {
+          const counts = getTraitCounts(state);
+          return counts.positive >= counts.negative + margin && getTotalTraits(state) >= p.minTraits;
+        },
+      };
+    },
+
+    // Pattern 19: Ultimate challenge
+    (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
+      name: 'Perfect Evolution',
+      description: `Traits ≥ ${p.minTraits + 2}, Score ≥ ${p.minScore + 4}, Stability ≥ ${p.minStability}`,
+      check: (state: State) =>
+        getTotalTraits(state) >= p.minTraits + 2 &&
+        state.score >= p.minScore + 4 &&
+        state.stability >= p.minStability,
+    }),
+  ];
+
+  // Generate 100 challenges
+  for (let i = 1; i <= 100; i++) {
+    const params = getDifficultyParams(i);
+    const tier = params.tier;
+
+    let patternIndex: number;
+    if (tier <= 3) {
+      patternIndex = (i - 1) % patterns.length;
+    } else if (tier <= 6) {
+      patternIndex = (i - 1) % (patterns.length + 5);
+    } else {
+      patternIndex = (i - 1) % (patterns.length + advancedPatterns.length);
+    }
+
+    let challengeData;
+    if (patternIndex < patterns.length) {
+      challengeData = patterns[patternIndex](i, params);
+    } else {
+      challengeData = advancedPatterns[patternIndex - patterns.length](i, params);
+    }
+
+    challenges.push({
+      id: `challenge-${i}`,
+      number: i,
+      name: challengeData.name,
+      description: challengeData.description,
+      difficulty: tier,
+      check: challengeData.check,
+    });
+  }
+
+  return challenges;
+}
+
+export const CHALLENGES: Challenge[] = generateAllChallenges();
+
+export function getChallenge(num: number): Challenge | null {
+  if (num < 1 || num > CHALLENGES.length) return null;
+  return CHALLENGES[num - 1];
+}
+
+export function checkChallenge(state: State, challenge: Challenge): boolean {
+  return challenge.check(state);
+}
+
+export function getDifficultyName(difficulty: number): string {
+  const names = [
+    'Novice',
+    'Beginner',
+    'Apprentice',
+    'Intermediate',
+    'Advanced',
+    'Expert',
+    'Master',
+    'Grandmaster',
+    'Legend',
+    'Mythic',
+  ];
+  return names[Math.min(difficulty - 1, names.length - 1)] || 'Unknown';
+}
+
+export function getTotalChallengeCount(): number {
+  return CHALLENGES.length;
+}
+
+export type Ante = {
+  id: string;
+  ante: number;
+  name: string;
+  challenges: Challenge[];
+};
+
+const ANTE_NAMES = [
+  'Survival & Identity',
+  'Adaptation',
+  'Optimization',
+  'Tradeoffs',
+  'Endgame',
+  'Final Evolution',
+  'Transcendence',
+  'Apex Predator',
+  'Cosmic Being',
+  'Ultimate Form',
 ];
 
-const ante4Challenges: Challenge[] = [
-  {
-    id: '4A',
-    name: 'Fragile Power',
-    description: '≥ 5 positive traits, Stability ≤ 5',
-    check: (state) => {
-      const counts = getTraitCounts(state);
-      return counts.positive >= 5 && state.stability <= 5;
-    },
-  },
-  {
-    id: '4B',
-    name: 'Adapt or Die',
-    description: 'At least 2 negative traits, Score ≥ targetScore × 1.2',
-    check: (state) => {
-      const counts = getTraitCounts(state);
-      const targetScore = 20;
-      return counts.negative >= 2 && state.score >= targetScore * 1.2;
-    },
-  },
-];
+// Group 10 challenges into 10 antes
+export const ANTES: Ante[] = Array.from({ length: 10 }, (_, i) => {
+  const anteNum = i + 1;
+  const startIdx = i * 10;
+  const endIdx = startIdx + 10;
 
-const ante5Challenges: Challenge[] = [
-  {
-    id: '5A',
-    name: 'Dominant Species',
-    description: 'Total traits ≥ 10, ≥ 6 traits share a category',
-    check: (state) => {
-      const total = getTotalTraits(state);
-      const counts = getTraitCounts(state);
-      const hasSixSame = counts.positive >= 6 || counts.neutral >= 6 || counts.negative >= 6 || counts.wild >= 6;
-      return total >= 10 && hasSixSame;
-    },
-  },
-  {
-    id: '5B',
-    name: 'Evolution Complete',
-    description: 'Stability > 0, Score ≥ 30, No category exceeds 60%',
-    check: (state) => {
-      const finalTargetScore = 30;
-      const total = getTotalTraits(state);
-      if (total === 0) return false;
+  return {
+    id: String(anteNum),
+    ante: anteNum,
+    name: ANTE_NAMES[i] || `Level ${anteNum}`,
+    challenges: CHALLENGES.slice(startIdx, endIdx),
+  };
+});
 
-      const positivePercent = getCategoryPercentage(state, 'positive');
-      const neutralPercent = getCategoryPercentage(state, 'neutral');
-      const negativePercent = getCategoryPercentage(state, 'negative');
-      const wildPercent = getCategoryPercentage(state, 'wild');
-
-      const noCategoryExceeds60 =
-        positivePercent <= 60 &&
-        neutralPercent <= 60 &&
-        negativePercent <= 60 &&
-        wildPercent <= 60;
-
-      return state.stability > 0 && state.score >= finalTargetScore && noCategoryExceeds60;
-    },
-  },
-];
-
-const ante6Challenges: Challenge[] = [
-  {
-    id: '6A',
-    name: 'Perfect Balance',
-    description: 'Total traits ≥ 12, Stability ≥ 8, Score ≥ 40',
-    check: (state) => {
-      return getTotalTraits(state) >= 12 && state.stability >= 8 && state.score >= 40;
-    },
-  },
-  {
-    id: '6B',
-    name: 'Ultimate Cat',
-    description: 'Total traits ≥ 15, All challenge types represented, Stability > 0',
-    check: (state) => {
-      const counts = getTraitCounts(state);
-      const hasAllTypes = counts.positive > 0 && counts.neutral > 0 && counts.negative > 0;
-      return getTotalTraits(state) >= 15 && hasAllTypes && state.stability > 0;
-    },
-  },
-];
-
-export const ANTES: Ante[] = [
-  {
-    id: '1',
-    ante: 1,
-    name: 'Survival & Identity',
-    color: '🟢',
-    challenges: ante1Challenges,
-  },
-  {
-    id: '2',
-    ante: 2,
-    name: 'Adaptation',
-    color: '🟡',
-    challenges: ante2Challenges,
-  },
-  {
-    id: '3',
-    ante: 3,
-    name: 'Optimization',
-    color: '🟠',
-    challenges: ante3Challenges,
-  },
-  {
-    id: '4',
-    ante: 4,
-    name: 'Tradeoffs',
-    color: '🔴',
-    challenges: ante4Challenges,
-  },
-  {
-    id: '5',
-    ante: 5,
-    name: 'Endgame',
-    color: '⚫',
-    challenges: ante5Challenges,
-  },
-  {
-    id: '6',
-    ante: 6,
-    name: 'Final Evolution',
-    color: '🟣',
-    challenges: ante6Challenges,
-  },
-];
+export function getAnteForRound(round: number): Ante | null {
+  if (round < 1 || round > ANTES.length) return null;
+  return ANTES[round - 1];
+}
 
 export function checkAnte(state: State, ante: Ante): boolean {
   return ante.challenges.some(challenge => challenge.check(state));
-}
-
-export function getAnteForRound(round: number): Ante | null {
-  if (round < 1 || round > ANTES.length) {
-    return null;
-  }
-  return ANTES[round - 1] || null;
 }

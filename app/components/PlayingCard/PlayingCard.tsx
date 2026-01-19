@@ -1,7 +1,7 @@
 'use client';
 
 import { Paper } from '@mui/material';
-import { Card as CardType } from '@/lib/types/card';
+import { Card as CardType, CATEGORY_ICONS, CATEGORY_NAMES } from '@/lib/types/card';
 import styles from './PlayingCard.module.css';
 
 interface CardProps {
@@ -10,20 +10,6 @@ interface CardProps {
   onClick?: () => void;
   onDoubleClick?: () => void;
 }
-
-const CATEGORY_ICONS: Record<string, string> = {
-  positive: '🩶',
-  neutral: '⚙️',
-  negative: '⛓️',
-  wild: '✨',
-};
-
-const CATEGORY_NAMES: Record<string, string> = {
-  positive: 'FLOURISH',
-  neutral: 'ADAPT',
-  negative: 'BURDEN',
-  wild: 'CATALYST',
-};
 
 export const PlayingCard = ({ card, isSelected = false, onClick, onDoubleClick }: CardProps) => {
   const categoryClass = {
