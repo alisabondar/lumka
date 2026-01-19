@@ -21,12 +21,17 @@ export const GameInfo = ({ gameState, currentAnte }: GameInfoProps) => {
     return acc;
   }, {} as Record<TraitCategory, number>);
 
-  const traitBreakdown = `${traitCounts.negative || 0} negative, ${traitCounts.positive || 0} positive, ${traitCounts.neutral || 0} neutral, ${traitCounts.wild || 0} wild`;
+  const traitBreakdown = `Currently: ${traitCounts.negative || 0} negative, ${traitCounts.positive || 0} positive, ${traitCounts.neutral || 0} neutral, ${traitCounts.wild || 0} wild`;
 
   return (
     <Paper elevation={4} data-walkthrough="game-info" className={styles.container}>
       <div className={styles.infoSection}>
-        <Typography variant="body1" component="span" className={styles.roundText}>
+        <Typography
+          variant="h6"
+          component="span"
+          className={styles.roundText}
+          sx={{ fontWeight: 700, fontSize: 'clamp(1.5rem, 1.8vw, 1.75rem)' }}
+        >
           Round {gameState.round}{selectedChallenge && ':'}
         </Typography>
         {selectedChallenge && (
@@ -35,7 +40,12 @@ export const GameInfo = ({ gameState, currentAnte }: GameInfoProps) => {
             arrow
             placement="bottom"
           >
-            <Typography variant="body1" component="span" className={styles.challengeText}>
+            <Typography
+              variant="h6"
+              component="span"
+              className={styles.challengeText}
+              sx={{ fontWeight: 700, fontSize: 'clamp(1.5rem, 1.8vw, 1.75rem)' }}
+            >
               {selectedChallenge.name}
             </Typography>
           </Tooltip>
@@ -50,14 +60,20 @@ export const GameInfo = ({ gameState, currentAnte }: GameInfoProps) => {
             {gameState.playerState.score}
           </Typography>
         </div>
-        <div className={styles.statItem}>
-          <Typography variant="caption" className={styles.statLabel}>
-            Stability
-          </Typography>
-          <Typography variant="body1" className={styles.statValue}>
-            {gameState.playerState.stability}
-          </Typography>
-        </div>
+        <Tooltip
+          title="Drawing or discarding cards costs 0.5 stability. If stability reaches zero, you lose!"
+          arrow
+          placement="bottom"
+        >
+          <div className={`${styles.statItem} ${styles.statItemHoverable}`}>
+            <Typography variant="caption" className={styles.statLabel}>
+              Stability
+            </Typography>
+            <Typography variant="body1" className={styles.statValue}>
+              {gameState.playerState.stability}
+            </Typography>
+          </div>
+        </Tooltip>
         <Tooltip
           title={traitBreakdown}
           arrow

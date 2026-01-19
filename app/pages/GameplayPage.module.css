@@ -9,6 +9,48 @@
   transition: background-image 0.5s ease-in-out;
 }
 
+.seasonalOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 0;
+  pointer-events: none;
+  animation: fadeIn 0.8s ease-out;
+}
+
+@media (prefers-color-scheme: dark) {
+  .seasonalOverlay {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    background: rgba(255, 255, 255, 0.9);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      background: rgba(0, 0, 0, 0.9);
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
 .walkthroughBackground {
   background-color: var(--animated-bg-color);
   background-image: var(--animated-bg-gradient);

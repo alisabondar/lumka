@@ -7,14 +7,15 @@
 
 .modalPaper {
   padding: 32px;
-  max-width: 600px;
-  width: 90%;
+  width: min(90vw, 600px);
   max-height: 90vh;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   background-color: rgba(255, 255, 255, 0.98);
   border-radius: 12px;
   border: 2px solid rgba(var(--neon-blue-rgb), 0.5);
   color: #000000;
+  box-sizing: border-box;
 }
 
 .title {
@@ -36,24 +37,21 @@
   font-weight: 500;
 }
 
-.challengesList {
-  align-items: flex-start;
-}
-
 .challengeButton {
   width: 100%;
   padding: 20px;
   text-align: left;
-  justify-content: flex-start;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
   border: 2px solid rgba(var(--neon-blue-rgb), 0.3);
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.95);
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .challengeButton:hover {
-  border: 2px solid rgba(var(--neon-blue-rgb), 0.8);
+  border-color: rgba(var(--neon-blue-rgb), 0.8);
   background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1), rgba(255, 230, 109, 0.1));
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }

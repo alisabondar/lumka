@@ -1,16 +1,16 @@
 .container {
   position: fixed;
-  top: clamp(12px, 1.5vh, 24px);
-  left: clamp(12px, 1.5vw, 24px);
+  top: clamp(16px, 2vh, 32px);
+  left: clamp(16px, 2vw, 32px);
   z-index: 100;
   background-color: rgba(255, 255, 255, 0.95);
-  padding: clamp(12px, 1.5vw, 20px);
+  padding: clamp(16px, 2vw, 28px);
   border: 2px solid rgba(229, 231, 235, 0.8);
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1vh, 16px);
-  min-width: clamp(240px, 20vw, 320px);
+  gap: clamp(12px, 1.5vh, 20px);
+  min-width: clamp(280px, 22vw, 380px);
 }
 
 .infoSection {
@@ -21,13 +21,15 @@
 }
 
 .roundText {
-  font-weight: 600;
-  font-size: clamp(0.875rem, 1vw, 1.125rem);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 1.8vw, 1.75rem);
 }
 
 .challengeText {
   cursor: pointer;
   color: var(--neon-blue);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 1.8vw, 1.75rem);
 }
 
 .challengeText:hover {
@@ -53,10 +55,10 @@
 .statLabel {
   font-weight: 600;
   color: rgba(0, 0, 0, 0.6);
-  font-size: clamp(0.625rem, 0.7vw, 0.875rem);
+  font-size: clamp(0.75rem, 0.85vw, 1rem);
 }
 
 .statValue {
   font-weight: 600;
-  font-size: clamp(1rem, 1.1vw, 1.25rem);
+  font-size: clamp(1.125rem, 1.3vw, 1.5rem);
 }

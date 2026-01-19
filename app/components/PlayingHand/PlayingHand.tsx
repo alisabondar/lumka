@@ -1,9 +1,9 @@
 'use client';
 
 import { Card as CardType } from '@/lib/types/card';
-import { Card } from './Card';
+import { PlayingCard } from '../PlayingCard';
 import { useState, useEffect } from 'react';
-import styles from './Hand.module.css';
+import styles from './PlayingHand.module.css';
 
 interface HandProps {
   cards: CardType[];
@@ -31,7 +31,7 @@ const calculateSpacing = (cardCount: number) => {
   return maxSpacing;
 };
 
-export const Hand = ({
+export const PlayingHand = ({
   cards,
   selectedCards,
   onCardClick,
@@ -70,7 +70,7 @@ export const Hand = ({
               className={styles.cardWrapper}
               style={wrapperStyle}
             >
-              <Card
+              <PlayingCard
                 card={card}
                 isSelected={isSelected}
                 onClick={() => onCardClick(card.id)}

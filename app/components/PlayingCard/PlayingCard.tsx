@@ -2,7 +2,7 @@
 
 import { Paper } from '@mui/material';
 import { Card as CardType } from '@/lib/types/card';
-import styles from './Card.module.css';
+import styles from './PlayingCard.module.css';
 
 interface CardProps {
   card: CardType;
@@ -25,7 +25,7 @@ const CATEGORY_NAMES: Record<string, string> = {
   wild: 'CATALYST',
 };
 
-export const Card = ({ card, isSelected = false, onClick, onDoubleClick }: CardProps) => {
+export const PlayingCard = ({ card, isSelected = false, onClick, onDoubleClick }: CardProps) => {
   const categoryClass = {
     positive: styles.cardPositive,
     neutral: styles.cardNeutral,

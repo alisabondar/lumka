@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Box, Container, Typography, TextField } from "@mui/material";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { WalkthroughWrapper } from "../components/WalkthroughWrapper";
+import { WalkthroughWrapper } from "../components/WalkthroughModal";
 import { GradientButton } from "../components/GradientButton";
 import styles from "./IntroPage.module.css";
 

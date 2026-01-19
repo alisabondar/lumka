@@ -19,7 +19,7 @@ export const ChallengeModal = ({ ante, onSelectChallenge }: ChallengeModalProps)
         <Typography variant="h6" className={styles.subtitle}>
           Choose a challenge to complete this round:
         </Typography>
-        <Stack spacing={2} className={styles.challengesList}>
+        <Stack spacing={2}>
           {ante.challenges.map((challenge) => (
             <Button
               key={challenge.id}

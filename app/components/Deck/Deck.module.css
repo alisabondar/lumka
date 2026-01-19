@@ -5,8 +5,8 @@
   right: clamp(32px, 4vw, 64px);
   z-index: 10;
   border-radius: 0.5rem;
-  width: clamp(140px, 12vw, 220px);
-  height: clamp(196px, 16.4vw, 308px);
+  width: clamp(110px, 10vw, 180px);
+  height: clamp(154px, 14vw, 252px);
 }
 
 .deckStackEnabled {
@@ -72,7 +72,7 @@
   transform: translate(-50%, -50%);
   color: white;
   font-weight: 700;
-  font-size: clamp(1.75rem, 1.8vw, 2.75rem);
+  font-size: clamp(1.5rem, 1.5vw, 2.25rem);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   pointer-events: none;
 }

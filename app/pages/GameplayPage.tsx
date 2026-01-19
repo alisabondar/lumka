@@ -5,7 +5,7 @@ import { Ante } from '@/lib/game/challenges';
 import { GameInfo } from '../components/GameInfo';
 import { ChallengeModal } from '../components/ChallengeModal';
 import { Deck } from '../components/Deck';
-import { Hand } from '../components/Hand';
+import { PlayingHand } from '../components/PlayingHand';
 import { GradientButton } from '../components/GradientButton';
 import styles from './GameplayPage.module.css';
 
@@ -47,6 +47,7 @@ export const GameplayPage = ({
         backgroundImage: `url(/${currentSeason}.png)`,
       }}
     >
+      {!isWalkthrough && <div key={currentSeason} className={styles.seasonalOverlay} />}
       <GameInfo gameState={gameState} currentAnte={currentAnte} />
 
       {!hasSelectedChallenge && (
@@ -85,7 +86,7 @@ export const GameplayPage = ({
             </div>
           )}
 
-          <Hand
+          <PlayingHand
             cards={gameState.hand}
             selectedCards={gameState.selectedCards}
             onCardClick={onCardClick}

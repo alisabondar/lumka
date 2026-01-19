@@ -1,7 +1,7 @@
 'use client';
 
 import { Paper, Typography, Button, LinearProgress } from '@mui/material';
-import { GradientButton } from './GradientButton';
+import { GradientButton } from '../GradientButton/GradientButton';
 import styles from './WalkthroughModal.module.css';
 
 interface WalkthroughModalProps {
