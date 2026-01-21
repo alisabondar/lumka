@@ -46,6 +46,7 @@ A strategic card game where you evolve your fox through 6 rounds of challenges, 
 - **State Management**: Immutable game state with functional updates
 - **CSS Modules**: Scoped styling with CSS custom properties
 - **Accessibility**: ARIA labels, keyboard navigation, focus management, and color contrast compliance
+- **Unit Testing**: Comprehensive Jest test suite covering all core game logic
 
 ### UI/UX Features
 - **Animated Backgrounds**: Gradient animations and seasonal overlays
@@ -87,7 +88,6 @@ A strategic card game where you evolve your fox through 6 rounds of challenges, 
 - **PWA Support**: Install as a progressive web app
 - **Analytics**: Game analytics for balancing and improvements
 - **Internationalization**: Multi-language support
-- **Unit Tests**: Comprehensive test coverage for game logic
 - **E2E Tests**: Playwright/Cypress tests for critical paths
 
 ### Content Expansion

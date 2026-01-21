@@ -25,7 +25,7 @@ export function cardToTrait(card: Card): Trait {
         newState.score += 1;
       } else if (card.traitCategory === 'negative') {
         newState.score += 1;
-        newState.stability -= 2;
+        newState.stability = Math.max(0, newState.stability - 2);
       } else if (card.traitCategory === 'wild') {
         newState.score += 1;
       }
