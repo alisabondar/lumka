@@ -8,11 +8,10 @@ import {
   selectCard,
   applyCardAsTrait,
   advanceRound,
-  drawCard,
-  selectChallenge
+  drawCard
 } from '@/lib/game/gameState';
 import type { GameState } from '@/lib/game/gameState';
-import { getAnteForRound } from '@/lib/game/challenges';
+import { getAnteForRound, getDifficultyName } from '@/lib/game/challenges';
 import { IntroPage } from './pages/IntroPage';
 import { GameplayPage } from './pages/GameplayPage';
 import { OutcomePage } from './pages/OutcomePage';
@@ -22,8 +21,10 @@ type Page = 'intro' | 'gameplay' | 'outcome';
 export default function Home() {
   const [currentPage, setCurrentPage] = useState<Page>('intro');
   const [gameState, setGameState] = useState<GameState | null>(null);
+  const [playerName, setPlayerName] = useState<string>('');
 
-  const startGame = () => {
+  const startGame = (name: string) => {
+    setPlayerName(name);
     const deck = shuffleDeck(createDeck());
     const initialState = createInitialGameState(deck);
     setGameState(initialState);
@@ -36,11 +37,6 @@ export default function Home() {
     const selectedChallenge = ante.challenges.find(c => c.id === state.selectedChallengeId);
     if (!selectedChallenge) return false;
     return selectedChallenge.check(state.playerState);
-  };
-
-  const handleSelectChallenge = (challengeId: string) => {
-    if (!gameState) return;
-    setGameState(selectChallenge(gameState, challengeId));
   };
 
   const handleCardClick = (cardId: string) => {
@@ -87,9 +83,19 @@ export default function Home() {
   }
 
   if (currentPage === 'outcome' && gameState) {
+    const ante = getAnteForRound(gameState.status === 'won' ? 6 : gameState.round);
+    const selectedChallenge = ante?.challenges.find(c => c.id === gameState.selectedChallengeId);
+    const challengeNumber = gameState.round;
+    const difficultyName = selectedChallenge
+      ? getDifficultyName(selectedChallenge.difficulty)
+      : getDifficultyName(Math.ceil(gameState.round / 10));
+
     return (
       <OutcomePage
         won={gameState.status === 'won'}
+        playerName={playerName}
+        level={challengeNumber}
+        difficulty={difficultyName}
         onPlayAgain={handlePlayAgain}
       />
     );
@@ -102,6 +108,9 @@ export default function Home() {
       return (
         <OutcomePage
           won={false}
+          playerName={playerName}
+          level={gameState.round}
+          difficulty={getDifficultyName(Math.ceil(gameState.round / 10))}
           onPlayAgain={handlePlayAgain}
         />
       );
@@ -115,7 +124,6 @@ export default function Home() {
       onDiscard: handleDiscard,
       onDrawCard: handleDrawCard,
       onEndRound: handleEndRound,
-      onSelectChallenge: handleSelectChallenge,
     };
 
     return <GameplayPage {...gameplayProps} />;

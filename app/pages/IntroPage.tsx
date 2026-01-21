@@ -8,8 +8,10 @@ import { GradientButton } from "../components/GradientButton";
 import styles from "./IntroPage.module.css";
 
 interface IntroPageProps {
-  onStart: () => void;
+  onStart: (playerName: string) => void;
 }
+
+const WALKTHROUGH_STORAGE_KEY = "lumka_walkthrough_shown";
 
 export const IntroPage = ({ onStart }: IntroPageProps) => {
   const [playerName, setPlayerName] = useState("");
@@ -17,14 +19,23 @@ export const IntroPage = ({ onStart }: IntroPageProps) => {
   const [modalKey, setModalKey] = useState(0);
 
   const handleStartClick = () => {
-    setModalKey((prev) => prev + 1);
-    setShowWalkthrough(true);
+    const hasSeenWalkthrough = typeof window !== "undefined"
+      ? localStorage.getItem(WALKTHROUGH_STORAGE_KEY) === "true"
+      : false;
+
+    if (!hasSeenWalkthrough) {
+      setModalKey((prev) => prev + 1);
+      setShowWalkthrough(true);
+    } else {
+      onStart(playerName.trim());
+    }
   };
 
   const handleWalkthroughClose = () => {
+    localStorage.setItem(WALKTHROUGH_STORAGE_KEY, "true");
     setShowWalkthrough(false);
     setTimeout(() => {
-      onStart();
+      onStart(playerName.trim());
     }, 100);
   };
 

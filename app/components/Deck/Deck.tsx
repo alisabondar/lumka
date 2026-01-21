@@ -34,7 +34,7 @@ export const Deck = ({ count, onClick, isWalkthrough = false, disabled = false }
       data-walkthrough="deck"
       className={stackClass}
     >
-      <Paper elevation={8} className={cardClass} sx={{ borderRadius: '0.5rem' }}>
+      <Paper elevation={8} className={cardClass}>
         <div className={styles.deckPattern} />
         {count > 0 && (
           <div className={styles.deckCount}>

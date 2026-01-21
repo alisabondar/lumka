@@ -30,27 +30,29 @@ export const GameInfo = ({ gameState, currentAnte }: GameInfoProps) => {
           variant="h6"
           component="span"
           className={styles.roundText}
-          sx={{ fontWeight: 700, fontSize: 'clamp(1.5rem, 1.8vw, 1.75rem)' }}
         >
           Round {gameState.round}{selectedChallenge && ':'}
         </Typography>
         {selectedChallenge && (
-          <Tooltip
-            title={selectedChallenge.description}
-            arrow
-            placement="bottom"
+          <Typography
+            variant="h6"
+            component="span"
+            className={styles.challengeText}
           >
-            <Typography
-              variant="h6"
-              component="span"
-              className={styles.challengeText}
-              sx={{ fontWeight: 700, fontSize: 'clamp(1.5rem, 1.8vw, 1.75rem)' }}
-            >
-              {selectedChallenge.name}
-            </Typography>
-          </Tooltip>
+            {selectedChallenge.name}
+          </Typography>
         )}
       </div>
+      {selectedChallenge && (
+        <div className={styles.challengeDescriptionSection}>
+          <Typography
+            variant="body2"
+            className={styles.challengeDescription}
+          >
+            {selectedChallenge.description}
+          </Typography>
+        </div>
+      )}
       <div className={styles.statsRow}>
         <div className={styles.statItem}>
           <Typography variant="caption" className={styles.statLabel}>

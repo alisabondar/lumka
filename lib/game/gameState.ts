@@ -2,7 +2,7 @@ import { Card } from '../types/card';
 import { State } from '../types/playerState';
 import { cardToTrait } from './cardToTrait';
 import { applyTrait } from './traitLogic';
-import { ANTES, checkAnte } from './challenges';
+import { ANTES, type Ante } from './challenges';
 
 export type GameStatus = 'playing' | 'won' | 'lost';
 
@@ -20,6 +20,14 @@ export type GameState = {
 
 const MAX_ROUNDS = 6;
 
+/**
+ * Randomly selects a challenge from the given ante
+ */
+function selectRandomChallenge(ante: Ante): string {
+  const randomIndex = Math.floor(Math.random() * ante.challenges.length);
+  return ante.challenges[randomIndex].id;
+}
+
 export function createInitialGameState(deck: Card[]): GameState {
   const initialDeck = [...deck];
   const initialHand: Card[] = [];
@@ -27,6 +35,9 @@ export function createInitialGameState(deck: Card[]): GameState {
   for (let i = 0; i < 6 && initialDeck.length > 0; i++) {
     initialHand.push(initialDeck.pop()!);
   }
+
+  const firstAnte = ANTES[0];
+  const selectedChallengeId = firstAnte ? selectRandomChallenge(firstAnte) : null;
 
   return {
     round: 1,
@@ -41,7 +52,7 @@ export function createInitialGameState(deck: Card[]): GameState {
     },
     selectedCards: new Set(),
     wildUsedThisRound: false,
-    selectedChallengeId: null,
+    selectedChallengeId,
   };
 }
 
@@ -132,10 +143,16 @@ export function checkRoundWin(state: GameState): boolean {
   }
 
   const currentAnte = ANTES[state.round - 1];
-  if (!currentAnte) {
+  if (!currentAnte || !state.selectedChallengeId) {
     return false;
   }
-  return checkAnte(state.playerState, currentAnte);
+
+  const selectedChallenge = currentAnte.challenges.find(c => c.id === state.selectedChallengeId);
+  if (!selectedChallenge) {
+    return false;
+  }
+
+  return selectedChallenge.check(state.playerState);
 }
 
 export function advanceRound(state: GameState): GameState {
@@ -163,13 +180,17 @@ export function advanceRound(state: GameState): GameState {
     newHand.push(newDeck.pop()!);
   }
 
+  const nextRound = state.round + 1;
+  const nextAnte = ANTES[nextRound - 1];
+  const selectedChallengeId = nextAnte ? selectRandomChallenge(nextAnte) : null;
+
   return {
     ...state,
-    round: state.round + 1,
+    round: nextRound,
     wildUsedThisRound: false,
     deck: newDeck,
     hand: newHand,
-    selectedChallengeId: null,
+    selectedChallengeId,
   };
 }
 

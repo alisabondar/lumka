@@ -3,7 +3,6 @@
 import { GameState } from '@/lib/game/gameState';
 import { Ante } from '@/lib/game/challenges';
 import { GameInfo } from '../components/GameInfo';
-import { ChallengeModal } from '../components/ChallengeModal';
 import { Deck } from '../components/Deck';
 import { PlayingHand } from '../components/PlayingHand';
 import { GradientButton } from '../components/GradientButton';
@@ -17,7 +16,6 @@ interface GameplayPageProps {
   onDiscard: () => void;
   onDrawCard: () => void;
   onEndRound: () => void;
-  onSelectChallenge: (challengeId: string) => void;
   isWalkthrough?: boolean;
 }
 
@@ -31,10 +29,8 @@ export const GameplayPage = ({
   onDiscard,
   onDrawCard,
   onEndRound,
-  onSelectChallenge,
   isWalkthrough = false,
 }: GameplayPageProps) => {
-  const hasSelectedChallenge = gameState.selectedChallengeId !== null;
   const hasSelectedCards = gameState.selectedCards.size > 0;
   const isHandFull = gameState.hand.length >= 6;
 
@@ -50,50 +46,39 @@ export const GameplayPage = ({
       {!isWalkthrough && <div key={currentSeason} className={styles.seasonalOverlay} />}
       <GameInfo gameState={gameState} currentAnte={currentAnte} />
 
-      {!hasSelectedChallenge && (
-        <ChallengeModal
-          ante={currentAnte}
-          onSelectChallenge={onSelectChallenge}
-        />
+      <div className={styles.endRoundButtonWrapper} data-walkthrough="end-round-button">
+        <GradientButton
+          size="large"
+          onClick={onEndRound}
+        >
+          End Round
+        </GradientButton>
+      </div>
+
+      <Deck
+        count={gameState.deck.length}
+        onClick={onDrawCard}
+        isWalkthrough={isWalkthrough}
+        disabled={isHandFull}
+      />
+
+      {hasSelectedCards && (
+        <div className={styles.discardButtonWrapper} data-walkthrough="discard-button">
+          <GradientButton
+            size="large"
+            onClick={onDiscard}
+          >
+            Discard
+          </GradientButton>
+        </div>
       )}
 
-      {hasSelectedChallenge && (
-        <>
-          <div className={styles.endRoundButtonWrapper} data-walkthrough="end-round-button">
-            <GradientButton
-              size="large"
-              onClick={onEndRound}
-            >
-              End Round
-            </GradientButton>
-          </div>
-
-          <Deck
-            count={gameState.deck.length}
-            onClick={onDrawCard}
-            isWalkthrough={isWalkthrough}
-            disabled={isHandFull}
-          />
-
-          {hasSelectedCards && (
-            <div className={styles.discardButtonWrapper} data-walkthrough="discard-button">
-              <GradientButton
-                size="large"
-                onClick={onDiscard}
-              >
-                Discard
-              </GradientButton>
-            </div>
-          )}
-
-          <PlayingHand
-            cards={gameState.hand}
-            selectedCards={gameState.selectedCards}
-            onCardClick={onCardClick}
-            onCardDoubleClick={onCardDoubleClick}
-          />
-        </>
-      )}
+      <PlayingHand
+        cards={gameState.hand}
+        selectedCards={gameState.selectedCards}
+        onCardClick={onCardClick}
+        onCardDoubleClick={onCardDoubleClick}
+      />
     </div>
   );
 };

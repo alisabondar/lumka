@@ -36,6 +36,18 @@
   color: var(--neon-blue-dark);
 }
 
+.challengeDescriptionSection {
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.challengeDescription {
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 1.5;
+  font-size: clamp(0.875rem, 1vw, 1rem);
+}
+
 .statsRow {
   display: flex;
   gap: clamp(16px, 2vw, 32px);

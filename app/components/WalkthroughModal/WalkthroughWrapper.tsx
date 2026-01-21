@@ -181,7 +181,6 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
     onDiscard: () => {},
     onDrawCard: () => {},
     onEndRound: () => {},
-    onSelectChallenge: () => {},
   };
 
   return (

@@ -11,28 +11,163 @@
   text-align: center;
   background-color: rgba(255, 255, 255, 0.95);
   border-radius: 16px;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .title {
   margin-bottom: 24px;
   font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 4rem);
 }
 
 .titleWin {
-  background: linear-gradient(45deg, #4caf50, #8bc34a);
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #ffe66d);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .titleLose {
-  background: linear-gradient(45deg, #f44336, #ff9800);
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #ffe66d);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .subtitle {
-  margin-bottom: 32px;
   color: rgba(0, 0, 0, 0.6);
+}
+
+.statsBox {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(103, 58, 183, 0.1), rgba(156, 39, 176, 0.1));
+  border-radius: 12px;
+}
+
+.savingMessage {
+  color: rgba(0, 0, 0, 0.5);
+  margin-top: 8px;
+}
+
+.savedMessage {
+  color: #4caf50;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.scoreboardBox {
+  margin: 16px 0 32px 0;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 12px;
+}
+
+.scoreboardTitle {
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.noScores {
+  color: rgba(0, 0, 0, 0.5);
+  font-style: italic;
+}
+
+.scoreboardList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.scoreboardEntry {
+  display: grid;
+  grid-template-columns: 50px 1fr auto auto;
+  gap: 12px;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 8px;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.shadowedPlayer {
+  grid-template-columns: 1fr auto auto;
+}
+
+.rank {
+  font-weight: 700;
+  color: #ff9800;
+  font-size: 1.1rem;
+}
+
+.entryName {
+  font-weight: 600;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.challengeInfo {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.9rem;
+}
+
+.difficulty {
+  background: #ff9800;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.currentPlayer {
+  background: linear-gradient(135deg, #fff8e1, #ffecb3);
+  border: 2px solid #ffc107;
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+}
+
+.currentPlayer .rank {
+  color: #f57c00;
+}
+
+.currentPlayer .entryName {
+  color: #e65100;
+}
+
+.shadowedPlayer {
+  opacity: 0.7;
+  filter: grayscale(0.15);
+  background: rgba(255, 255, 255, 0.75) !important;
+  width: 50%;
+  margin: 0 auto;
+  justify-self: center;
+}
+
+.shadowedPlayer .rank,
+.shadowedPlayer .entryName,
+.shadowedPlayer .challengeInfo {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.shadowedPlayer .difficulty {
+  background: rgba(255, 152, 0, 0.55);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.rankSeparator {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 1.2rem;
+  letter-spacing: 4px;
 }
