@@ -20,8 +20,8 @@ const fredoka = Fredoka({
 });
 
 export const metadata: Metadata = {
-  title: "Lumka - Evolve Your Cat",
-  description: "A minigame all about growth and evolution to become an immortal cat",
+  title: "Lumka - Evolve Your Fox",
+  description: "A minigame all about growth and evolution to become an immortal fox",
 };
 
 export default function RootLayout({

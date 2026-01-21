@@ -51,18 +51,22 @@ export const IntroPage = ({ onStart }: IntroPageProps) => {
           onClose={handleWalkthroughClose}
         />
       )}
-      <Box className={`${styles.pageContainer} ${showWalkthrough ? styles.fading : ''}`}>
+      <Box
+        component="main"
+        className={`${styles.pageContainer} ${showWalkthrough ? styles.fading : ''}`}
+        aria-label="Welcome to Lumka"
+      >
         <Container maxWidth="md" className={styles.contentContainer}>
-          <Typography variant="h1" className={styles.title}>
-            🐾 LUMKA 🐾
+          <Typography variant="h1" className={styles.title} component="h1">
+            <span aria-hidden="true">🐾</span> LUMKA <span aria-hidden="true">🐾</span>
           </Typography>
 
-          <Typography variant="h5" className={styles.subtitle}>
+          <Typography variant="h5" className={styles.subtitle} component="p">
             Welcome to Lumka! A game all about growth and evolution in order to
             become an immortal fox. Are you ready to evolve?
           </Typography>
 
-          <Box className={styles.formContainer}>
+          <Box component="form" className={styles.formContainer} onSubmit={(e) => { e.preventDefault(); handleStartClick(); }}>
             <TextField
               fullWidth
               variant="outlined"
@@ -70,12 +74,17 @@ export const IntroPage = ({ onStart }: IntroPageProps) => {
               value={playerName}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPlayerName(e.target.value)}
               className={styles.nameInput}
+              label="Player Name"
+              aria-label="Enter your player name"
+              aria-required="true"
+              autoComplete="name"
             />
 
             <GradientButton
               size="large"
               onClick={handleStartClick}
               disabled={!isNameValid}
+              aria-label={isNameValid ? "Start the game" : "Enter your name to start the game"}
             >
               Start Game
             </GradientButton>
@@ -86,6 +95,8 @@ export const IntroPage = ({ onStart }: IntroPageProps) => {
           loop
           autoplay
           className={styles.lottie}
+          aria-label="Animated fox character"
+          role="img"
         />
       </Box>
     </>

@@ -7,7 +7,7 @@
   align-items: center;
   cursor: pointer;
   padding: clamp(12px, 1.2vw, 18px);
-  border-radius: 12px;
+  border-radius: var(--border-radius-medium);
   transition: all 0.15s ease;
   position: relative;
 }
@@ -15,32 +15,37 @@
 .cardPositive {
   border: 2px solid var(--card-positive);
   background: linear-gradient(135deg, rgba(var(--card-positive-rgb), 0.1) 0%, rgba(var(--card-positive-rgb), 0.2) 100%);
-  color: #0d9488;
+  color: #047857;
 }
 
 .cardNeutral {
   border: 2px solid var(--card-neutral);
   background: linear-gradient(135deg, rgba(var(--card-neutral-rgb), 0.1) 0%, rgba(var(--card-neutral-rgb), 0.2) 100%);
-  color: #0284c7;
+  color: #0369a1;
 }
 
 .cardNegative {
   border: 2px solid var(--card-negative);
   background: linear-gradient(135deg, rgba(var(--card-negative-rgb), 0.1) 0%, rgba(var(--card-negative-rgb), 0.2) 100%);
-  color: #dc2626;
+  color: #b91c1c;
 }
 
 .cardWild {
   border: 2px solid var(--card-wild);
   background: linear-gradient(135deg, rgba(var(--card-wild-rgb), 0.15) 0%, rgba(var(--card-wild-rgb), 0.25) 100%);
-  color: #b45309;
+  color: #92400e;
 }
 
 .cardSelected {
   border-width: 4px !important;
   transform: translateY(-20px) !important;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: var(--shadow-large) !important;
   z-index: 10;
+}
+
+.card:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
 }
 
 .cardPositive.cardSelected {

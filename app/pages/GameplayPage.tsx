@@ -38,19 +38,21 @@ export const GameplayPage = ({
   const currentSeason = SEASONS[(gameState.round - 1) % SEASONS.length];
 
   return (
-    <div
+    <main
       className={`${styles.gameplayContainer} ${isWalkthrough ? styles.walkthroughBackground : ''}`}
       style={isWalkthrough ? undefined : {
         backgroundImage: `url(/${currentSeason}.png)`,
       }}
+      aria-label={`Gameplay - Round ${gameState.round}, ${currentSeason} season`}
     >
-      {!isWalkthrough && <div key={currentSeason} className={styles.seasonalOverlay} />}
+      {!isWalkthrough && <div key={currentSeason} className={styles.seasonalOverlay} aria-hidden="true" />}
       <GameInfo gameState={gameState} currentAnte={currentAnte} />
 
       <div className={styles.endRoundButtonWrapper} data-walkthrough="end-round-button">
         <GradientButton
           size="large"
           onClick={onEndRound}
+          aria-label="End round and check challenge requirements"
         >
           End Round
         </GradientButton>
@@ -68,6 +70,7 @@ export const GameplayPage = ({
           <GradientButton
             size="large"
             onClick={onDiscard}
+            aria-label={`Discard ${gameState.selectedCards.size} selected card${gameState.selectedCards.size > 1 ? 's' : ''}`}
           >
             Discard
           </GradientButton>
@@ -80,6 +83,6 @@ export const GameplayPage = ({
         onCardClick={onCardClick}
         onCardDoubleClick={onCardDoubleClick}
       />
-    </div>
+    </main>
   );
 };

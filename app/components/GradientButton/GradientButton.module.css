@@ -2,10 +2,10 @@
   padding: clamp(10px, 1vh, 16px) clamp(20px, 2vw, 32px);
   font-size: clamp(1rem, 1.2vw, 1.5rem);
   font-weight: 700;
-  border-radius: 8px;
+  border-radius: var(--border-radius-small);
   background: linear-gradient(45deg, var(--gradient-pink), var(--gradient-teal), var(--gradient-yellow));
   color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: var(--text-shadow);
   box-shadow: 0 4px 16px rgba(255, 107, 107, 0.5);
   transition: all 0.2s ease;
   border: none;
@@ -22,4 +22,9 @@
   color: rgba(255, 255, 255, 0.5);
   text-shadow: none;
   cursor: not-allowed;
+}
+
+.gradientButton:focus-visible {
+  outline: var(--focus-outline-white);
+  outline-offset: var(--focus-outline-offset);
 }

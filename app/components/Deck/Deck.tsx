@@ -30,14 +30,24 @@ export const Deck = ({ count, onClick, isWalkthrough = false, disabled = false }
   return (
     <div
       onClick={handleClick}
+      onKeyDown={(e) => {
+        if ((e.key === 'Enter' || e.key === ' ') && !isDisabled) {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+      role="button"
+      tabIndex={isDisabled ? -1 : 0}
+      aria-label={getTitle()}
+      aria-disabled={isDisabled}
       title={getTitle()}
       data-walkthrough="deck"
       className={stackClass}
     >
       <Paper elevation={8} className={cardClass}>
-        <div className={styles.deckPattern} />
+        <div className={styles.deckPattern} aria-hidden="true" />
         {count > 0 && (
-          <div className={styles.deckCount}>
+          <div className={styles.deckCount} aria-label={`${count} cards remaining`}>
             {count}
           </div>
         )}

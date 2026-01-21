@@ -35,11 +35,29 @@
   --animated-bg-gradient: linear-gradient(-45deg, rgba(238, 119, 82, 0.15), rgba(231, 60, 126, 0.15), rgba(35, 166, 213, 0.15), rgba(35, 213, 171, 0.15));
 
   --text-primary: rgba(0, 0, 0, 0.87);
-  --text-secondary: rgba(0, 0, 0, 0.6);
+  --text-secondary: rgba(0, 0, 0, 0.7);
+  --text-tertiary: rgba(0, 0, 0, 0.5);
   --text-light: rgba(255, 255, 255, 0.95);
 
   --modal-bg: rgba(255, 255, 255, 0.98);
   --overlay-dark: rgba(0, 0, 0, 0.75);
+
+  --border-color: rgba(0, 0, 0, 0.2);
+  --border-color-light: rgba(0, 0, 0, 0.1);
+
+  --focus-outline: 3px solid #4FC3F7;
+  --focus-outline-white: 3px solid #ffffff;
+  --focus-outline-offset: 2px;
+
+  --shadow-small: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-large: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+  --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+  --border-radius-small: 8px;
+  --border-radius-medium: 12px;
+  --border-radius-large: 16px;
 }
 
 @theme inline {
@@ -55,6 +73,13 @@
     --foreground: #ededed;
     --animated-bg-color: #0a0a0a;
     --animated-bg-gradient: linear-gradient(-45deg, rgba(238, 119, 82, 0.25), rgba(231, 60, 126, 0.25), rgba(35, 166, 213, 0.25), rgba(35, 213, 171, 0.25));
+
+    --text-primary: rgba(255, 255, 255, 0.87);
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-tertiary: rgba(255, 255, 255, 0.5);
+
+    --border-color: rgba(255, 255, 255, 0.2);
+    --border-color-light: rgba(255, 255, 255, 0.1);
   }
 }
 

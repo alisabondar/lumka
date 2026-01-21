@@ -9,6 +9,11 @@
   height: clamp(154px, 14vw, 252px);
 }
 
+.deckStack:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+}
+
 .deckStackEnabled {
   cursor: pointer;
 }
@@ -73,7 +78,7 @@
   color: white;
   font-weight: 700;
   font-size: clamp(1.5rem, 1.5vw, 2.25rem);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: var(--text-shadow);
   pointer-events: none;
 }
 

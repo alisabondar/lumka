@@ -1,6 +1,6 @@
 .gameplayContainer {
   min-height: 100vh;
-  padding: 24px;
+  padding: clamp(12px, 2vw, 24px);
   position: relative;
   overflow: visible;
   background-size: cover;

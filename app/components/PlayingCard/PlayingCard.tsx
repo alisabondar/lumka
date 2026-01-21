@@ -21,15 +21,28 @@ export const PlayingCard = ({ card, isSelected = false, onClick, onDoubleClick }
 
   const cardClass = `${styles.card} ${categoryClass} ${isSelected ? styles.cardSelected : ''}`;
 
+  const categoryLabel = CATEGORY_NAMES[card.traitCategory];
+  const ariaLabel = `${card.name}, ${categoryLabel} trait${isSelected ? ', selected' : ''}. Click to select, double click to apply as trait`;
+
   return (
     <Paper
       elevation={isSelected ? 8 : 2}
       onClick={onClick}
       onDoubleClick={onDoubleClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick?.();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label={ariaLabel}
+      aria-pressed={isSelected}
       title={`${card.name} - Double click to apply as trait`}
       className={cardClass}
     >
-      <div className={styles.categoryIcon}>
+      <div className={styles.categoryIcon} aria-hidden="true">
         {CATEGORY_ICONS[card.traitCategory]}
       </div>
       <div className={styles.traitName}>
@@ -37,7 +50,7 @@ export const PlayingCard = ({ card, isSelected = false, onClick, onDoubleClick }
           <span key={i}>{word}</span>
         ))}
       </div>
-      <div className={styles.categoryName}>
+      <div className={styles.categoryName} aria-label={categoryLabel}>
         {CATEGORY_NAMES[card.traitCategory]}
       </div>
     </Paper>
