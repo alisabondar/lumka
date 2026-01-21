@@ -3,8 +3,17 @@ import { State } from '../types/playerState';
 import { cardToTrait } from './cardToTrait';
 import { applyTrait } from './traitLogic';
 import { ANTES, type Ante } from './challenges';
+import { MAX_HAND_SIZE } from '../utilsAndConstants';
 
 export type GameStatus = 'playing' | 'won' | 'lost';
+
+const MAX_ROUNDS = 6;
+const INITIAL_STABILITY = 10;
+const STABILITY_COST = 0.5;
+
+function reduceStability(stability: number, amount: number = STABILITY_COST): number {
+  return Math.max(0, stability - amount);
+}
 
 export type GameState = {
   round: number;
@@ -18,8 +27,6 @@ export type GameState = {
   selectedChallengeId: string | null;
 };
 
-const MAX_ROUNDS = 6;
-
 /**
  * Randomly selects a challenge from the given ante
  */
@@ -32,7 +39,7 @@ export function createInitialGameState(deck: Card[]): GameState {
   const initialDeck = [...deck];
   const initialHand: Card[] = [];
 
-  for (let i = 0; i < 6 && initialDeck.length > 0; i++) {
+  for (let i = 0; i < MAX_HAND_SIZE && initialDeck.length > 0; i++) {
     initialHand.push(initialDeck.pop()!);
   }
 
@@ -48,7 +55,7 @@ export function createInitialGameState(deck: Card[]): GameState {
     playerState: {
       traits: [],
       score: 0,
-      stability: 10,
+      stability: INITIAL_STABILITY,
     },
     selectedCards: new Set(),
     wildUsedThisRound: false,
@@ -61,7 +68,7 @@ export function drawCard(state: GameState): GameState {
     return state;
   }
 
-  if (state.hand.length >= 6) {
+  if (state.hand.length >= MAX_HAND_SIZE) {
     return state;
   }
 
@@ -70,7 +77,7 @@ export function drawCard(state: GameState): GameState {
 
   const newPlayerState = {
     ...state.playerState,
-    stability: Math.max(0, state.playerState.stability - 0.5),
+    stability: reduceStability(state.playerState.stability),
   };
 
   return {
@@ -86,7 +93,7 @@ export function discardCards(state: GameState, cardIds: string[]): GameState {
   const discardedCards = state.hand.filter(card => cardIds.includes(card.id));
 
   const newDeck = [...state.deck];
-  const cardsNeeded = 6 - newHand.length;
+  const cardsNeeded = MAX_HAND_SIZE - newHand.length;
 
   for (let i = 0; i < cardsNeeded && newDeck.length > 0; i++) {
     newHand.push(newDeck.pop()!);
@@ -94,7 +101,7 @@ export function discardCards(state: GameState, cardIds: string[]): GameState {
 
   const newPlayerState = {
     ...state.playerState,
-    stability: Math.max(0, state.playerState.stability - 0.5),
+    stability: reduceStability(state.playerState.stability),
   };
 
   return {
@@ -174,7 +181,7 @@ export function advanceRound(state: GameState): GameState {
 
   const newDeck = [...state.deck];
   const newHand = [...state.hand];
-  const cardsNeeded = 6 - newHand.length;
+  const cardsNeeded = MAX_HAND_SIZE - newHand.length;
 
   for (let i = 0; i < cardsNeeded && newDeck.length > 0; i++) {
     newHand.push(newDeck.pop()!);

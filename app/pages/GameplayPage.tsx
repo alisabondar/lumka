@@ -6,6 +6,7 @@ import { GameInfo } from '../components/GameInfo';
 import { Deck } from '../components/Deck';
 import { PlayingHand } from '../components/PlayingHand';
 import { GradientButton } from '../components/GradientButton';
+import { MAX_HAND_SIZE } from '@/lib/utilsAndConstants';
 import styles from './GameplayPage.module.css';
 
 interface GameplayPageProps {
@@ -32,7 +33,7 @@ export const GameplayPage = ({
   isWalkthrough = false,
 }: GameplayPageProps) => {
   const hasSelectedCards = gameState.selectedCards.size > 0;
-  const isHandFull = gameState.hand.length >= 6;
+  const handIsFull = gameState.hand.length >= MAX_HAND_SIZE;
 
   const currentSeason = SEASONS[(gameState.round - 1) % SEASONS.length];
 
@@ -59,7 +60,7 @@ export const GameplayPage = ({
         count={gameState.deck.length}
         onClick={onDrawCard}
         isWalkthrough={isWalkthrough}
-        disabled={isHandFull}
+        disabled={handIsFull}
       />
 
       {hasSelectedCards && (

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { createDeck, shuffleDeck } from '@/lib/deck';
 import { createInitialGameState } from '@/lib/game/gameState';
 import { getAnteForRound } from '@/lib/game/challenges';
 import type { GameState } from '@/lib/game/gameState';
+import { createNewShuffledDeck } from '@/lib/utilsAndConstants';
 import { GameplayPage } from '../../pages/GameplayPage';
 import { WalkthroughModal } from './WalkthroughModal';
 import styles from './WalkthroughWrapper.module.css';
@@ -93,7 +93,7 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [mockGameState] = useState<GameState>(() => {
-    const deck = shuffleDeck(createDeck());
+    const deck = createNewShuffledDeck();
     const state = createInitialGameState(deck);
     const ante = getAnteForRound(1);
     if (ante) {

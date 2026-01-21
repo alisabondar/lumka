@@ -5,6 +5,7 @@ import { Box, Container, Typography, TextField } from "@mui/material";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { WalkthroughWrapper } from "../components/WalkthroughModal";
 import { GradientButton } from "../components/GradientButton";
+import { normalizePlayerName } from "@/lib/utilsAndConstants";
 import styles from "./IntroPage.module.css";
 
 interface IntroPageProps {
@@ -27,7 +28,7 @@ export const IntroPage = ({ onStart }: IntroPageProps) => {
       setModalKey((prev) => prev + 1);
       setShowWalkthrough(true);
     } else {
-      onStart(playerName.trim());
+      onStart(normalizePlayerName(playerName));
     }
   };
 
@@ -35,11 +36,11 @@ export const IntroPage = ({ onStart }: IntroPageProps) => {
     localStorage.setItem(WALKTHROUGH_STORAGE_KEY, "true");
     setShowWalkthrough(false);
     setTimeout(() => {
-      onStart(playerName.trim());
+      onStart(normalizePlayerName(playerName));
     }, 100);
   };
 
-  const isNameValid = playerName.trim().length > 0;
+  const isNameValid = normalizePlayerName(playerName).length > 0;
 
   return (
     <>

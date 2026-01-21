@@ -5,7 +5,10 @@ import { Container, Typography, Paper, Box } from '@mui/material';
 import { GradientButton } from '../components/GradientButton';
 import { saveScore, getTopScores } from '@/lib/scoreboard';
 import type { ScoreboardEntry } from '@/lib/types/scoreboard';
+import { normalizePlayerName } from '@/lib/utilsAndConstants';
 import styles from './OutcomePage.module.css';
+
+const TOP_SCORES_LIMIT = 5;
 
 interface OutcomePageProps {
   won: boolean;
@@ -27,7 +30,7 @@ export const OutcomePage = ({ won, playerName, level, difficulty, onPlayAgain }:
     let cancelled = false;
 
     const loadInitialData = async () => {
-      const scores = await getTopScores(5);
+      const scores = await getTopScores(TOP_SCORES_LIMIT);
       if (!cancelled) {
         setScoreboard(scores);
         setLoadingScores(false);
@@ -48,7 +51,7 @@ export const OutcomePage = ({ won, playerName, level, difficulty, onPlayAgain }:
       setSaving(true);
       try {
         const savedEntry = await saveScore({
-          name: playerName.trim(),
+          name: normalizePlayerName(playerName),
           level: level,
           difficulty: difficulty,
         });
@@ -62,7 +65,7 @@ export const OutcomePage = ({ won, playerName, level, difficulty, onPlayAgain }:
           setScoreSaved(true);
           setSavedEntryId(savedEntry.id ?? null);
 
-          const scores = await getTopScores(5);
+          const scores = await getTopScores(TOP_SCORES_LIMIT);
           if (cancelled) {
             setSaving(false);
             return;
@@ -92,7 +95,7 @@ export const OutcomePage = ({ won, playerName, level, difficulty, onPlayAgain }:
 
   const isPlayerInTop5 = savedEntryId
     ? scoreboard.some(s => s.id === savedEntryId)
-    : scoreboard.some(s => s.name === playerName.trim() && s.level === level);
+    : scoreboard.some(s => s.name === normalizePlayerName(playerName) && s.level === level);
 
   const shouldShowPlayerEntry = playerName && !isPlayerInTop5 && scoreboard.length > 0;
 
@@ -127,7 +130,7 @@ export const OutcomePage = ({ won, playerName, level, difficulty, onPlayAgain }:
               <Typography className={styles.noScores}>No scores yet. Be the first!</Typography>
             ) : (
               <div className={styles.scoreboardList}>
-                {scoreboard.slice(0, 5).map((entry, index) => (
+                {scoreboard.slice(0, TOP_SCORES_LIMIT).map((entry, index) => (
                   <div
                     key={entry.id || index}
                     className={`${styles.scoreboardEntry} ${isCurrentPlayer(entry.id) ? styles.currentPlayer : ''}`}

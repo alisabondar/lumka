@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { createDeck, shuffleDeck } from '@/lib/deck';
 import {
   createInitialGameState,
   discardCards,
@@ -12,11 +11,18 @@ import {
 } from '@/lib/game/gameState';
 import type { GameState } from '@/lib/game/gameState';
 import { getAnteForRound, getDifficultyName } from '@/lib/game/challenges';
+import { createNewShuffledDeck } from '@/lib/utilsAndConstants';
 import { IntroPage } from './pages/IntroPage';
 import { GameplayPage } from './pages/GameplayPage';
 import { OutcomePage } from './pages/OutcomePage';
 
 type Page = 'intro' | 'gameplay' | 'outcome';
+
+const DIFFICULTY_TIER_DIVISOR = 10;
+
+function calculateDifficultyTier(round: number): number {
+  return Math.ceil(round / DIFFICULTY_TIER_DIVISOR);
+}
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState<Page>('intro');
@@ -25,7 +31,7 @@ export default function Home() {
 
   const startGame = (name: string) => {
     setPlayerName(name);
-    const deck = shuffleDeck(createDeck());
+    const deck = createNewShuffledDeck();
     const initialState = createInitialGameState(deck);
     setGameState(initialState);
     setCurrentPage('gameplay');
@@ -72,7 +78,7 @@ export default function Home() {
   };
 
   const handlePlayAgain = () => {
-    const deck = shuffleDeck(createDeck());
+    const deck = createNewShuffledDeck();
     const initialState = createInitialGameState(deck);
     setGameState(initialState);
     setCurrentPage('intro');
@@ -88,7 +94,7 @@ export default function Home() {
     const challengeNumber = gameState.round;
     const difficultyName = selectedChallenge
       ? getDifficultyName(selectedChallenge.difficulty)
-      : getDifficultyName(Math.ceil(gameState.round / 10));
+      : getDifficultyName(calculateDifficultyTier(gameState.round));
 
     return (
       <OutcomePage
@@ -110,7 +116,7 @@ export default function Home() {
           won={false}
           playerName={playerName}
           level={gameState.round}
-          difficulty={getDifficultyName(Math.ceil(gameState.round / 10))}
+          difficulty={getDifficultyName(calculateDifficultyTier(gameState.round))}
           onPlayAgain={handlePlayAgain}
         />
       );
