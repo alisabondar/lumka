@@ -70,7 +70,6 @@ export const IntroPage = ({ onStart }: IntroPageProps) => {
             <TextField
               fullWidth
               variant="outlined"
-              placeholder="Enter your name"
               value={playerName}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPlayerName(e.target.value)}
               className={styles.nameInput}

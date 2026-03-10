@@ -1,6 +1,6 @@
 .deckStack {
   position: absolute;
-  top: 50%;
+  top: 38%;
   transform: translateY(-50%);
   right: clamp(32px, 4vw, 64px);
   z-index: 10;
@@ -44,10 +44,10 @@
   transform: translateY(-2px);
 }
 
-.deckCardWalkthrough:hover {
-  transform: none !important;
-  background: linear-gradient(45deg, var(--gradient-pink), var(--gradient-teal), var(--gradient-yellow)) !important;
-  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.5) !important;
+.deckCard.deckCardWalkthrough:hover {
+  transform: none;
+  background: linear-gradient(45deg, var(--gradient-pink), var(--gradient-teal), var(--gradient-yellow));
+  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.5);
 }
 
 .deckPattern {

@@ -55,6 +55,7 @@ export const GameInfo = ({ gameState, currentAnte }: GameInfoProps) => {
         <div className={styles.challengeDescriptionSection}>
           <Typography
             variant="body2"
+            sx={{ fontSize: { xs: '0.95rem', sm: '1rem', md: '1.125rem' } }}
             className={styles.challengeDescription}
             aria-label={`Challenge requirement: ${selectedChallenge.description}`}
           >

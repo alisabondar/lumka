@@ -24,6 +24,7 @@ export type GameState = {
   playerState: State;
   selectedCards: Set<string>;
   wildUsedThisRound: boolean;
+  hasAppliedCardThisRound: boolean;
   selectedChallengeId: string | null;
 };
 
@@ -59,6 +60,7 @@ export function createInitialGameState(deck: Card[]): GameState {
     },
     selectedCards: new Set(),
     wildUsedThisRound: false,
+    hasAppliedCardThisRound: false,
     selectedChallengeId,
   };
 }
@@ -141,6 +143,7 @@ export function applyCardAsTrait(state: GameState, cardId: string): GameState {
     ...state,
     hand: newHand,
     playerState: newPlayerState,
+    hasAppliedCardThisRound: true,
   };
 }
 
@@ -195,6 +198,7 @@ export function advanceRound(state: GameState): GameState {
     ...state,
     round: nextRound,
     wildUsedThisRound: false,
+    hasAppliedCardThisRound: false,
     deck: newDeck,
     hand: newHand,
     selectedChallengeId,

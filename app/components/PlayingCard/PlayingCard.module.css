@@ -37,10 +37,10 @@
   color: #92400e;
 }
 
-.cardSelected {
-  border-width: 4px !important;
-  transform: translateY(-20px) !important;
-  box-shadow: var(--shadow-large) !important;
+.card.cardSelected {
+  border-width: 4px;
+  transform: translateY(-20px);
+  box-shadow: var(--shadow-large);
   z-index: 10;
 }
 
@@ -50,36 +50,36 @@
 }
 
 .cardPositive.cardSelected {
-  box-shadow: 0 8px 24px rgba(var(--card-positive-rgb), 0.5) !important;
+  box-shadow: 0 8px 24px rgba(var(--card-positive-rgb), 0.5);
 }
 
 .cardNeutral.cardSelected {
-  box-shadow: 0 8px 24px rgba(var(--card-neutral-rgb), 0.5) !important;
+  box-shadow: 0 8px 24px rgba(var(--card-neutral-rgb), 0.5);
 }
 
 .cardNegative.cardSelected {
-  box-shadow: 0 8px 24px rgba(var(--card-negative-rgb), 0.5) !important;
+  box-shadow: 0 8px 24px rgba(var(--card-negative-rgb), 0.5);
 }
 
 .cardWild.cardSelected {
-  box-shadow: 0 8px 24px rgba(var(--card-wild-rgb), 0.5) !important;
+  box-shadow: 0 8px 24px rgba(var(--card-wild-rgb), 0.5);
 }
 
 @media (prefers-color-scheme: dark) {
-  .cardPositive {
-    background: linear-gradient(135deg, rgba(var(--card-positive-rgb), 0.2) 0%, rgba(var(--card-positive-rgb), 0.3) 100%), #e8e6e1 !important;
+  .card.cardPositive {
+    background: linear-gradient(135deg, rgba(var(--card-positive-rgb), 0.2) 0%, rgba(var(--card-positive-rgb), 0.3) 100%), #e8e6e1;
   }
 
-  .cardNeutral {
-    background: linear-gradient(135deg, rgba(var(--card-neutral-rgb), 0.2) 0%, rgba(var(--card-neutral-rgb), 0.3) 100%), #e8e6e1 !important;
+  .card.cardNeutral {
+    background: linear-gradient(135deg, rgba(var(--card-neutral-rgb), 0.2) 0%, rgba(var(--card-neutral-rgb), 0.3) 100%), #e8e6e1;
   }
 
-  .cardNegative {
-    background: linear-gradient(135deg, rgba(var(--card-negative-rgb), 0.2) 0%, rgba(var(--card-negative-rgb), 0.3) 100%), #e8e6e1 !important;
+  .card.cardNegative {
+    background: linear-gradient(135deg, rgba(var(--card-negative-rgb), 0.2) 0%, rgba(var(--card-negative-rgb), 0.3) 100%), #e8e6e1;
   }
 
-  .cardWild {
-    background: linear-gradient(135deg, rgba(var(--card-wild-rgb), 0.25) 0%, rgba(var(--card-wild-rgb), 0.35) 100%), #e8e6e1 !important;
+  .card.cardWild {
+    background: linear-gradient(135deg, rgba(var(--card-wild-rgb), 0.25) 0%, rgba(var(--card-wild-rgb), 0.35) 100%), #e8e6e1;
   }
 }
 

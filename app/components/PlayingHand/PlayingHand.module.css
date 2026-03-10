@@ -1,6 +1,6 @@
 .handContainer {
   position: fixed;
-  bottom: clamp(8px, 0.5vh, 16px);
+  bottom: clamp(156px, 17vh, 225px);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -21,7 +21,7 @@
   max-width: 90vw;
   overflow: visible;
   min-height: clamp(240px, 20vh, 340px);
-  padding: clamp(32px, 3vh, 48px) clamp(24px, 3vw, 64px);
+  padding: clamp(32px, 3vh, 48px) clamp(24px, 3vw, 64px) 0;
 }
 
 .cardWrapper {

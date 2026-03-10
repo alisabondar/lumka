@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { GameState } from '@/lib/game/gameState';
 import { Ante } from '@/lib/game/challenges';
+import { Tooltip } from '@mui/material';
 import { GameInfo } from '../components/GameInfo';
 import { Deck } from '../components/Deck';
 import { PlayingHand } from '../components/PlayingHand';
@@ -35,6 +36,7 @@ export const GameplayPage = ({
 }: GameplayPageProps) => {
   const hasSelectedCards = gameState.selectedCards.size > 0;
   const handIsFull = gameState.hand.length >= MAX_HAND_SIZE;
+  const canEndRound = isWalkthrough || gameState.hasAppliedCardThisRound;
 
   const currentSeason = SEASONS[(gameState.round - 1) % SEASONS.length];
   const [displaySeason, setDisplaySeason] = useState(currentSeason);
@@ -67,13 +69,28 @@ export const GameplayPage = ({
       <GameInfo gameState={gameState} currentAnte={currentAnte} />
 
       <div className={styles.endRoundButtonWrapper} data-walkthrough="end-round-button">
-        <GradientButton
-          size="large"
-          onClick={onEndRound}
-          aria-label="End round and check challenge requirements"
-        >
-          End Round
-        </GradientButton>
+        {canEndRound ? (
+          <GradientButton
+            size="large"
+            onClick={onEndRound}
+            aria-label="End round and check challenge requirements"
+          >
+            End Round
+          </GradientButton>
+        ) : (
+          <Tooltip title="Must play a card every round">
+            <span>
+              <GradientButton
+                size="large"
+                onClick={onEndRound}
+                disabled
+                aria-label="Apply a card as a trait first to end the round"
+              >
+                End Round
+              </GradientButton>
+            </span>
+          </Tooltip>
+        )}
       </div>
 
       <Deck
