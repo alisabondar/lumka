@@ -5,8 +5,8 @@
   right: clamp(32px, 4vw, 64px);
   z-index: 10;
   border-radius: 0.5rem;
-  width: clamp(110px, 10vw, 180px);
-  height: clamp(154px, 14vw, 252px);
+  width: clamp(138px, 12.5vw, 225px);
+  height: clamp(192px, 17vw, 315px);
 }
 
 .deckStack:focus-visible {

@@ -15,8 +15,22 @@
 
 @media (prefers-color-scheme: dark) {
   .container {
-    background-color: rgba(30, 30, 30, 0.98);
-    border-color: var(--border-color);
+    background-color: #e8e6e1;
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .roundText,
+  .statLabel,
+  .statValue {
+    color: rgba(0, 0, 0, 0.87) !important;
+  }
+
+  .challengeDescription {
+    color: rgba(0, 0, 0, 0.7) !important;
+  }
+
+  .challengeDescriptionSection {
+    border-top-color: rgba(0, 0, 0, 0.1);
   }
 }
 

@@ -111,7 +111,7 @@
   }
 
   .nameInput :global(.MuiInputBase-input::placeholder) {
-    color: rgba(180, 180, 180, 0.5) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
     opacity: 1 !important;
   }
 }

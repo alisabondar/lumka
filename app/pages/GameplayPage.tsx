@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { GameState } from '@/lib/game/gameState';
 import { Ante } from '@/lib/game/challenges';
 import { GameInfo } from '../components/GameInfo';
@@ -36,16 +37,33 @@ export const GameplayPage = ({
   const handIsFull = gameState.hand.length >= MAX_HAND_SIZE;
 
   const currentSeason = SEASONS[(gameState.round - 1) % SEASONS.length];
+  const [displaySeason, setDisplaySeason] = useState(currentSeason);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  useEffect(() => {
+    if (currentSeason === displaySeason) return;
+    setIsTransitioning(true);
+    const switchTimer = setTimeout(() => {
+      setDisplaySeason(currentSeason);
+      setIsTransitioning(false);
+    }, 400);
+    return () => clearTimeout(switchTimer);
+  }, [currentSeason, displaySeason]);
 
   return (
     <main
       className={`${styles.gameplayContainer} ${isWalkthrough ? styles.walkthroughBackground : ''}`}
       style={isWalkthrough ? undefined : {
-        backgroundImage: `url(/${currentSeason}.png)`,
+        backgroundImage: `url(/${displaySeason}.png)`,
       }}
       aria-label={`Gameplay - Round ${gameState.round}, ${currentSeason} season`}
     >
-      {!isWalkthrough && <div key={currentSeason} className={styles.seasonalOverlay} aria-hidden="true" />}
+      {!isWalkthrough && (
+        <div
+          className={`${styles.seasonalOverlay} ${isTransitioning ? styles.seasonalOverlayOpaque : ''}`}
+          aria-hidden="true"
+        />
+      )}
       <GameInfo gameState={gameState} currentAnte={currentAnte} />
 
       <div className={styles.endRoundButtonWrapper} data-walkthrough="end-round-button">

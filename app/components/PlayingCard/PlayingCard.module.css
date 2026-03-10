@@ -1,6 +1,6 @@
 .card {
-  width: clamp(120px, 10vw, 180px);
-  height: clamp(164px, 13.7vw, 246px);
+  width: clamp(150px, 12.5vw, 225px);
+  height: clamp(205px, 17vw, 308px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -93,7 +93,7 @@
 
 .traitName {
   font-family: var(--font-trait), sans-serif;
-  font-size: clamp(0.5rem, 10cqw, 1.5rem);
+  font-size: clamp(1rem, 14cqw, 1.5rem);
   font-weight: 600;
   text-align: center;
   line-height: 1.15;
