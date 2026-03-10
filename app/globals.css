@@ -78,6 +78,8 @@
     --text-secondary: rgba(255, 255, 255, 0.7);
     --text-tertiary: rgba(255, 255, 255, 0.5);
 
+    --modal-bg: #e8e6e1;
+
     --border-color: rgba(255, 255, 255, 0.2);
     --border-color-light: rgba(255, 255, 255, 0.1);
   }

@@ -22,6 +22,7 @@ const fredoka = Fredoka({
 export const metadata: Metadata = {
   title: "Lumka - Evolve Your Fox",
   description: "A minigame all about growth and evolution to become an immortal fox",
+  icons: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦊</text></svg>",
 };
 
 export default function RootLayout({

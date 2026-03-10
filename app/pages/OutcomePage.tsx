@@ -126,7 +126,7 @@ export const OutcomePage = ({ won, playerName, level, difficulty, onPlayAgain }:
                 Saving score...
               </Typography>
             ) : loadingScores ? (
-              <Typography role="status" aria-live="polite">Loading...</Typography>
+              <Typography className={styles.loadingScores} role="status" aria-live="polite">Loading...</Typography>
             ) : scoreboard.length === 0 ? (
               <Typography className={styles.noScores}>No scores yet. Be the first!</Typography>
             ) : (

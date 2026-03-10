@@ -51,7 +51,7 @@
 }
 
 .savingMessage {
-  color: var(--text-tertiary);
+  color: rgba(0, 0, 0, 0.5);
   margin-top: 8px;
 }
 
@@ -72,11 +72,11 @@
   margin-bottom: 20px;
   padding-bottom: 8px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: rgba(0, 0, 0, 0.87);
 }
 
 .noScores {
-  color: var(--text-secondary);
+  color: rgba(0, 0, 0, 0.7);
   font-style: italic;
 }
 
@@ -114,14 +114,14 @@
 
 .entryName {
   font-weight: 600;
-  color: var(--text-primary);
+  color: rgba(0, 0, 0, 0.87);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .challengeInfo {
-  color: var(--text-secondary);
+  color: rgba(0, 0, 0, 0.7);
   font-size: 0.9rem;
 }
 
@@ -175,4 +175,34 @@
   color: rgba(0, 0, 0, 0.3);
   font-size: 1.2rem;
   letter-spacing: 4px;
+}
+
+.loadingScores {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+@media (prefers-color-scheme: dark) {
+  .outcomeCard {
+    background-color: #e8e6e1;
+  }
+
+  .scoreboardBox {
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .scoreboardEntry {
+    background: #e8e6e1;
+  }
+
+  .currentPlayer {
+    background: linear-gradient(135deg, #ebe5d8, #e5dfd0);
+  }
+
+  .shadowedPlayer {
+    background: rgba(232, 230, 225, 0.75) !important;
+  }
+
+  .subtitle {
+    color: rgba(0, 0, 0, 0.87);
+  }
 }

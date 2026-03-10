@@ -82,3 +82,29 @@
 .nextButton {
   flex: 1;
 }
+
+@media (prefers-color-scheme: dark) {
+  .progress :global(.MuiLinearProgress-root) {
+    background-color: #b8b5b0;
+  }
+
+  .backButton {
+    background-color: #d5d2cd;
+    border-color: #c4c1bc;
+  }
+
+  .backButton:hover:not(:disabled) {
+    background-color: #c4c1bc;
+    border-color: #b5b2ad;
+  }
+
+  .backButton:disabled {
+    background-color: #d5d2cd;
+    border-color: #c4c1bc;
+  }
+
+  .title,
+  .text {
+    color: rgba(0, 0, 0, 0.87);
+  }
+}

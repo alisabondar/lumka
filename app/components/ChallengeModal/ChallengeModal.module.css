@@ -66,3 +66,13 @@
   color: rgba(0, 0, 0, 0.6);
   line-height: 1.5;
 }
+
+@media (prefers-color-scheme: dark) {
+  .modalPaper {
+    background-color: #e8e6e1;
+  }
+
+  .challengeButton {
+    background-color: #e0ddd8;
+  }
+}

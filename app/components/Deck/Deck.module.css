@@ -86,4 +86,11 @@
   .deckCard {
     border-color: rgb(82 82 91);
   }
+
+  .deckPattern {
+    background:
+      repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.06) 10px, rgba(255, 255, 255, 0.06) 20px),
+      repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.06) 10px, rgba(255, 255, 255, 0.06) 20px),
+      linear-gradient(135deg, rgba(255, 107, 107, 0.3), rgba(78, 205, 196, 0.3), rgba(255, 230, 109, 0.3));
+  }
 }

@@ -10,6 +10,7 @@
   border-radius: var(--border-radius-medium);
   transition: all 0.15s ease;
   position: relative;
+  container-type: inline-size;
 }
 
 .cardPositive {
@@ -64,6 +65,24 @@
   box-shadow: 0 8px 24px rgba(var(--card-wild-rgb), 0.5) !important;
 }
 
+@media (prefers-color-scheme: dark) {
+  .cardPositive {
+    background: linear-gradient(135deg, rgba(var(--card-positive-rgb), 0.2) 0%, rgba(var(--card-positive-rgb), 0.3) 100%), #e8e6e1 !important;
+  }
+
+  .cardNeutral {
+    background: linear-gradient(135deg, rgba(var(--card-neutral-rgb), 0.2) 0%, rgba(var(--card-neutral-rgb), 0.3) 100%), #e8e6e1 !important;
+  }
+
+  .cardNegative {
+    background: linear-gradient(135deg, rgba(var(--card-negative-rgb), 0.2) 0%, rgba(var(--card-negative-rgb), 0.3) 100%), #e8e6e1 !important;
+  }
+
+  .cardWild {
+    background: linear-gradient(135deg, rgba(var(--card-wild-rgb), 0.25) 0%, rgba(var(--card-wild-rgb), 0.35) 100%), #e8e6e1 !important;
+  }
+}
+
 .categoryIcon {
   position: absolute;
   top: 8px;
@@ -74,13 +93,15 @@
 
 .traitName {
   font-family: var(--font-trait), sans-serif;
-  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-size: clamp(0.5rem, 10cqw, 1.5rem);
   font-weight: 600;
   text-align: center;
   line-height: 1.15;
   display: flex;
   flex-direction: column;
   gap: 0;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .traitName span {
