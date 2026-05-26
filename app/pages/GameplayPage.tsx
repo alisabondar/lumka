@@ -1,9 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import type { CSSProperties } from 'react';
 import { GameState } from '@/lib/game/gameState';
 import { Ante } from '@/lib/game/challenges';
 import { Tooltip } from '@mui/material';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { GameInfo } from '../components/GameInfo';
 import { Deck } from '../components/Deck';
 import { PlayingHand } from '../components/PlayingHand';
@@ -23,6 +26,51 @@ interface GameplayPageProps {
 }
 
 const SEASONS = ['winter', 'spring', 'summer', 'autumn'] as const;
+type Season = typeof SEASONS[number];
+
+const SEASON_EFFECT_CLASSES: Record<Season, string> = {
+  winter: styles.snow,
+  spring: styles.blossoms,
+  summer: styles.summerDots,
+  autumn: styles.leaves,
+};
+
+const SEASON_SCENE_CLASSES: Record<Season, string> = {
+  winter: styles.winterScene,
+  spring: styles.springScene,
+  summer: styles.summerScene,
+  autumn: styles.autumnScene,
+};
+
+const randomFor = (index: number, salt: number) => {
+  const value = Math.sin(index * 93.9898 + salt * 78.233) * 43758.5453;
+  return value - Math.floor(value);
+};
+
+const PARTICLES = Array.from({ length: 34 }, (_, index) => ({
+  id: index,
+  left: `${randomFor(index, 1) * 100}%`,
+  delay: `${-(randomFor(index, 2) * 12).toFixed(2)}s`,
+  duration: `${(7.5 + randomFor(index, 3) * 8).toFixed(2)}s`,
+  size: `${(4 + randomFor(index, 4) * 9).toFixed(2)}px`,
+  driftMid: `${(-70 + randomFor(index, 5) * 140).toFixed(2)}px`,
+  driftEnd: `${(-90 + randomFor(index, 6) * 180).toFixed(2)}px`,
+  opacity: `${(0.42 + randomFor(index, 7) * 0.45).toFixed(2)}`,
+  rotation: `${Math.round(randomFor(index, 8) * 360)}deg`,
+  spin: `${Math.round(-280 + randomFor(index, 9) * 680)}deg`,
+}));
+
+type ParticleStyle = CSSProperties & {
+  '--particle-left': string;
+  '--particle-delay': string;
+  '--particle-duration': string;
+  '--particle-size': string;
+  '--particle-drift-mid': string;
+  '--particle-drift-end': string;
+  '--particle-opacity': string;
+  '--particle-rotation': string;
+  '--particle-spin': string;
+};
 
 export const GameplayPage = ({
   gameState,
@@ -44,17 +92,22 @@ export const GameplayPage = ({
 
   useEffect(() => {
     if (currentSeason === displaySeason) return;
-    setIsTransitioning(true);
+    const transitionTimer = setTimeout(() => {
+      setIsTransitioning(true);
+    }, 0);
     const switchTimer = setTimeout(() => {
       setDisplaySeason(currentSeason);
       setIsTransitioning(false);
     }, 400);
-    return () => clearTimeout(switchTimer);
+    return () => {
+      clearTimeout(transitionTimer);
+      clearTimeout(switchTimer);
+    };
   }, [currentSeason, displaySeason]);
 
   return (
     <main
-      className={`${styles.gameplayContainer} ${isWalkthrough ? styles.walkthroughBackground : ''}`}
+      className={`${styles.gameplayContainer} ${SEASON_SCENE_CLASSES[displaySeason]} ${isWalkthrough ? styles.walkthroughBackground : ''}`}
       style={isWalkthrough ? undefined : {
         backgroundImage: `url(/${displaySeason}.png)`,
       }}
@@ -66,6 +119,30 @@ export const GameplayPage = ({
           aria-hidden="true"
         />
       )}
+      {!isWalkthrough && (
+        <div
+          className={`${styles.particleLayer} ${SEASON_EFFECT_CLASSES[displaySeason]}`}
+          aria-hidden="true"
+        >
+          {PARTICLES.map((particle) => (
+            <span
+              key={`${displaySeason}-${particle.id}`}
+              className={styles.particle}
+              style={{
+                '--particle-left': particle.left,
+                '--particle-delay': particle.delay,
+                '--particle-duration': particle.duration,
+                '--particle-size': particle.size,
+                '--particle-drift-mid': particle.driftMid,
+                '--particle-drift-end': particle.driftEnd,
+                '--particle-opacity': particle.opacity,
+                '--particle-rotation': particle.rotation,
+                '--particle-spin': particle.spin,
+              } as ParticleStyle}
+            />
+          ))}
+        </div>
+      )}
       <GameInfo gameState={gameState} currentAnte={currentAnte} />
 
       <div className={styles.endRoundButtonWrapper} data-walkthrough="end-round-button">
@@ -73,9 +150,10 @@ export const GameplayPage = ({
           <GradientButton
             size="large"
             onClick={onEndRound}
+            className={styles.iconActionButton}
             aria-label="End round and check challenge requirements"
           >
-            End Round
+            <ArrowForwardRoundedIcon fontSize="large" />
           </GradientButton>
         ) : (
           <Tooltip title="Must play a card every round">
@@ -84,9 +162,10 @@ export const GameplayPage = ({
                 size="large"
                 onClick={onEndRound}
                 disabled
+                className={styles.iconActionButton}
                 aria-label="Apply a card as a trait first to end the round"
               >
-                End Round
+                <ArrowForwardRoundedIcon fontSize="large" />
               </GradientButton>
             </span>
           </Tooltip>
@@ -105,9 +184,10 @@ export const GameplayPage = ({
           <GradientButton
             size="large"
             onClick={onDiscard}
+            className={styles.iconActionButton}
             aria-label={`Discard ${gameState.selectedCards.size} selected card${gameState.selectedCards.size > 1 ? 's' : ''}`}
           >
-            Discard
+            <DeleteRoundedIcon fontSize="large" />
           </GradientButton>
         </div>
       )}

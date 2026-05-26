@@ -1,6 +1,6 @@
 .handContainer {
   position: fixed;
-  bottom: clamp(156px, 17vh, 225px);
+  bottom: clamp(44px, 7vh, 88px);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -13,19 +13,44 @@
 }
 
 .cardsInner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  --fan-card-width: clamp(158px, 12.8vw, 232px);
+  --fan-card-height: clamp(235px, 18.7vw, 340px);
+  --fan-overlap-step: clamp(88px, 7.6vw, 128px);
+  display: block;
   position: relative;
-  width: 90%;
-  max-width: 90vw;
+  width: min(92vw, calc(var(--fan-card-width) + (var(--card-count, 6) - 1) * var(--fan-overlap-step)));
+  height: calc(var(--fan-card-height) + 48px);
   overflow: visible;
-  min-height: clamp(240px, 20vh, 340px);
-  padding: clamp(32px, 3vh, 48px) clamp(24px, 3vw, 64px) 0;
+  padding: 0;
+  transform-origin: 50% 125%;
 }
 
 .cardWrapper {
-  position: relative;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transition: transform 0.22s ease, z-index 0.2s ease;
+  transform:
+    translateX(calc(-50% + var(--card-offset) * var(--fan-overlap-step)))
+    translateY(var(--fan-drop))
+    rotate(var(--fan-rotation));
+  transform-origin: 50% 145%;
+}
+
+.cardWrapper:hover,
+.cardWrapper:focus-within {
+  transform:
+    translateX(calc(-50% + var(--card-offset) * var(--fan-overlap-step)))
+    translateY(calc(var(--fan-drop) - 34px))
+    rotate(0deg)
+    scale(1.04);
+  z-index: 1100 !important;
+}
+
+@media (max-width: 780px) {
+  .cardsInner {
+    --fan-card-width: clamp(142px, 38vw, 178px);
+    --fan-card-height: clamp(220px, 58vw, 270px);
+    --fan-overlap-step: clamp(54px, 18vw, 76px);
+  }
 }

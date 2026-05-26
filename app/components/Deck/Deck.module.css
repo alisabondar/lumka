@@ -1,12 +1,13 @@
 .deckStack {
   position: absolute;
-  top: 38%;
-  transform: translateY(-50%);
-  right: clamp(32px, 4vw, 64px);
+  top: auto;
+  bottom: calc(clamp(116px, 16vh, 168px) + 50px);
+  right: clamp(28px, 4vw, 60px);
   z-index: 10;
-  border-radius: 0.5rem;
-  width: clamp(138px, 12.5vw, 225px);
-  height: clamp(192px, 17vw, 315px);
+  border-radius: 12px;
+  width: clamp(96px, 8.5vw, 142px);
+  aspect-ratio: 0.72;
+  height: auto;
 }
 
 .deckStack:focus-visible {
@@ -25,19 +26,23 @@
 .deckCard {
   width: 100%;
   height: 100%;
-  border-radius: 0.5rem;
-  border: 2px solid rgb(63 63 70);
-  background: linear-gradient(45deg, var(--gradient-pink), var(--gradient-teal), var(--gradient-yellow));
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.05)),
+    var(--season-surface-strong, rgba(255, 255, 255, 0.72)) !important;
+  background-color: var(--season-surface-strong, rgba(255, 255, 255, 0.72)) !important;
   position: relative;
-  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.5);
+  box-shadow: 0 18px 34px var(--season-shadow, rgba(0, 0, 0, 0.2));
   transition: transform 0.15s ease;
   overflow: hidden;
+  backdrop-filter: var(--season-panel-blur, blur(16px));
+  -webkit-backdrop-filter: var(--season-panel-blur, blur(16px));
 }
 
 .deckCard:hover {
   transform: translateY(-4px);
-  background: linear-gradient(45deg, #ff5252, #45b8b0, #ffd93d);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.7);
+  box-shadow: 0 22px 42px var(--season-shadow, rgba(0, 0, 0, 0.24));
 }
 
 .deckCard:active {
@@ -46,18 +51,18 @@
 
 .deckCard.deckCardWalkthrough:hover {
   transform: none;
-  background: linear-gradient(45deg, var(--gradient-pink), var(--gradient-teal), var(--gradient-yellow));
-  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.5);
+  box-shadow: 0 18px 34px var(--season-shadow, rgba(0, 0, 0, 0.2));
 }
 
 .deckPattern {
   width: 100%;
   height: 100%;
   background:
-    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.15) 10px, rgba(255, 255, 255, 0.15) 20px),
-    repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.15) 10px, rgba(255, 255, 255, 0.15) 20px),
-    linear-gradient(135deg, rgba(255, 107, 107, 0.3), rgba(78, 205, 196, 0.3), rgba(255, 230, 109, 0.3));
-  border-radius: 0.5rem;
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.18), transparent 34%),
+    linear-gradient(90deg, transparent 0 46%, rgba(255, 255, 255, 0.14) 46% 54%, transparent 54%),
+    linear-gradient(0deg, transparent 0 46%, rgba(255, 255, 255, 0.12) 46% 54%, transparent 54%),
+    linear-gradient(135deg, var(--season-surface, rgba(255, 255, 255, 0.38)), transparent);
+  border-radius: 12px;
   animation: shimmer 3s ease-in-out infinite;
 }
 
@@ -75,22 +80,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: white;
+  color: var(--season-button-ink, white);
   font-weight: 700;
-  font-size: clamp(1.5rem, 1.5vw, 2.25rem);
-  text-shadow: var(--text-shadow);
+  font-size: clamp(1.1rem, 1.2vw, 1.6rem);
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.5);
   pointer-events: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  .deckCard {
-    border-color: rgb(82 82 91);
-  }
-
-  .deckPattern {
-    background:
-      repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.06) 10px, rgba(255, 255, 255, 0.06) 20px),
-      repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.06) 10px, rgba(255, 255, 255, 0.06) 20px),
-      linear-gradient(135deg, rgba(255, 107, 107, 0.3), rgba(78, 205, 196, 0.3), rgba(255, 230, 109, 0.3));
-  }
 }

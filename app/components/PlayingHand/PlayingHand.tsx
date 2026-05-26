@@ -2,7 +2,7 @@
 
 import { Card as CardType } from '@/lib/types/card';
 import { PlayingCard } from '../PlayingCard';
-import { useState, useEffect } from 'react';
+import type { CSSProperties } from 'react';
 import styles from './PlayingHand.module.css';
 
 interface HandProps {
@@ -12,23 +12,12 @@ interface HandProps {
   onCardDoubleClick: (cardId: string) => void;
 }
 
-const calculateSpacing = (cardCount: number) => {
-  const cardWidth = 120;
-  const maxSpacing = 20;
-
-  const totalCardsWidth = cardWidth * cardCount;
-  const spacingBetweenCards = maxSpacing * (cardCount - 1);
-  const totalWidth = totalCardsWidth + spacingBetweenCards;
-
-  const viewportWidth = window.innerWidth;
-  const targetWidth = viewportWidth * 0.8;
-
-  if (totalWidth > targetWidth) {
-    const overlapNeeded = totalWidth - targetWidth;
-    const overlapPerCard = overlapNeeded / (cardCount - 1);
-    return maxSpacing - overlapPerCard;
-  }
-  return maxSpacing;
+type CardWrapperStyle = CSSProperties & {
+  '--card-index': number;
+  '--card-count': number;
+  '--card-offset': number;
+  '--fan-rotation': string;
+  '--fan-drop': string;
 };
 
 export const PlayingHand = ({
@@ -38,31 +27,30 @@ export const PlayingHand = ({
   onCardDoubleClick,
 }: HandProps) => {
   const totalCards = cards.length;
-  const [spacing, setSpacing] = useState(() => calculateSpacing(totalCards));
-
-  useEffect(() => {
-    const handleResize = () => {
-      setSpacing(calculateSpacing(totalCards));
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [totalCards]);
 
   if (totalCards === 0) return null;
 
   return (
     <div className={styles.handContainer} data-walkthrough="hand">
-      <div className={styles.cardsInner}>
+      <div
+        className={styles.cardsInner}
+        style={{ '--card-count': totalCards } as CSSProperties & { '--card-count': number }}
+      >
         {cards.map((card, index) => {
           const isSelected = selectedCards.has(card.id);
-          const selectedLift = isSelected ? -8 : 0;
+          const midpoint = (totalCards - 1) / 2;
+          const offsetFromCenter = index - midpoint;
+          const fanRotation = offsetFromCenter * 5.5;
+          const fanDrop = Math.abs(offsetFromCenter) * 7;
 
           const wrapperStyle = {
-            marginLeft: index === 0 ? '0' : `${spacing}px`,
-            marginTop: `${selectedLift}px`,
             zIndex: isSelected ? 1000 : totalCards - index,
-          };
+            '--card-index': index,
+            '--card-count': totalCards,
+            '--card-offset': offsetFromCenter,
+            '--fan-rotation': `${fanRotation}deg`,
+            '--fan-drop': `${fanDrop}px`,
+          } as CardWrapperStyle;
 
           return (
             <div

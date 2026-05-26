@@ -212,27 +212,20 @@ describe('gameState', () => {
 
     it('should apply positive trait effects correctly', () => {
       const state = createInitialGameState(testDeck);
-      const positiveCard = state.hand.find((c) => c.traitCategory === 'positive');
-      if (!positiveCard) {
-        const testState: GameState = {
-          ...state,
-          hand: [
-            {
-              id: 'test-positive',
-              name: 'Test Positive',
-              traitCategory: 'positive',
-            },
-            ...state.hand.slice(1),
-          ],
-        };
-        const newState = applyCardAsTrait(testState, 'test-positive');
-        expect(newState.playerState.score).toBe(2);
-        expect(newState.playerState.stability).toBe(11);
-      } else {
-        const newState = applyCardAsTrait(state, positiveCard.id);
-        expect(newState.playerState.score).toBeGreaterThanOrEqual(2);
-        expect(newState.playerState.stability).toBeGreaterThanOrEqual(11);
-      }
+      const testState: GameState = {
+        ...state,
+        hand: [
+          {
+            id: 'test-positive',
+            name: 'Test Positive',
+            traitCategory: 'positive',
+          },
+          ...state.hand.slice(1),
+        ],
+      };
+      const newState = applyCardAsTrait(testState, 'test-positive');
+      expect(newState.playerState.score).toBe(2);
+      expect(newState.playerState.stability).toBe(11);
     });
 
     it('should return unchanged state if card not found', () => {
@@ -422,4 +415,3 @@ function createWinningStateForChallenge(
 
   return statesToTry[statesToTry.length - 1];
 }
-

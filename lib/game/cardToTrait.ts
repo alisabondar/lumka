@@ -1,6 +1,7 @@
 import { Card } from '../types/card';
 import { Trait } from '../types/trait';
 import { State } from '../types/playerState';
+import { resolveCardEffect } from './cardEffects';
 
 const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   positive: 'A flourishing trait that enhances survival and prosperity',
@@ -14,23 +15,7 @@ export function cardToTrait(card: Card): Trait {
     id: card.id,
     name: card.name,
     category: card.traitCategory,
-    description: CATEGORY_DESCRIPTIONS[card.traitCategory] || '',
-    apply: (state: State): State => {
-      const newState = { ...state };
-
-      if (card.traitCategory === 'positive') {
-        newState.score += 2;
-        newState.stability += 1;
-      } else if (card.traitCategory === 'neutral') {
-        newState.score += 1;
-      } else if (card.traitCategory === 'negative') {
-        newState.score += 1;
-        newState.stability = Math.max(0, newState.stability - 2);
-      } else if (card.traitCategory === 'wild') {
-        newState.score += 1;
-      }
-
-      return newState;
-    },
+    description: card.effectText || CATEGORY_DESCRIPTIONS[card.traitCategory] || '',
+    apply: (state: State): State => resolveCardEffect(state, card),
   };
 }

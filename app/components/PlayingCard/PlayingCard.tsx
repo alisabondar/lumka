@@ -1,7 +1,8 @@
 'use client';
 
+import Image from 'next/image';
 import { Paper } from '@mui/material';
-import { Card as CardType, CATEGORY_ICONS, CATEGORY_NAMES } from '@/lib/types/card';
+import { Card as CardType, CATEGORY_ICONS, CATEGORY_NAMES, type FoxVariant } from '@/lib/types/card';
 import styles from './PlayingCard.module.css';
 
 interface CardProps {
@@ -22,7 +23,9 @@ export const PlayingCard = ({ card, isSelected = false, onClick, onDoubleClick }
   const cardClass = `${styles.card} ${categoryClass} ${isSelected ? styles.cardSelected : ''}`;
 
   const categoryLabel = CATEGORY_NAMES[card.traitCategory];
-  const ariaLabel = `${card.name}, ${categoryLabel} trait${isSelected ? ', selected' : ''}. Click to select, double click to apply as trait`;
+  const effectText = card.effectText || `${categoryLabel} trait`;
+  const foxVariant: FoxVariant = card.foxVariant || 'bonus';
+  const ariaLabel = `${card.name}, ${categoryLabel} trait${isSelected ? ', selected' : ''}. ${effectText} Click to select, double click to apply as trait`;
 
   return (
     <Paper
@@ -42,16 +45,38 @@ export const PlayingCard = ({ card, isSelected = false, onClick, onDoubleClick }
       title={`${card.name} - Double click to apply as trait`}
       className={cardClass}
     >
-      <div className={styles.categoryIcon} aria-hidden="true">
-        {CATEGORY_ICONS[card.traitCategory]}
+      <div className={styles.cardHeader}>
+        <span className={styles.categoryName}>
+          {CATEGORY_NAMES[card.traitCategory]}
+        </span>
+        <span className={styles.categoryIcon} aria-hidden="true">
+          {CATEGORY_ICONS[card.traitCategory]}
+        </span>
       </div>
+
+      <div className={styles.foxFrame} aria-hidden="true">
+        <Image
+          src={`/foxes/fox-${foxVariant}.png`}
+          alt=""
+          width={132}
+          height={132}
+          className={styles.foxImage}
+          draggable={false}
+        />
+      </div>
+
+      {card.flavorText && (
+        <div className={styles.flavorText}>
+          {card.flavorText}
+        </div>
+      )}
+
+      <div className={styles.effectText}>
+        {effectText}
+      </div>
+
       <div className={styles.traitName}>
-        {card.name.split(' ').map((word, i) => (
-          <span key={i}>{word}</span>
-        ))}
-      </div>
-      <div className={styles.categoryName} aria-label={categoryLabel}>
-        {CATEGORY_NAMES[card.traitCategory]}
+        {card.name}
       </div>
     </Paper>
   );
