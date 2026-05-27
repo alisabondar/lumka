@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { Box, Container, Typography, TextField } from "@mui/material";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { WalkthroughWrapper } from "../components/WalkthroughModal";
 import { GradientButton } from "../components/GradientButton";
 import { normalizePlayerName } from "@/lib/utilsAndConstants";
 import styles from "./IntroPage.module.css";
@@ -13,6 +13,10 @@ interface IntroPageProps {
 }
 
 const WALKTHROUGH_STORAGE_KEY = "lumka_walkthrough_shown";
+const WalkthroughWrapper = dynamic(
+  () => import("../components/WalkthroughModal").then((mod) => mod.WalkthroughWrapper),
+  { ssr: false }
+);
 
 export const IntroPage = ({ onStart }: IntroPageProps) => {
   const [playerName, setPlayerName] = useState("");

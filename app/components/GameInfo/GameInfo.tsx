@@ -3,6 +3,7 @@
 import { Paper, Typography, Tooltip } from '@mui/material';
 import { GameState } from '@/lib/game/gameState';
 import { Ante } from '@/lib/game/challenges';
+import { CATEGORY_NAMES } from '@/lib/types/card';
 import type { TraitCategory } from '@/lib/types/trait';
 import styles from './GameInfo.module.css';
 
@@ -21,7 +22,7 @@ export const GameInfo = ({ gameState, currentAnte }: GameInfoProps) => {
     return acc;
   }, {} as Record<TraitCategory, number>);
 
-  const traitBreakdown = `Currently: ${traitCounts.negative || 0} negative, ${traitCounts.positive || 0} positive, ${traitCounts.neutral || 0} neutral, ${traitCounts.wild || 0} wild`;
+  const traitBreakdown = `Currently: ${traitCounts.positive || 0} ${CATEGORY_NAMES.positive}, ${traitCounts.neutral || 0} ${CATEGORY_NAMES.neutral}, ${traitCounts.negative || 0} ${CATEGORY_NAMES.negative}, ${traitCounts.wild || 0} ${CATEGORY_NAMES.wild}`;
 
   return (
     <Paper
@@ -104,4 +105,3 @@ export const GameInfo = ({ gameState, currentAnte }: GameInfoProps) => {
     </Paper>
   );
 };
-

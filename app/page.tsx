@@ -46,24 +46,25 @@ export default function Home() {
   };
 
   const handleCardClick = (cardId: string) => {
-    if (!gameState) return;
-    setGameState(selectCard(gameState, cardId));
+    setGameState((state) => state ? selectCard(state, cardId) : state);
   };
 
   const handleDiscard = () => {
-    if (!gameState || gameState.selectedCards.size === 0) return;
-    setGameState(discardCards(gameState, Array.from(gameState.selectedCards)));
+    setGameState((state) => {
+      if (!state || state.selectedCards.size === 0) return state;
+      return discardCards(state, Array.from(state.selectedCards));
+    });
   };
 
   const handleDrawCard = () => {
-    if (!gameState || gameState.deck.length === 0) return;
-    setGameState(drawCard(gameState));
+    setGameState((state) => {
+      if (!state || state.deck.length === 0) return state;
+      return drawCard(state);
+    });
   };
 
   const handleApplyCard = (cardId: string) => {
-    if (!gameState) return;
-    const updatedState = applyCardAsTrait(gameState, cardId);
-    setGameState(updatedState);
+    setGameState((state) => state ? applyCardAsTrait(state, cardId) : state);
   };
 
   const handleEndRound = () => {

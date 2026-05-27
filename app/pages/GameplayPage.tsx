@@ -88,31 +88,66 @@ export const GameplayPage = ({
 
   const currentSeason = SEASONS[(gameState.round - 1) % SEASONS.length];
   const [displaySeason, setDisplaySeason] = useState(currentSeason);
+  const [previousSeason, setPreviousSeason] = useState<Season | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     if (currentSeason === displaySeason) return;
-    const transitionTimer = setTimeout(() => {
-      setIsTransitioning(true);
-    }, 0);
-    const switchTimer = setTimeout(() => {
+
+    let isCancelled = false;
+    let transitionTimer: ReturnType<typeof setTimeout> | undefined;
+    const outgoingSeason = displaySeason;
+    const nextBackground = new window.Image();
+
+    const startTransition = () => {
+      if (isCancelled) return;
+      setPreviousSeason(outgoingSeason);
       setDisplaySeason(currentSeason);
-      setIsTransitioning(false);
-    }, 400);
+      setIsTransitioning(true);
+
+      transitionTimer = setTimeout(() => {
+        setIsTransitioning(false);
+        setPreviousSeason(null);
+      }, 850);
+    };
+
+    nextBackground.src = `/${currentSeason}.png`;
+    if (nextBackground.complete) {
+      startTransition();
+    } else if (nextBackground.decode) {
+      nextBackground.decode().then(startTransition).catch(startTransition);
+    } else {
+      nextBackground.onload = startTransition;
+      nextBackground.onerror = startTransition;
+    }
+
     return () => {
-      clearTimeout(transitionTimer);
-      clearTimeout(switchTimer);
+      isCancelled = true;
+      if (transitionTimer) {
+        clearTimeout(transitionTimer);
+      }
+      nextBackground.onload = null;
+      nextBackground.onerror = null;
     };
   }, [currentSeason, displaySeason]);
 
   return (
     <main
       className={`${styles.gameplayContainer} ${SEASON_SCENE_CLASSES[displaySeason]} ${isWalkthrough ? styles.walkthroughBackground : ''}`}
-      style={isWalkthrough ? undefined : {
+      style={{
         backgroundImage: `url(/${displaySeason}.png)`,
       }}
       aria-label={`Gameplay - Round ${gameState.round}, ${currentSeason} season`}
     >
+      {!isWalkthrough && previousSeason && (
+        <div
+          className={`${styles.sceneCrossfade} ${isTransitioning ? styles.sceneCrossfadeLeaving : ''}`}
+          style={{
+            backgroundImage: `url(/${previousSeason}.png)`,
+          }}
+          aria-hidden="true"
+        />
+      )}
       {!isWalkthrough && (
         <div
           className={`${styles.seasonalOverlay} ${isTransitioning ? styles.seasonalOverlayOpaque : ''}`}
@@ -176,7 +211,8 @@ export const GameplayPage = ({
         count={gameState.deck.length}
         onClick={onDrawCard}
         isWalkthrough={isWalkthrough}
-        disabled={handIsFull}
+        disabled={isWalkthrough ? false : handIsFull}
+        season={displaySeason}
       />
 
       {hasSelectedCards && (

@@ -210,6 +210,16 @@ describe('gameState', () => {
       expect(newState.playerState.traits[0].id).toBe(cardToApply.id);
     });
 
+    it('should clear applied cards from selected cards', () => {
+      const state = createInitialGameState(testDeck);
+      const cardToApply = state.hand[0];
+      const selectedState = selectCard(state, cardToApply.id);
+
+      const newState = applyCardAsTrait(selectedState, cardToApply.id);
+
+      expect(newState.selectedCards.has(cardToApply.id)).toBe(false);
+    });
+
     it('should apply positive trait effects correctly', () => {
       const state = createInitialGameState(testDeck);
       const testState: GameState = {

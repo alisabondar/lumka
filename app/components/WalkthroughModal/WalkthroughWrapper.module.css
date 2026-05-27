@@ -14,7 +14,7 @@
 .highlight {
   position: fixed;
   z-index: 1002;
-  box-shadow: 0 0 0 4px rgba(var(--neon-pink-rgb), 0.6);
+  box-shadow: 0 0 0 4px rgba(99, 181, 255, 0.78);
   animation: pulse 2s ease-in-out infinite;
   pointer-events: none;
   background: transparent;
@@ -30,9 +30,9 @@
 
 @keyframes pulse {
   0%, 100% {
-    box-shadow: 0 0 0 4px rgba(var(--neon-pink-rgb), 1);
+    box-shadow: 0 0 0 4px rgba(99, 181, 255, 0.95), 0 0 28px rgba(99, 181, 255, 0.42);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(var(--neon-pink-rgb), 1);
+    box-shadow: 0 0 0 7px rgba(176, 222, 255, 1), 0 0 42px rgba(99, 181, 255, 0.56);
   }
 }

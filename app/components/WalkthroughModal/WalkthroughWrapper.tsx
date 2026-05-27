@@ -1,16 +1,18 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { createInitialGameState } from '@/lib/game/gameState';
 import { getAnteForRound } from '@/lib/game/challenges';
 import type { GameState } from '@/lib/game/gameState';
-import { createNewShuffledDeck } from '@/lib/utilsAndConstants';
+import { createDeck } from '@/lib/deck';
+import { MAX_HAND_SIZE } from '@/lib/utilsAndConstants';
 import { GameplayPage } from '../../pages/GameplayPage';
 import { WalkthroughModal } from './WalkthroughModal';
 import styles from './WalkthroughWrapper.module.css';
 
+type HighlightRect = Pick<DOMRect, 'top' | 'left' | 'right' | 'bottom' | 'width' | 'height'>;
+
 interface OverlayProps {
-  elementRect: DOMRect;
+  elementRect: HighlightRect;
 }
 
 const Overlay = ({ elementRect }: OverlayProps) => {
@@ -28,7 +30,7 @@ const Overlay = ({ elementRect }: OverlayProps) => {
           key={index}
           style={{
             position: 'fixed',
-            background: 'rgba(0, 0, 0, 0.75)',
+            background: 'rgba(15, 24, 18, 0.38)',
             zIndex: 1001,
             pointerEvents: 'none',
             ...style,
@@ -62,7 +64,7 @@ const STEPS = [
   },
   {
     title: "Selecting Cards",
-    text: "Click cards to select them (they'll be highlighted). You can select multiple cards at once.",
+    text: "Click cards to select them. You can select multiple cards at once.",
     highlightElement: "hand",
   },
   {
@@ -90,22 +92,67 @@ const STEPS = [
 export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps) => {
   const [stepIndex, setStepIndex] = useState(0);
   const [highlightPosition, setHighlightPosition] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
+  const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [mockGameState] = useState<GameState>(() => {
-    const deck = createNewShuffledDeck();
-    const state = createInitialGameState(deck);
+    const deck = createDeck();
+    const hand = deck.slice(0, MAX_HAND_SIZE);
+    const remainingDeck = deck.slice(MAX_HAND_SIZE);
     const ante = getAnteForRound(1);
-    if (ante) {
-      return { ...state, selectedChallengeId: ante.challenges[0].id, selectedCards: new Set() };
-    }
-    return state;
+
+    return {
+      round: 1,
+      status: 'playing',
+      deck: remainingDeck,
+      discard: [],
+      hand,
+      playerState: {
+        traits: [],
+        score: 0,
+        stability: 10,
+      },
+      selectedCards: new Set(),
+      wildUsedThisRound: false,
+      hasAppliedCardThisRound: false,
+      selectedChallengeId: ante?.challenges[0]?.id || null,
+    };
   });
 
   const displayGameState: GameState = {
     ...mockGameState,
-    selectedCards: stepIndex >= 3 ? new Set([mockGameState.hand[0]?.id].filter(Boolean)) : new Set(),
+    selectedCards: new Set(),
   };
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    let isCancelled = false;
+
+    const background = new window.Image();
+    background.src = '/winter.png';
+
+    const markLoaded = () => {
+      if (!isCancelled) {
+        setIsBackgroundLoaded(true);
+      }
+    };
+
+    if (background.complete) {
+      markLoaded();
+    } else if (background.decode) {
+      background.decode().then(markLoaded).catch(markLoaded);
+    } else {
+      background.onload = markLoaded;
+      background.onerror = markLoaded;
+    }
+
+    return () => {
+      isCancelled = true;
+      background.onload = null;
+      background.onerror = null;
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -172,6 +219,10 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
 
   if (!isOpen) return null;
 
+  if (!isBackgroundLoaded) {
+    return <div className={styles.wrapper} aria-hidden="true" />;
+  }
+
   const currentStep = STEPS[stepIndex];
   const isLastStep = stepIndex === STEPS.length - 1;
 
@@ -197,7 +248,17 @@ export const WalkthroughWrapper = ({ isOpen, onClose }: WalkthroughWrapperProps)
       {highlightPosition && (() => {
         const element = document.querySelector(`[data-walkthrough="${currentStep.highlightElement}"]`);
         if (!element) return null;
-        const elementRect = element.getBoundingClientRect();
+        const rawElementRect = element.getBoundingClientRect();
+        const elementRect = currentStep.highlightElement === 'hand'
+          ? {
+              top: rawElementRect.top,
+              left: rawElementRect.left,
+              right: rawElementRect.right,
+              bottom: window.innerHeight,
+              width: rawElementRect.width,
+              height: window.innerHeight - rawElementRect.top,
+            }
+          : rawElementRect;
 
         const getBorderRadius = () => {
           const roundedElements = ['discard-button', 'end-round-button', 'deck'];

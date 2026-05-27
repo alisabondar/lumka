@@ -8,11 +8,18 @@ interface DeckProps {
   onClick: () => void;
   isWalkthrough?: boolean;
   disabled?: boolean;
+  season?: 'winter' | 'spring' | 'summer' | 'autumn';
 }
 
-export const Deck = ({ count, onClick, isWalkthrough = false, disabled = false }: DeckProps) => {
+export const Deck = ({ count, onClick, isWalkthrough = false, disabled = false, season = 'winter' }: DeckProps) => {
   const isDisabled = disabled || count === 0;
   const stackClass = `${styles.deckStack} ${!isDisabled ? styles.deckStackEnabled : styles.deckStackDisabled}`;
+  const deckSeasonClass = {
+    winter: styles.deckPatternWinter,
+    spring: styles.deckPatternSpring,
+    summer: styles.deckPatternSummer,
+    autumn: styles.deckPatternAutumn,
+  }[season];
   const cardClass = `${styles.deckCard} ${isWalkthrough ? styles.deckCardWalkthrough : ''}`;
 
   const handleClick = () => {
@@ -45,7 +52,7 @@ export const Deck = ({ count, onClick, isWalkthrough = false, disabled = false }
       className={stackClass}
     >
       <Paper elevation={8} className={cardClass}>
-        <div className={styles.deckPattern} aria-hidden="true" />
+        <div className={`${styles.deckPattern} ${deckSeasonClass}`} aria-hidden="true" />
         {count > 0 && (
           <div className={styles.deckCount} aria-label={`${count} cards remaining`}>
             {count}

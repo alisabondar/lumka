@@ -25,6 +25,7 @@ export const PlayingCard = ({ card, isSelected = false, onClick, onDoubleClick }
   const categoryLabel = CATEGORY_NAMES[card.traitCategory];
   const effectText = card.effectText || `${categoryLabel} trait`;
   const foxVariant: FoxVariant = card.foxVariant || 'bonus';
+  const foxImageClass = `${styles.foxImage} ${foxVariant === 'swift' ? styles.foxImageSwift : ''}`;
   const ariaLabel = `${card.name}, ${categoryLabel} trait${isSelected ? ', selected' : ''}. ${effectText} Click to select, double click to apply as trait`;
 
   return (
@@ -60,7 +61,7 @@ export const PlayingCard = ({ card, isSelected = false, onClick, onDoubleClick }
           alt=""
           width={132}
           height={132}
-          className={styles.foxImage}
+          className={foxImageClass}
           draggable={false}
         />
       </div>

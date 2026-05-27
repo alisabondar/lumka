@@ -39,6 +39,14 @@ describe('challenges', () => {
 
       expect(uniqueIds.size).toBe(CHALLENGES.length);
     });
+
+    it('should not use emojis in challenge descriptions', () => {
+      const emojiPattern = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u;
+
+      CHALLENGES.forEach((challenge) => {
+        expect(challenge.description).not.toMatch(emojiPattern);
+      });
+    });
   });
 
   describe('getChallenge', () => {
@@ -221,4 +229,3 @@ describe('challenges', () => {
     });
   });
 });
-

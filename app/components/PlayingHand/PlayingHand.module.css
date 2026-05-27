@@ -15,7 +15,7 @@
 .cardsInner {
   --fan-card-width: clamp(158px, 12.8vw, 232px);
   --fan-card-height: clamp(235px, 18.7vw, 340px);
-  --fan-overlap-step: clamp(88px, 7.6vw, 128px);
+  --fan-overlap-step: clamp(104px, 8.8vw, 154px);
   display: block;
   position: relative;
   width: min(92vw, calc(var(--fan-card-width) + (var(--card-count, 6) - 1) * var(--fan-overlap-step)));
@@ -41,9 +41,9 @@
 .cardWrapper:focus-within {
   transform:
     translateX(calc(-50% + var(--card-offset) * var(--fan-overlap-step)))
-    translateY(calc(var(--fan-drop) - 34px))
+    translateY(calc(var(--fan-drop) - 58px))
     rotate(0deg)
-    scale(1.04);
+    scale(1.06);
   z-index: 1100 !important;
 }
 
@@ -51,6 +51,6 @@
   .cardsInner {
     --fan-card-width: clamp(142px, 38vw, 178px);
     --fan-card-height: clamp(220px, 58vw, 270px);
-    --fan-overlap-step: clamp(54px, 18vw, 76px);
+    --fan-overlap-step: clamp(68px, 21vw, 92px);
   }
 }

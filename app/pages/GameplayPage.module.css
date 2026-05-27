@@ -3,8 +3,8 @@
   padding: clamp(12px, 2vw, 24px);
   position: relative;
   overflow: hidden;
-  background-size: 112% 112%;
-  background-position: center 38%;
+  background-size: cover;
+  background-position: center 74%;
   background-repeat: no-repeat;
   --season-surface: rgba(190, 224, 255, 0.32);
   --season-surface-strong: rgba(164, 210, 248, 0.66);
@@ -18,36 +18,36 @@
 }
 
 .winterScene {
-  --season-surface: rgba(182, 221, 255, 0.34);
-  --season-surface-strong: rgba(151, 203, 246, 0.68);
-  --season-surface-soft: rgba(241, 249, 255, 0.52);
+  --season-surface: rgba(98, 177, 238, 0.42);
+  --season-surface-strong: rgba(72, 158, 225, 0.76);
+  --season-surface-soft: rgba(181, 225, 255, 0.58);
   --season-ink: #13283f;
-  --season-shadow: rgba(14, 38, 68, 0.32);
-  --season-button: rgba(154, 207, 248, 0.76);
-  --season-button-hover: rgba(213, 238, 255, 0.92);
+  --season-shadow: rgba(7, 52, 95, 0.38);
+  --season-button: rgba(75, 164, 231, 0.84);
+  --season-button-hover: rgba(154, 211, 255, 0.96);
   --season-button-ink: #10263e;
 }
 
 .springScene {
-  --season-surface: rgba(147, 222, 169, 0.34);
-  --season-surface-strong: rgba(115, 196, 139, 0.66);
-  --season-surface-soft: rgba(243, 255, 236, 0.48);
-  --season-ink: #18351e;
-  --season-shadow: rgba(21, 70, 28, 0.28);
-  --season-button: rgba(130, 207, 151, 0.76);
-  --season-button-hover: rgba(207, 244, 200, 0.9);
-  --season-button-ink: #17371d;
+  --season-surface: rgba(34, 118, 57, 0.64);
+  --season-surface-strong: rgba(24, 94, 45, 0.88);
+  --season-surface-soft: rgba(80, 164, 69, 0.64);
+  --season-ink: #0f2a16;
+  --season-shadow: rgba(5, 45, 19, 0.42);
+  --season-button: rgba(28, 112, 53, 0.9);
+  --season-button-hover: rgba(63, 151, 54, 0.98);
+  --season-button-ink: #eefbe8;
 }
 
 .summerScene {
-  --season-surface: rgba(255, 225, 94, 0.34);
-  --season-surface-strong: rgba(255, 211, 68, 0.66);
-  --season-surface-soft: rgba(255, 251, 213, 0.5);
-  --season-ink: #3a2d08;
-  --season-shadow: rgba(91, 67, 10, 0.28);
-  --season-button: rgba(255, 213, 75, 0.78);
-  --season-button-hover: rgba(255, 239, 156, 0.94);
-  --season-button-ink: #3a2d08;
+  --season-surface: rgba(142, 91, 4, 0.72);
+  --season-surface-strong: rgba(105, 65, 2, 0.94);
+  --season-surface-soft: rgba(172, 109, 8, 0.76);
+  --season-ink: #241803;
+  --season-shadow: rgba(68, 42, 1, 0.48);
+  --season-button: rgba(122, 76, 3, 0.94);
+  --season-button-hover: rgba(171, 106, 8, 0.98);
+  --season-button-ink: #fff3c4;
 }
 
 .autumnScene {
@@ -61,23 +61,40 @@
   --season-button-ink: #3f1d0b;
 }
 
+.sceneCrossfade {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center 74%;
+  background-repeat: no-repeat;
+  opacity: 1;
+  pointer-events: none;
+}
+
+.sceneCrossfadeLeaving {
+  animation: sceneFadeOut 850ms ease-in-out forwards;
+}
+
 .seasonalOverlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
   z-index: 0;
   pointer-events: none;
   animation: fadeIn 0.8s ease-out;
-  transition: background 0.4s ease-in-out;
+  transition: background 0.85s ease-in-out, backdrop-filter 0.85s ease-in-out;
 }
 
 .seasonalOverlayOpaque {
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.26);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .particleLayer {
@@ -142,8 +159,8 @@
   border-radius: 999px;
   width: calc(var(--particle-size) * 0.55);
   height: calc(var(--particle-size) * 0.55);
-  background: rgba(255, 222, 75, 0.9);
-  box-shadow: 0 0 7px rgba(255, 226, 89, 0.55);
+  background: rgba(222, 155, 20, 0.95);
+  box-shadow: 0 0 7px rgba(190, 119, 4, 0.58);
 }
 
 @keyframes seasonalFall {
@@ -166,18 +183,29 @@
 
 @media (prefers-color-scheme: dark) {
   .seasonalOverlay {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.22);
   }
 
   .seasonalOverlayOpaque {
-    background: rgba(0, 0, 0, 0.98);
+    background: rgba(0, 0, 0, 0.32);
+  }
+}
+
+@keyframes sceneFadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.01);
   }
 }
 
 @keyframes fadeIn {
   0% {
     opacity: 0;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.28);
   }
   100% {
     opacity: 1;
@@ -188,7 +216,7 @@
   @keyframes fadeIn {
     0% {
       opacity: 0;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.36);
     }
     100% {
       opacity: 1;
@@ -197,10 +225,7 @@
 }
 
 .walkthroughBackground {
-  background-color: var(--animated-bg-color);
-  background-image: var(--animated-bg-gradient);
-  background-size: 400% 400%;
-  animation: walkthroughGradient 20s ease infinite;
+  background-color: #d8ecff;
 }
 
 @keyframes walkthroughGradient {

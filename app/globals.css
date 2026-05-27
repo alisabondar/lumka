@@ -19,8 +19,8 @@
   --neon-teal: #4ecdc4;
   --neon-teal-rgb: 78, 205, 196;
 
-  --neon-yellow: #ffe66d;
-  --neon-yellow-rgb: 255, 230, 109;
+  --neon-yellow: #b77905;
+  --neon-yellow-rgb: 183, 121, 5;
 
   --card-positive: var(--neon-teal);
   --card-positive-rgb: var(--neon-teal-rgb);

@@ -12,14 +12,15 @@
   container-type: inline-size;
   overflow: hidden;
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.05)),
-    var(--season-surface, rgba(255, 255, 255, 0.5)) !important;
-  background-color: var(--season-surface, rgba(255, 255, 255, 0.5)) !important;
+    linear-gradient(145deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.08)),
+    linear-gradient(145deg, color-mix(in srgb, var(--season-surface, rgba(255, 255, 255, 0.5)) 34%, transparent), transparent 68%),
+    #e4e6df !important;
+  background-color: #e4e6df !important;
   color: var(--season-ink, #2d261d);
-  border: 1px solid rgba(255, 255, 255, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.72);
   box-shadow: 0 18px 34px var(--season-shadow, rgba(0, 0, 0, 0.2));
-  backdrop-filter: var(--season-panel-blur, blur(16px));
-  -webkit-backdrop-filter: var(--season-panel-blur, blur(16px));
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .card::before {
@@ -35,10 +36,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 24% 12%, rgba(255, 255, 255, 0.46), transparent 18%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.24), transparent 42%);
-  mix-blend-mode: screen;
-  opacity: 0.4;
+    radial-gradient(circle at 24% 12%, rgba(255, 255, 255, 0.5), transparent 18%),
+    linear-gradient(135deg, color-mix(in srgb, var(--season-surface-strong, rgba(255, 255, 255, 0.4)) 22%, transparent), transparent 52%);
+  opacity: 0.78;
   pointer-events: none;
 }
 
@@ -65,31 +65,34 @@
 .card.cardSelected {
   transform: translateY(-22px) scale(1.025);
   z-index: 10;
+  border-color: rgba(96, 176, 255, 0.96);
+  outline: 3px solid rgba(96, 176, 255, 0.92);
+  outline-offset: -5px;
 }
 
 .cardPositive.cardSelected {
-  box-shadow: 0 16px 38px rgba(var(--card-positive-rgb), 0.42);
+  box-shadow: 0 16px 38px rgba(var(--card-positive-rgb), 0.28), 0 0 0 5px rgba(96, 176, 255, 0.22);
 }
 
 .cardNeutral.cardSelected {
-  box-shadow: 0 16px 38px rgba(var(--card-neutral-rgb), 0.42);
+  box-shadow: 0 16px 38px rgba(var(--card-neutral-rgb), 0.28), 0 0 0 5px rgba(96, 176, 255, 0.22);
 }
 
 .cardNegative.cardSelected {
-  box-shadow: 0 16px 38px rgba(var(--card-negative-rgb), 0.42);
+  box-shadow: 0 16px 38px rgba(var(--card-negative-rgb), 0.28), 0 0 0 5px rgba(96, 176, 255, 0.22);
 }
 
 .cardWild.cardSelected {
-  box-shadow: 0 16px 38px rgba(var(--card-wild-rgb), 0.48);
+  box-shadow: 0 16px 38px rgba(var(--card-wild-rgb), 0.32), 0 0 0 5px rgba(96, 176, 255, 0.22);
 }
 
 .card:hover {
-  transform: translateY(-20px) scale(1.045);
+  transform: none;
   box-shadow: 0 22px 46px var(--season-shadow, rgba(0, 0, 0, 0.26));
 }
 
 .card.cardSelected:hover {
-  transform: translateY(-26px) scale(1.045);
+  transform: translateY(-22px) scale(1.025);
 }
 
 .card:focus-visible {
@@ -136,9 +139,9 @@
   padding: clamp(5px, 0.5vw, 8px);
   border-radius: 6px;
   background:
-    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.46), transparent 48%),
-    linear-gradient(135deg, rgba(var(--category-accent-rgb), 0.2), var(--season-surface-soft, rgba(255, 255, 255, 0.16)));
-  border: 1px solid rgba(255, 255, 255, 0.32);
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.5), transparent 48%),
+    linear-gradient(135deg, rgba(var(--category-accent-rgb), 0.18), color-mix(in srgb, var(--season-surface-soft, rgba(255, 255, 255, 0.16)) 42%, #daddd4));
+  border: 1px solid rgba(255, 255, 255, 0.54);
   overflow: hidden;
 }
 
@@ -149,6 +152,10 @@
   object-position: center;
   filter: drop-shadow(0 8px 12px rgba(39, 28, 16, 0.22));
   user-select: none;
+}
+
+.foxImageSwift {
+  transform: scale(1.2);
 }
 
 .traitName {
@@ -170,7 +177,9 @@
   justify-content: center;
   padding: clamp(5px, 0.5vw, 7px);
   border-radius: 6px;
-  background: color-mix(in srgb, var(--season-surface-strong, rgba(255, 255, 255, 0.34)) 54%, transparent);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--season-surface-strong, rgba(255, 255, 255, 0.34)) 34%, transparent), transparent),
+    rgba(238, 239, 232, 0.92);
   color: var(--season-ink, #3c3328);
   font-size: clamp(0.72rem, 6.25cqw, 0.92rem);
   font-weight: 700;

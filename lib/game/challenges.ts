@@ -1,6 +1,5 @@
 import { State } from '../types/playerState';
 import { TraitCategory } from '../types/trait';
-import { CATEGORY_ICONS } from '../types/card';
 
 export type Challenge = {
   id: string;
@@ -37,8 +36,15 @@ function getCategoryPercentage(state: State, category: TraitCategory): number {
   return (counts[category] / total) * 100;
 }
 
-function getCategoryEmoji(category: TraitCategory): string {
-  return CATEGORY_ICONS[category];
+function getCategoryLabel(category: TraitCategory): string {
+  const labels: Record<TraitCategory, string> = {
+    positive: 'FLOURISH',
+    neutral: 'ADAPT',
+    negative: 'BURDEN',
+    wild: 'CATALYST',
+  };
+
+  return labels[category];
 }
 
 // 52-card deck, start with 10 stability
@@ -84,14 +90,14 @@ function generateAllChallenges(): Challenge[] {
     // Pattern 2: Flourish focus
     (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
       name: 'Flourishing Path',
-      description: `At least ${p.minCategoryCount} ${getCategoryEmoji('positive')} FLOURISH traits`,
+      description: `At least ${p.minCategoryCount} ${getCategoryLabel('positive')} traits`,
       check: (state: State) => getTraitCounts(state).positive >= p.minCategoryCount,
     }),
 
     // Pattern 3: Adapt focus
     (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
       name: 'Balanced Approach',
-      description: `At least ${p.minCategoryCount} ${getCategoryEmoji('neutral')} ADAPT traits`,
+      description: `At least ${p.minCategoryCount} ${getCategoryLabel('neutral')} traits`,
       check: (state: State) => getTraitCounts(state).neutral >= p.minCategoryCount,
     }),
 
@@ -107,7 +113,7 @@ function generateAllChallenges(): Challenge[] {
       const maxNeg = Math.max(0, 4 - Math.floor(p.tier / 2));
       return {
         name: 'Burden Control',
-        description: `No more than ${maxNeg} ${getCategoryEmoji('negative')} BURDEN traits, Traits ≥ ${p.minTraits}`,
+        description: `No more than ${maxNeg} ${getCategoryLabel('negative')} traits, Traits ≥ ${p.minTraits}`,
         check: (state: State) => getTraitCounts(state).negative <= maxNeg && getTotalTraits(state) >= p.minTraits,
       };
     },
@@ -115,7 +121,7 @@ function generateAllChallenges(): Challenge[] {
     // Pattern 6: Category diversity
     () => ({
       name: 'Diverse Genome',
-      description: `≥1 ${getCategoryEmoji('positive')}, ≥1 ${getCategoryEmoji('neutral')}, ≥1 ${getCategoryEmoji('negative')}`,
+      description: `≥1 ${getCategoryLabel('positive')}, ≥1 ${getCategoryLabel('neutral')}, ≥1 ${getCategoryLabel('negative')}`,
       check: (state: State) => {
       const counts = getTraitCounts(state);
       return counts.positive >= 1 && counts.neutral >= 1 && counts.negative >= 1;
@@ -141,7 +147,7 @@ function generateAllChallenges(): Challenge[] {
       const minWild = Math.max(1, Math.floor(p.tier / 3));
       return {
         name: 'Catalyst Spark',
-        description: `At least ${minWild} ${getCategoryEmoji('wild')} CATALYST trait${minWild > 1 ? 's' : ''}`,
+        description: `At least ${minWild} ${getCategoryLabel('wild')} trait${minWild > 1 ? 's' : ''}`,
         check: (state: State) => getTraitCounts(state).wild >= minWild,
       };
     },
@@ -162,14 +168,14 @@ function generateAllChallenges(): Challenge[] {
     // Pattern 10: Flourish majority
     (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
       name: 'Flourish Dominant',
-      description: `${getCategoryEmoji('positive')} traits ≥ ${p.minCategoryPct}% of total`,
+      description: `${getCategoryLabel('positive')} traits ≥ ${p.minCategoryPct}% of total`,
       check: (state: State) => getCategoryPercentage(state, 'positive') >= p.minCategoryPct,
     }),
 
     // Pattern 11: High score + specific category
     (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
       name: 'Focused Excellence',
-      description: `Score ≥ ${p.minScore + 2}, ≥${p.minCategoryCount + 1} ${getCategoryEmoji('positive')} traits`,
+      description: `Score ≥ ${p.minScore + 2}, ≥${p.minCategoryCount + 1} ${getCategoryLabel('positive')} traits`,
       check: (state: State) => state.score >= p.minScore + 2 && getTraitCounts(state).positive >= p.minCategoryCount + 1,
     }),
 
@@ -198,7 +204,7 @@ function generateAllChallenges(): Challenge[] {
       const req = Math.floor(1 + p.tier / 3);
       return {
         name: 'Hybrid Vigor',
-        description: `≥${req} ${getCategoryEmoji('positive')}, ≥${req} ${getCategoryEmoji('neutral')}, Score ≥ ${p.minScore}`,
+        description: `≥${req} ${getCategoryLabel('positive')}, ≥${req} ${getCategoryLabel('neutral')}, Score ≥ ${p.minScore}`,
         check: (state: State) => {
           const counts = getTraitCounts(state);
           return counts.positive >= req && counts.neutral >= req && state.score >= p.minScore;
@@ -223,7 +229,7 @@ function generateAllChallenges(): Challenge[] {
       const ratio = Math.floor(1 + p.tier / 3);
       return {
         name: 'Golden Ratio',
-        description: `${getCategoryEmoji('positive')} traits ≥ ${ratio}× ${getCategoryEmoji('negative')} traits`,
+        description: `${getCategoryLabel('positive')} traits ≥ ${ratio}× ${getCategoryLabel('negative')} traits`,
         check: (state: State) => {
           const counts = getTraitCounts(state);
           return counts.positive >= counts.negative * ratio;
@@ -243,7 +249,7 @@ function generateAllChallenges(): Challenge[] {
       const margin = Math.max(1, Math.floor(p.tier / 3));
       return {
         name: 'Flourish Dominance',
-        description: `${getCategoryEmoji('positive')} traits exceed ${getCategoryEmoji('negative')} by at least ${margin}, Traits ≥ ${p.minTraits}`,
+        description: `${getCategoryLabel('positive')} traits exceed ${getCategoryLabel('negative')} by at least ${margin}, Traits ≥ ${p.minTraits}`,
         check: (state: State) => {
           const counts = getTraitCounts(state);
           return counts.positive >= counts.negative + margin && getTotalTraits(state) >= p.minTraits;

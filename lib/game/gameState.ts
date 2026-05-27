@@ -138,10 +138,13 @@ export function applyCardAsTrait(state: GameState, cardId: string): GameState {
   const newPlayerState = applyTrait(state.playerState, trait);
 
   const newHand = state.hand.filter(c => c.id !== cardId);
+  const newSelectedCards = new Set(state.selectedCards);
+  newSelectedCards.delete(cardId);
 
   return {
     ...state,
     hand: newHand,
+    selectedCards: newSelectedCards,
     playerState: newPlayerState,
     hasAppliedCardThisRound: true,
   };
