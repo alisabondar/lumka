@@ -2,6 +2,7 @@ import {
   CHALLENGES,
   getChallenge,
   checkChallenge,
+  getChallengeRequirements,
   getDifficultyName,
   getTotalChallengeCount,
   getAnteForRound,
@@ -45,6 +46,32 @@ describe('challenges', () => {
 
       CHALLENGES.forEach((challenge) => {
         expect(challenge.description).not.toMatch(emojiPattern);
+      });
+    });
+
+    it('should use spaces around comparison operators in descriptions', () => {
+      const compactOperatorPattern = /[≥≤<>]\d|\d×/u;
+
+      CHALLENGES.forEach((challenge) => {
+        expect(challenge.description).not.toMatch(compactOperatorPattern);
+      });
+    });
+
+    it('should provide structured requirement feedback for every challenge', () => {
+      const emptyState: State = {
+        traits: [],
+        score: 0,
+        stability: 10,
+      };
+
+      CHALLENGES.forEach((challenge) => {
+        const requirements = getChallengeRequirements(emptyState, challenge);
+
+        expect(requirements.length).toBeGreaterThan(0);
+        requirements.forEach((requirement) => {
+          expect(requirement.label.length).toBeGreaterThan(0);
+          expect(typeof requirement.met).toBe('boolean');
+        });
       });
     });
   });
@@ -122,6 +149,40 @@ describe('challenges', () => {
       const result = checkChallenge(passingState, challenge);
 
       expect(typeof result).toBe('boolean');
+    });
+
+    it('should match structured requirement completion', () => {
+      const sampleStates: State[] = [
+        { traits: [], score: 0, stability: 10 },
+        {
+          traits: Array(8).fill(null).map((_, i) => ({
+            id: `flourish-${i}`,
+            name: `Flourish ${i}`,
+            category: 'positive' as const,
+            description: 'Test trait',
+          })),
+          score: 20,
+          stability: 10,
+        },
+        {
+          traits: Array(8).fill(null).map((_, i) => ({
+            id: `trait-${i}`,
+            name: `Trait ${i}`,
+            category: (['positive', 'neutral', 'negative', 'wild'] as const)[i % 4],
+            description: 'Test trait',
+          })),
+          score: 14,
+          stability: 3,
+        },
+      ];
+
+      CHALLENGES.forEach((challenge) => {
+        sampleStates.forEach((state) => {
+          const requirementsMet = getChallengeRequirements(state, challenge).every((requirement) => requirement.met);
+
+          expect(requirementsMet).toBe(checkChallenge(state, challenge));
+        });
+      });
     });
   });
 

@@ -3,10 +3,10 @@ import type { Card } from '../types/card';
 
 describe('deck', () => {
   describe('createDeck', () => {
-    it('should create a deck with 52 cards', () => {
+    it('should create a deck with 55 cards', () => {
       const deck = createDeck();
 
-      expect(deck.length).toBe(52);
+      expect(deck.length).toBe(55);
     });
 
     it('should contain all positive traits', () => {
@@ -30,11 +30,11 @@ describe('deck', () => {
       expect(negativeCards.length).toBe(17);
     });
 
-    it('should contain one wild card', () => {
+    it('should contain four wild cards', () => {
       const deck = createDeck();
       const wildCards = deck.filter((c) => c.traitCategory === 'wild');
 
-      expect(wildCards.length).toBe(1);
+      expect(wildCards.length).toBe(4);
     });
 
     it('should have unique card IDs', () => {
@@ -98,7 +98,7 @@ describe('deck', () => {
       const order2 = shuffle2.map((c) => c.id).join(',');
       const order3 = shuffle3.map((c) => c.id).join(',');
 
-      expect(typeof order1).toBe('string');
+      expect(new Set([order1, order2, order3]).size).toBeGreaterThan(1);
     });
   });
 
@@ -138,4 +138,3 @@ describe('deck', () => {
     });
   });
 });
-

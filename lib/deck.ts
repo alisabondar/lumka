@@ -388,6 +388,27 @@ const CATALYST_CARDS: CardDefinition[] = [
       bonusStabilityPerCategory: { positive: 1, neutral: 1, negative: 1, wild: 1 },
     },
   },
+  {
+    name: 'Moonlit Mutation',
+    flavorText: 'A small shimmer becomes a very large maybe.',
+    effectText: '+2 Score. If you have 3+ traits, gain +1 Score and +1 Stability.',
+    foxVariant: 'star',
+    effect: { score: 2, ifTraitCountAtLeast: { count: 3, score: 1, stability: 1 } },
+  },
+  {
+    name: 'Lucky Spark',
+    flavorText: 'Lumka trips over destiny and pretends it was planned.',
+    effectText: '+1 Score, +1 Stability. Gain +1 Score for each category you have.',
+    foxVariant: 'wild',
+    effect: { score: 1, stability: 1, bonusScorePerCategory: { positive: 1, neutral: 1, negative: 1, wild: 1 } },
+  },
+  {
+    name: 'Strange Symmetry',
+    flavorText: 'Everything lines up for one suspiciously perfect second.',
+    effectText: '+2 Score. Gain +1 Stability for each category you have.',
+    foxVariant: 'bonus',
+    effect: { score: 2, bonusStabilityPerCategory: { positive: 1, neutral: 1, negative: 1, wild: 1 } },
+  },
 ];
 
 function createCards(category: TraitCategory, cards: CardDefinition[]): Card[] {

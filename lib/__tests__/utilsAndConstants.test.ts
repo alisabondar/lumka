@@ -3,7 +3,6 @@ import {
   createNewShuffledDeck,
   normalizePlayerName,
 } from '../utilsAndConstants';
-import { createDeck } from '../deck';
 
 describe('utilsAndConstants', () => {
   describe('MAX_HAND_SIZE', () => {
@@ -13,10 +12,10 @@ describe('utilsAndConstants', () => {
   });
 
   describe('createNewShuffledDeck', () => {
-    it('should create a deck with 52 cards', () => {
+    it('should create a deck with 55 cards', () => {
       const deck = createNewShuffledDeck();
 
-      expect(deck.length).toBe(52);
+      expect(deck.length).toBe(55);
     });
 
     it('should return a shuffled deck', () => {
@@ -28,7 +27,7 @@ describe('utilsAndConstants', () => {
       const order2 = deck2.map((c) => c.id).join(',');
       const order3 = deck3.map((c) => c.id).join(',');
 
-      expect(typeof order1).toBe('string');
+      expect(new Set([order1, order2, order3]).size).toBeGreaterThan(1);
     });
 
     it('should contain all card types', () => {
@@ -42,7 +41,7 @@ describe('utilsAndConstants', () => {
       expect(positive.length).toBe(17);
       expect(neutral.length).toBe(17);
       expect(negative.length).toBe(17);
-      expect(wild.length).toBe(1);
+      expect(wild.length).toBe(4);
     });
   });
 
@@ -76,4 +75,3 @@ describe('utilsAndConstants', () => {
     });
   });
 });
-

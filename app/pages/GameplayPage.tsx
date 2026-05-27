@@ -154,6 +154,11 @@ export const GameplayPage = ({
           aria-hidden="true"
         />
       )}
+      {!isWalkthrough && isTransitioning && (
+        <div className={styles.seasonTransition} aria-live="polite">
+          {displaySeason}
+        </div>
+      )}
       {!isWalkthrough && (
         <div
           className={`${styles.particleLayer} ${SEASON_EFFECT_CLASSES[displaySeason]}`}

@@ -1,5 +1,12 @@
 import { State } from '../types/playerState';
 import { TraitCategory } from '../types/trait';
+import { CATEGORY_NAMES } from '../types/card';
+
+export type ChallengeRequirement = {
+  label: string;
+  met: boolean;
+  current?: string;
+};
 
 export type Challenge = {
   id: string;
@@ -37,18 +44,32 @@ function getCategoryPercentage(state: State, category: TraitCategory): number {
 }
 
 function getCategoryLabel(category: TraitCategory): string {
-  const labels: Record<TraitCategory, string> = {
-    positive: 'FLOURISH',
-    neutral: 'ADAPT',
-    negative: 'BURDEN',
-    wild: 'CATALYST',
-  };
-
-  return labels[category];
+  return CATEGORY_NAMES[category];
 }
 
-// 52-card deck, start with 10 stability
-// Positive: +2 score, +1 stability | Neutral: +1 score | Negative: +1 score, -2 stability
+function formatCount(count: number): string {
+  return `${count}`;
+}
+
+function formatPercentage(value: number): string {
+  return `${Math.round(value)}%`;
+}
+
+function getPatternIndex(challengeNum: number, patternCount: number, advancedPatternCount: number): number {
+  const tier = Math.ceil(challengeNum / 10);
+
+  if (tier <= 3) {
+    return (challengeNum - 1) % patternCount;
+  }
+
+  if (tier <= 6) {
+    return (challengeNum - 1) % (patternCount + 5);
+  }
+
+  return (challengeNum - 1) % (patternCount + advancedPatternCount);
+}
+
+// Start with 10 stability.
 function getDifficultyParams(challengeNum: number) {
   const tier = Math.ceil(challengeNum / 10);
   const tierProgress = (challengeNum - 1) % 10;
@@ -121,7 +142,7 @@ function generateAllChallenges(): Challenge[] {
     // Pattern 6: Category diversity
     () => ({
       name: 'Diverse Genome',
-      description: `≥1 ${getCategoryLabel('positive')}, ≥1 ${getCategoryLabel('neutral')}, ≥1 ${getCategoryLabel('negative')}`,
+      description: `≥ 1 ${getCategoryLabel('positive')}, ≥ 1 ${getCategoryLabel('neutral')}, ≥ 1 ${getCategoryLabel('negative')}`,
       check: (state: State) => {
       const counts = getTraitCounts(state);
       return counts.positive >= 1 && counts.neutral >= 1 && counts.negative >= 1;
@@ -145,10 +166,16 @@ function generateAllChallenges(): Challenge[] {
     // Pattern 8: Catalyst requirement
     (num: number, p: ReturnType<typeof getDifficultyParams>) => {
       const minWild = Math.max(1, Math.floor(p.tier / 3));
+      const canUseAdaptFallback = p.tier <= 2;
       return {
         name: 'Catalyst Spark',
-        description: `At least ${minWild} ${getCategoryLabel('wild')} trait${minWild > 1 ? 's' : ''}`,
-        check: (state: State) => getTraitCounts(state).wild >= minWild,
+        description: canUseAdaptFallback
+          ? `At least 1 ${getCategoryLabel('wild')} trait or 2 ${getCategoryLabel('neutral')} traits`
+          : `At least ${minWild} ${getCategoryLabel('wild')} trait${minWild > 1 ? 's' : ''}`,
+        check: (state: State) => {
+          const counts = getTraitCounts(state);
+          return counts.wild >= minWild || (canUseAdaptFallback && counts.neutral >= 2);
+        },
       };
     },
 
@@ -175,7 +202,7 @@ function generateAllChallenges(): Challenge[] {
     // Pattern 11: High score + specific category
     (num: number, p: ReturnType<typeof getDifficultyParams>) => ({
       name: 'Focused Excellence',
-      description: `Score ≥ ${p.minScore + 2}, ≥${p.minCategoryCount + 1} ${getCategoryLabel('positive')} traits`,
+      description: `Score ≥ ${p.minScore + 2}, ≥ ${p.minCategoryCount + 1} ${getCategoryLabel('positive')} traits`,
       check: (state: State) => state.score >= p.minScore + 2 && getTraitCounts(state).positive >= p.minCategoryCount + 1,
     }),
 
@@ -204,7 +231,7 @@ function generateAllChallenges(): Challenge[] {
       const req = Math.floor(1 + p.tier / 3);
       return {
         name: 'Hybrid Vigor',
-        description: `≥${req} ${getCategoryLabel('positive')}, ≥${req} ${getCategoryLabel('neutral')}, Score ≥ ${p.minScore}`,
+        description: `≥ ${req} ${getCategoryLabel('positive')}, ≥ ${req} ${getCategoryLabel('neutral')}, Score ≥ ${p.minScore}`,
         check: (state: State) => {
           const counts = getTraitCounts(state);
           return counts.positive >= req && counts.neutral >= req && state.score >= p.minScore;
@@ -229,10 +256,10 @@ function generateAllChallenges(): Challenge[] {
       const ratio = Math.floor(1 + p.tier / 3);
       return {
         name: 'Golden Ratio',
-        description: `${getCategoryLabel('positive')} traits ≥ ${ratio}× ${getCategoryLabel('negative')} traits`,
+        description: `${getCategoryLabel('positive')} traits ≥ ${ratio} × ${getCategoryLabel('negative')} traits, Traits ≥ ${p.minTraits}`,
         check: (state: State) => {
           const counts = getTraitCounts(state);
-          return counts.positive >= counts.negative * ratio;
+          return counts.positive >= counts.negative * ratio && getTotalTraits(state) >= p.minTraits;
         },
       };
     },
@@ -311,6 +338,186 @@ export function getChallenge(num: number): Challenge | null {
 
 export function checkChallenge(state: State, challenge: Challenge): boolean {
   return challenge.check(state);
+}
+
+export function getChallengeRequirements(state: State, challenge: Challenge): ChallengeRequirement[] {
+  const params = getDifficultyParams(challenge.number);
+  const patternIndex = getPatternIndex(challenge.number, 10, 10);
+  const counts = getTraitCounts(state);
+  const totalTraits = getTotalTraits(state);
+
+  switch (patternIndex) {
+    case 0:
+      return [
+        { label: `Traits ≥ ${params.minTraits}`, met: totalTraits >= params.minTraits, current: formatCount(totalTraits) },
+        { label: `Stability ≥ ${params.minStability}`, met: state.stability >= params.minStability, current: `${state.stability}` },
+      ];
+    case 1:
+      return [
+        { label: `Score ≥ ${params.minScore}`, met: state.score >= params.minScore, current: formatCount(state.score) },
+      ];
+    case 2:
+      return [
+        {
+          label: `${getCategoryLabel('positive')} traits ≥ ${params.minCategoryCount}`,
+          met: counts.positive >= params.minCategoryCount,
+          current: formatCount(counts.positive),
+        },
+      ];
+    case 3:
+      return [
+        {
+          label: `${getCategoryLabel('neutral')} traits ≥ ${params.minCategoryCount}`,
+          met: counts.neutral >= params.minCategoryCount,
+          current: formatCount(counts.neutral),
+        },
+      ];
+    case 4:
+      return [
+        { label: `Score ≥ ${params.minScore}`, met: state.score >= params.minScore, current: formatCount(state.score) },
+        { label: `Stability ≥ ${params.minStability}`, met: state.stability >= params.minStability, current: `${state.stability}` },
+      ];
+    case 5: {
+      const maxNeg = Math.max(0, 4 - Math.floor(params.tier / 2));
+      return [
+        {
+          label: `${getCategoryLabel('negative')} traits ≤ ${maxNeg}`,
+          met: counts.negative <= maxNeg,
+          current: formatCount(counts.negative),
+        },
+        { label: `Traits ≥ ${params.minTraits}`, met: totalTraits >= params.minTraits, current: formatCount(totalTraits) },
+      ];
+    }
+    case 6:
+      return [
+        { label: `${getCategoryLabel('positive')} traits ≥ 1`, met: counts.positive >= 1, current: formatCount(counts.positive) },
+        { label: `${getCategoryLabel('neutral')} traits ≥ 1`, met: counts.neutral >= 1, current: formatCount(counts.neutral) },
+        { label: `${getCategoryLabel('negative')} traits ≥ 1`, met: counts.negative >= 1, current: formatCount(counts.negative) },
+      ];
+    case 7: {
+      const minSame = Math.floor(2 + params.tier * 0.5);
+      const largestCategoryCount = Math.max(counts.positive, counts.neutral, counts.negative, counts.wild);
+      return [
+        {
+          label: `Any category traits ≥ ${minSame}`,
+          met: largestCategoryCount >= minSame,
+          current: formatCount(largestCategoryCount),
+        },
+      ];
+    }
+    case 8: {
+      const minWild = Math.max(1, Math.floor(params.tier / 3));
+      const canUseAdaptFallback = params.tier <= 2;
+      return [
+        {
+          label: canUseAdaptFallback
+            ? `${getCategoryLabel('wild')} ≥ 1 or ${getCategoryLabel('neutral')} ≥ 2`
+            : `${getCategoryLabel('wild')} traits ≥ ${minWild}`,
+          met: counts.wild >= minWild || (canUseAdaptFallback && counts.neutral >= 2),
+          current: canUseAdaptFallback
+            ? `${counts.wild}/1 or ${counts.neutral}/2`
+            : formatCount(counts.wild),
+        },
+      ];
+    }
+    case 9: {
+      const categoryPercentages = (['positive', 'neutral', 'negative', 'wild'] as TraitCategory[]).map((category) =>
+        getCategoryPercentage(state, category)
+      );
+      const largestCategoryPct = Math.max(...categoryPercentages);
+      return [
+        { label: `Traits ≥ ${params.minTraits}`, met: totalTraits >= params.minTraits, current: formatCount(totalTraits) },
+        {
+          label: `Largest category ≤ ${params.maxCategoryPct}%`,
+          met: totalTraits >= params.minTraits && largestCategoryPct <= params.maxCategoryPct,
+          current: totalTraits === 0 ? '0%' : formatPercentage(largestCategoryPct),
+        },
+      ];
+    }
+    case 10:
+      return [
+        {
+          label: `${getCategoryLabel('positive')} share ≥ ${params.minCategoryPct}%`,
+          met: getCategoryPercentage(state, 'positive') >= params.minCategoryPct,
+          current: formatPercentage(getCategoryPercentage(state, 'positive')),
+        },
+      ];
+    case 11:
+      return [
+        { label: `Score ≥ ${params.minScore + 2}`, met: state.score >= params.minScore + 2, current: formatCount(state.score) },
+        {
+          label: `${getCategoryLabel('positive')} traits ≥ ${params.minCategoryCount + 1}`,
+          met: counts.positive >= params.minCategoryCount + 1,
+          current: formatCount(counts.positive),
+        },
+      ];
+    case 12: {
+      const maxStab = Math.max(2, 6 - Math.floor(params.tier / 2));
+      return [
+        { label: `Stability ≤ ${maxStab}`, met: state.stability <= maxStab, current: `${state.stability}` },
+        { label: `Traits ≥ ${params.minTraits + 1}`, met: totalTraits >= params.minTraits + 1, current: formatCount(totalTraits) },
+      ];
+    }
+    case 13: {
+      const extraTraits = Math.floor(params.tier / 3) + 1;
+      return [
+        { label: `Traits ≥ ${params.minTraits + extraTraits}`, met: totalTraits >= params.minTraits + extraTraits, current: formatCount(totalTraits) },
+        { label: `Stability ≥ ${params.minStability}`, met: state.stability >= params.minStability, current: `${state.stability}` },
+      ];
+    }
+    case 14: {
+      const req = Math.floor(1 + params.tier / 3);
+      return [
+        { label: `${getCategoryLabel('positive')} traits ≥ ${req}`, met: counts.positive >= req, current: formatCount(counts.positive) },
+        { label: `${getCategoryLabel('neutral')} traits ≥ ${req}`, met: counts.neutral >= req, current: formatCount(counts.neutral) },
+        { label: `Score ≥ ${params.minScore}`, met: state.score >= params.minScore, current: formatCount(state.score) },
+      ];
+    }
+    case 15:
+      return [
+        { label: `Traits ≥ ${params.minTraits + 1}`, met: totalTraits >= params.minTraits + 1, current: formatCount(totalTraits) },
+        { label: `${getCategoryLabel('positive')} present`, met: counts.positive > 0, current: formatCount(counts.positive) },
+        { label: `${getCategoryLabel('neutral')} present`, met: counts.neutral > 0, current: formatCount(counts.neutral) },
+        { label: `${getCategoryLabel('negative')} present`, met: counts.negative > 0, current: formatCount(counts.negative) },
+        { label: `Score ≥ ${params.minScore}`, met: state.score >= params.minScore, current: formatCount(state.score) },
+      ];
+    case 16: {
+      const ratio = Math.floor(1 + params.tier / 3);
+      return [
+        {
+          label: `${getCategoryLabel('positive')} ≥ ${ratio} × ${getCategoryLabel('negative')}`,
+          met: counts.positive >= counts.negative * ratio,
+          current: `${counts.positive}:${counts.negative}`,
+        },
+        { label: `Traits ≥ ${params.minTraits}`, met: totalTraits >= params.minTraits, current: formatCount(totalTraits) },
+      ];
+    }
+    case 17:
+      return [
+        { label: 'Stability > 0', met: state.stability > 0, current: `${state.stability}` },
+        { label: `Score ≥ ${params.minScore + 3}`, met: state.score >= params.minScore + 3, current: formatCount(state.score) },
+        { label: `Traits ≥ ${params.minTraits}`, met: totalTraits >= params.minTraits, current: formatCount(totalTraits) },
+      ];
+    case 18: {
+      const margin = Math.max(1, Math.floor(params.tier / 3));
+      return [
+        {
+          label: `${getCategoryLabel('positive')} exceeds ${getCategoryLabel('negative')} by ${margin}`,
+          met: counts.positive >= counts.negative + margin,
+          current: `${counts.positive} vs ${counts.negative}`,
+        },
+        { label: `Traits ≥ ${params.minTraits}`, met: totalTraits >= params.minTraits, current: formatCount(totalTraits) },
+      ];
+    }
+    case 19:
+      return [
+        { label: `Traits ≥ ${params.minTraits + 2}`, met: totalTraits >= params.minTraits + 2, current: formatCount(totalTraits) },
+        { label: `Score ≥ ${params.minScore + 4}`, met: state.score >= params.minScore + 4, current: formatCount(state.score) },
+        { label: `Stability ≥ ${params.minStability}`, met: state.stability >= params.minStability, current: `${state.stability}` },
+      ];
+    default:
+      return [{ label: challenge.description, met: challenge.check(state) }];
+  }
 }
 
 export function getDifficultyName(difficulty: number): string {

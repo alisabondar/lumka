@@ -32,6 +32,14 @@
   .container .challengeDescriptionSection {
     border-top-color: rgba(0, 0, 0, 0.1);
   }
+
+  .requirementMet {
+    color: #155234;
+  }
+
+  .requirementMissing {
+    color: #4f4438;
+  }
 }
 
 .infoSection {
@@ -76,6 +84,54 @@
   overflow-wrap: break-word;
   word-wrap: break-word;
   max-width: 100%;
+}
+
+.requirementList {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.requirementItem {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 7px;
+  font-size: clamp(0.72rem, 0.78vw, 0.88rem);
+  font-weight: 700;
+}
+
+.requirementMet {
+  background: rgba(42, 145, 92, 0.16);
+  color: #155234;
+}
+
+.requirementMissing {
+  background: rgba(105, 105, 105, 0.12);
+  color: #4f4438;
+}
+
+.requirementStatus {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 0.82rem;
+}
+
+.requirementLabel {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.requirementCurrent {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.82;
 }
 
 .statsRow {
