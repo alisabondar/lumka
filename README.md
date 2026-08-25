@@ -25,10 +25,6 @@ A strategic card game where you evolve your fox through 6 rounds of challenges, 
 - **Content**: More trait cards, seasonal events, story mode, custom challenge sharing
 - **Other**: Performance optimization, analytics, internationalization (i18n)
 
-## Contributing
-
-Pull requests welcome. For larger changes, open an issue first.
-
 ---
 
 *Evolve. Adapt. Flourish.* 🦊
